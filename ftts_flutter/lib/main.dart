@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screen/CameraScreen.dart';
+import 'screen/HomeScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,11 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-
-        primarySwatch: Colors.green,
-      ),
-      home: CameraExample(),
+      theme: ThemeData(),
+      home: HomeScreen(),
     );
   }
 }
