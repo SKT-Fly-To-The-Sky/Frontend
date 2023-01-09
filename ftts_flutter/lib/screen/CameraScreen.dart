@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'ResultPage.dart';
+import 'ResultScreen.dart';
 
 //main을 켜면 가장 먼저 나오는 화면으로 이미지 촬영을 위한 버튼과 갤러리 접근 버튼이 있다.
 

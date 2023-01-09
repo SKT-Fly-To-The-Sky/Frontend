@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 
-import 'camera_ex.dart';
+import 'CameraScreen.dart';
 
 class ResultPage extends StatelessWidget{
   final File? _image;
