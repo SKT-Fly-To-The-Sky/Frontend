@@ -82,9 +82,13 @@ flutter:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
-  #   - family: Trajan Pro
+  fonts:  
+    - family: NotoSansKR
       fonts:
-        - asset: assets/font/NotoSansKR-Regular.otf
+        - asset: assets/fonts/NotoSansKR-Regular.otf
+    # - family: NotoSansKRthin
+    #   fonts:
+    #     - asset: assets/font/NotoSansKR-Thin.otf
         # - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #

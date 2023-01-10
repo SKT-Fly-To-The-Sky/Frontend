@@ -30,10 +30,7 @@ class _MainScreenState extends State<MainScreen> {
           title: const Text(
             "A.식단",
             style: TextStyle(
-                fontFamily: 'NotoSansKR',
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold),
+                fontFamily: 'NotoSansKR', color: Colors.black, fontSize: 18),
           ),
           leading: IconButton(
             icon: const Icon(Icons.menu),

@@ -10,8 +10,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int flag = 0;
-
   @override
   void initState() {
     super.initState();
@@ -22,18 +20,79 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          title: const Text(
+            "에이닷",
+            style: TextStyle(
+                fontFamily: 'NotoSansKR', color: Colors.black, fontSize: 18),
+          ),
           iconTheme: const IconThemeData(color: Colors.black),
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           centerTitle: true,
-          elevation: 0.0,
+          elevation: 1.0,
           leading: IconButton(
             icon: const Icon(Icons.menu),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MenuRoute()));
+            },
           ),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
         ));
+  }
+}
+
+class MenuRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: const Text(
+            "메뉴",
+            style: TextStyle(
+                fontFamily: 'NotoSansKR', color: Colors.black, fontSize: 18),
+          ),
+          iconTheme: const IconThemeData(color: Colors.black),
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          elevation: 1.0,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
+        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Text("구미진님의 에이닷"),
+              ),
+              ListTile(
+                title: const Text('Item 1'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Item 2'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          )
+        ]));
   }
 }
