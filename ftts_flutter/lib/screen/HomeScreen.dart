@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'CameraScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -56,43 +57,49 @@ class MenuRoute extends StatelessWidget {
                 fontFamily: 'NotoSansKR', color: Colors.black, fontSize: 18),
           ),
           iconTheme: const IconThemeData(color: Colors.black),
-          automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           centerTitle: true,
-          elevation: 1.0,
+          elevation: 0.0,
           actions: [
-            IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            Container(
+              margin: const EdgeInsets.only(right: 5),
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.close)),
             )
           ],
         ),
-        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
+        body: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
+              height: 120,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 236, 218, 255),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
                 child: Text("구미진님의 에이닷"),
               ),
-              ListTile(
-                title: const Text('Item 1'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
+            ),
+            Container(
+              child: Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(15),
+                    child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: ((context) => const CameraExample())));
+                        },
+                        icon: const Icon(Icons.camera_alt)),
+                  )
+                ],
               ),
-              ListTile(
-                title: const Text('Item 2'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          )
-        ]));
+            )
+          ],
+        ));
   }
 }

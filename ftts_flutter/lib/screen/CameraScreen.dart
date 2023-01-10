@@ -23,17 +23,15 @@ class _CameraExampleState extends State<CameraExample> {
 
     setState(() {
       _image = File(image!.path); // 가져온 이미지를 _image에 저장
-    }
-    );
-    if(_image!=null){
+    });
+    if (_image != null) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context)=>ResultPage(_image)),
+        MaterialPageRoute(builder: (context) => ResultPage(_image)),
         //이미지 주소가 있다면 ResultPage로 _image 이동=>출력
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
