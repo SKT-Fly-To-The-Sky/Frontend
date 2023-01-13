@@ -6,14 +6,14 @@ import 'ResultScreen.dart';
 
 //main을 켜면 가장 먼저 나오는 화면으로 이미지 촬영을 위한 버튼과 갤러리 접근 버튼이 있다.
 
-class CameraExample extends StatefulWidget {
-  const CameraExample({Key? key}) : super(key: key);
+class CameraScreen extends StatefulWidget {
+  const CameraScreen({Key? key}) : super(key: key);
 
   @override
-  _CameraExampleState createState() => _CameraExampleState();
+  _CameraScreenState createState() => _CameraScreenState();
 }
 
-class _CameraExampleState extends State<CameraExample> {
+class _CameraScreenState extends State<CameraScreen> {
   File? _image;
   final picker = ImagePicker();
 

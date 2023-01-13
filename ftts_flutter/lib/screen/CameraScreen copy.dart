@@ -1,19 +1,19 @@
-import 'package:flutter/cupertino.dart';
-import 'MenuScreen.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'ResultScreen.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+//main을 켜면 가장 먼저 나오는 화면으로 이미지 촬영을 위한 버튼과 갤러리 접근 버튼이 있다.
+
+class CameraExample extends StatefulWidget {
+  const CameraExample({Key? key}) : super(key: key);
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  _CameraExampleState createState() => _CameraExampleState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _CameraExampleState extends State<CameraExample> {
   File? _image;
   final picker = ImagePicker();
 
@@ -33,44 +33,15 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  int flag = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    // 화면 세로 고정
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+    //UI
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          elevation: 1.0, // 그림자 농도 0
-          title: const Text(
-            "A.식단",
-            style: TextStyle(
-                fontFamily: 'NotoSansKR', color: Colors.black, fontSize: 18),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MenuScreen()));
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
-        ),
+        backgroundColor: const Color(0xfff4f3f9),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

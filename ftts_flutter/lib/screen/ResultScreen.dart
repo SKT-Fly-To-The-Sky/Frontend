@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'CameraScreen.dart';
 
-class ResultPage extends StatelessWidget{
+class ResultPage extends StatelessWidget {
   final File? _image;
   const ResultPage(this._image, {super.key});
 
@@ -19,8 +19,8 @@ class ResultPage extends StatelessWidget{
               child: _image == null
                   ? const Text('No image selected.')
                   : Image.file(File(_image!.path))));
-
     }
+
     return Scaffold(
         backgroundColor: const Color(0xffD6D6D6),
         appBar: AppBar(
@@ -29,7 +29,7 @@ class ResultPage extends StatelessWidget{
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white, //appbar 투명색
           centerTitle: true,
-          elevation: 0.0,// 그림자 농도 0
+          elevation: 0.0, // 그림자 농도 0
           title: const Text(
             "A.식단",
             style: TextStyle(
@@ -40,17 +40,14 @@ class ResultPage extends StatelessWidget{
               //닫기 버튼
               icon: const Icon(Icons.close),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context)=>CameraExample())
-                );
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CameraScreen()));
               },
             )
           ],
         ),
-
         body: Column(
-          //image 출력 view
+            //image 출력 view
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 25.0),
@@ -58,9 +55,6 @@ class ResultPage extends StatelessWidget{
               const SizedBox(
                 height: 50.0,
               ),
-            ]
-        )
-    );
+            ]));
   }
-
 }
