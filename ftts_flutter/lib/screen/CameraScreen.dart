@@ -27,7 +27,7 @@ class _CameraScreenState extends State<CameraScreen> {
     if (_image != null) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ResultPage(_image)),
+        MaterialPageRoute(builder: (context) => ResultScreen(_image)),
         //이미지 주소가 있다면 ResultPage로 _image 이동=>출력
       );
     }

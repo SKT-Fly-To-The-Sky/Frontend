@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'CameraScreen.dart';
 
-class ResultPage extends StatelessWidget {
+class ResultScreen extends StatelessWidget {
   final File? _image;
-  const ResultPage(this._image, {super.key});
+  const ResultScreen(this._image, {super.key});
 
   @override
   Widget build(BuildContext context) {
