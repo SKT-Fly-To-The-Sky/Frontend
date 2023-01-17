@@ -1,24 +1,21 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 
-import 'CameraScreen.dart';
-
-class ResultPage extends StatelessWidget {
-  final File? _image;
-  const ResultPage(this._image, {super.key});
+class ResultScreen extends StatelessWidget {
+  final String? _image;
+  const ResultScreen(this._image, {super.key});
 
   @override
   Widget build(BuildContext context) {
     //이미지를 보여주는 위젯으로 image를 받으면 A.식단 결과 페이지가 나타난다
     Widget showImage() {
       return Container(
-          color: const Color(0xffd0cece),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.width,
-          child: Center(
-              child: _image == null
-                  ? const Text('No image selected.')
-                  : Image.file(File(_image!.path))));
+        color: const Color(0xffd0cece),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.width,
+        child:Center(
+            child: Image.network(_image!)
+        ) ,
+      );
     }
 
     return Scaffold(
@@ -37,11 +34,10 @@ class ResultPage extends StatelessWidget {
           ),
           actions: [
             IconButton(
-              //닫기 버튼
+              //닫기 버튼 (뒤로가기와 기능적으로 같다)
               icon: const Icon(Icons.close),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CameraScreen()));
+                Navigator.pop(context);
               },
             )
           ],
