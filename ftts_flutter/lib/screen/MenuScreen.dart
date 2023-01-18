@@ -35,14 +35,6 @@ class MenuScreen extends StatelessWidget {
               child: Center(
                 child: Image(image: AssetImage('assets/adot_menu.jpg')),
               ),
-              // height: 120,
-              // decoration: BoxDecoration(
-              //   color: Color.fromARGB(255, 236, 218, 255),
-              //   borderRadius: BorderRadius.circular(10),
-              // ),
-              // child: Center(
-              //   child: Text("구미진님의 에이닷"),
-              // ),
             ),
             Container(
               margin: EdgeInsets.only(left: 20),

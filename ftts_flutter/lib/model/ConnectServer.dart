@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ConnectServer{
+class ConnectServer {
   XFile? file;
   final String Url = 'http://210.109.63.74:11003/';
-  final dio=Dio();
-  Future<String> uploading(XFile file) async{
+  final dio = Dio();
+  Future<String> uploading(XFile file) async {
     //데이터 변환
-    FormData formData =FormData.fromMap({
-      'file':await MultipartFile.fromFile(
+    FormData formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(
         file.path,
       )
     });
@@ -23,9 +23,10 @@ class ConnectServer{
         requestBody: false));
 
     //post image
-    var response=await dio.post('${Url}api/picture/upload-images',data: formData);
-    var responseData=response.data?['fileName'];
-    String imagePath='${Url}api/picture/images/$responseData';
+    var response =
+        await dio.post('${Url}api/picture/upload-images', data: formData);
+    var responseData = response.data?['fileName'];
+    String imagePath = '${Url}api/picture/images/$responseData';
 
     return imagePath;
   }
