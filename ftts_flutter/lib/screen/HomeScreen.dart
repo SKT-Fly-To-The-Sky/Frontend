@@ -40,6 +40,17 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+              margin: EdgeInsets.all(10),
+              child: Text(
+                '반가워요! 제 이름은 에이닷이에요',
+                style: TextStyle(
+                    fontFamily: 'NotoSansKR',
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
             SizedBox(
               height: 20,
             ),
