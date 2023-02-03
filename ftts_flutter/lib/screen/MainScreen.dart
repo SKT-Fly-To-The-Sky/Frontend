@@ -6,6 +6,7 @@ import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'ResultScreen.dart';
+import 'HomeScreen.dart';
 import '../model/ConnectServer.dart';
 import '../utils.dart';
 
@@ -88,7 +89,9 @@ class _MainScreenState extends State<MainScreen> {
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()));
+                // Navigator.pop(context);
               },
             )
           ],
