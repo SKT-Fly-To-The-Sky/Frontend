@@ -54,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     final List<DoughnutChartData> doughnutChartData = [
-      DoughnutChartData('섭취한 칼로리', 1700, Color(0xFF334CFF)),
+      DoughnutChartData('섭취한 칼로리', 1700, Color(0xFF3617CE)),
       DoughnutChartData('남은 칼로리', 400, Color(0xFFe8e8e8)),
     ];
 
@@ -99,6 +99,7 @@ class _MainScreenState extends State<MainScreen> {
         body: SingleChildScrollView(
             child: Column(children: [
           TableCalendar(
+            locale: 'ko-KR',
             firstDay: kFirstDay,
             lastDay: kLastDay,
             focusedDay: _focusedDay,
@@ -132,6 +133,21 @@ class _MainScreenState extends State<MainScreen> {
               // No need to call `setState()` here
               _focusedDay = focusedDay;
             },
+            calendarStyle: CalendarStyle(
+              selectedDecoration: const BoxDecoration(
+                color: const Color(0xFF3617CE),
+                shape: BoxShape.circle,
+              ),
+              todayDecoration: const BoxDecoration(
+                color: const Color(0xFFaea2eb),
+                shape: BoxShape.circle,
+              ),
+            ),
+            headerStyle: HeaderStyle(
+                titleCentered: true,
+                formatButtonVisible: false,
+                titleTextStyle:
+                    const TextStyle(fontFamily: 'NotoSansKR', fontSize: 17.0)),
           ),
           Container(
               // padding: const EdgeInsets.all(8.0),
@@ -379,7 +395,7 @@ class _MainScreenState extends State<MainScreen> {
                         children: <Widget>[
                           // 카메라 촬영 버튼 동작
                           FloatingActionButton(
-                            backgroundColor: Color(0xFF334CFF),
+                            backgroundColor: Color(0xFF3617CE),
                             child: Icon(Icons.add_a_photo),
                             tooltip: 'pick Image',
                             onPressed: () {
@@ -389,7 +405,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           // 갤러리에서 이미지를 가져오는 버튼
                           FloatingActionButton(
-                            backgroundColor: Color(0xFF334CFF),
+                            backgroundColor: Color(0xFF3617CE),
                             child: Icon(Icons.wallpaper),
                             tooltip: 'pick Image',
                             onPressed: () {
