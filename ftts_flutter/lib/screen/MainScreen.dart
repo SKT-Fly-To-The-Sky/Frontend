@@ -404,10 +404,10 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ],
               views: [
-                Container(color: Colors.white),
                 imageUpload(),
-                Container(color: Colors.white),
-                Container(color: Colors.white)
+                imageUpload(),
+                imageUpload(),
+                imageUpload(),
               ],
             ),
           ),
