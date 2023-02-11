@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Fly To The Sky',
-      theme: ThemeData(),
+      theme: ThemeData(fontFamily: 'NotoSansKR'),
       home: HomeScreen(),
     );
   }

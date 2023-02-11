@@ -1,6 +1,8 @@
 import 'package:table_calendar/table_calendar.dart';
 import 'MenuScreen.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -18,6 +20,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  File? _image;
   final picker = ImagePicker();
   final connectServer = ConnectServer();
 
@@ -30,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
       imagepath = await connectServer.uploading(image);
       if (imagepath != "fail") {
         setState(() {
+          _image = File(image!.path); // 가져온 이미지를 _image에 저장
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => ResultScreen(imagepath)));
         });
@@ -48,6 +52,40 @@ class _MainScreenState extends State<MainScreen> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+
+  // 이미지 업로더 위젯
+  Widget imageUpload() {
+    return Container(
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: _image == null
+                ? <Widget>[
+                    // 카메라 촬영 버튼 동작
+                    FloatingActionButton(
+                      backgroundColor: Color(0xFF3617CE),
+                      child: Icon(Icons.add_a_photo),
+                      tooltip: 'pick Image',
+                      onPressed: () {
+                        //카메라에서 이미지 가져오기
+                        getImage(ImageSource.camera);
+                      },
+                    ),
+                    // 갤러리에서 이미지를 가져오는 버튼
+                    FloatingActionButton(
+                      backgroundColor: Color(0xFF3617CE),
+                      child: Icon(Icons.wallpaper),
+                      tooltip: 'pick Image',
+                      onPressed: () {
+                        //갤러리에서 이미지 가져오기
+                        getImage(ImageSource.gallery);
+                      },
+                    ),
+                  ]
+                : <Widget>[Image.file(File(_image!.path))])
+      ]),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +113,7 @@ class _MainScreenState extends State<MainScreen> {
           elevation: 1.0, // 그림자 농도 0
           title: const Text(
             "A.식단",
-            style: TextStyle(
-                fontFamily: 'NotoSansKR', color: Colors.black, fontSize: 18),
+            style: TextStyle(color: Colors.black, fontSize: 18),
           ),
           leading: IconButton(
             icon: const Icon(Icons.menu),
@@ -134,6 +171,7 @@ class _MainScreenState extends State<MainScreen> {
               _focusedDay = focusedDay;
             },
             calendarStyle: CalendarStyle(
+              // cellMargin: EdgeInsets.all(5.0),
               selectedDecoration: const BoxDecoration(
                 color: const Color(0xFF3617CE),
                 shape: BoxShape.circle,
@@ -146,8 +184,7 @@ class _MainScreenState extends State<MainScreen> {
             headerStyle: HeaderStyle(
                 titleCentered: true,
                 formatButtonVisible: false,
-                titleTextStyle:
-                    const TextStyle(fontFamily: 'NotoSansKR', fontSize: 17.0)),
+                titleTextStyle: const TextStyle(fontSize: 17.0)),
           ),
           Container(
               // padding: const EdgeInsets.all(8.0),
@@ -165,16 +202,12 @@ class _MainScreenState extends State<MainScreen> {
                   Text(
                     'Daily',
                     style: TextStyle(
-                        fontFamily: 'NotoSansKR',
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     'Weekly',
                     style: TextStyle(
-                        fontFamily: 'NotoSansKR',
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                 ],
                 views: [
@@ -194,7 +227,6 @@ class _MainScreenState extends State<MainScreen> {
                                     child: const Text(
                                       "남은 칼로리\n1700kcal",
                                       style: TextStyle(
-                                          fontFamily: 'NotoSansKR',
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16),
                                     ),
@@ -226,7 +258,6 @@ class _MainScreenState extends State<MainScreen> {
                                   axisLine: AxisLine(color: Colors.transparent),
                                   labelStyle: TextStyle(
                                       color: Colors.black,
-                                      fontFamily: 'NotoSansKR',
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13),
@@ -307,14 +338,11 @@ class _MainScreenState extends State<MainScreen> {
                     Text(
                       '아침',
                       style: TextStyle(
-                          fontFamily: 'NotoSansKR',
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                          color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       "300kcal",
                       style: TextStyle(
-                        fontFamily: 'NotoSansKR',
                         color: Colors.black,
                       ),
                     ),
@@ -328,14 +356,11 @@ class _MainScreenState extends State<MainScreen> {
                     Text(
                       '점심',
                       style: TextStyle(
-                          fontFamily: 'NotoSansKR',
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                          color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       "-",
                       style: TextStyle(
-                        fontFamily: 'NotoSansKR',
                         color: Colors.black,
                       ),
                     ),
@@ -349,14 +374,11 @@ class _MainScreenState extends State<MainScreen> {
                     Text(
                       '저녁',
                       style: TextStyle(
-                          fontFamily: 'NotoSansKR',
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                          color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       "-",
                       style: TextStyle(
-                        fontFamily: 'NotoSansKR',
                         color: Colors.black,
                       ),
                     ),
@@ -370,14 +392,11 @@ class _MainScreenState extends State<MainScreen> {
                     Text(
                       '간식',
                       style: TextStyle(
-                          fontFamily: 'NotoSansKR',
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                          color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       "-",
                       style: TextStyle(
-                        fontFamily: 'NotoSansKR',
                         color: Colors.black,
                       ),
                     ),
@@ -385,41 +404,10 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ],
               views: [
-                Container(color: Colors.white),
-                Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          // 카메라 촬영 버튼 동작
-                          FloatingActionButton(
-                            backgroundColor: Color(0xFF3617CE),
-                            child: Icon(Icons.add_a_photo),
-                            tooltip: 'pick Image',
-                            onPressed: () {
-                              //카메라에서 이미지 가져오기
-                              getImage(ImageSource.camera);
-                            },
-                          ),
-                          // 갤러리에서 이미지를 가져오는 버튼
-                          FloatingActionButton(
-                            backgroundColor: Color(0xFF3617CE),
-                            child: Icon(Icons.wallpaper),
-                            tooltip: 'pick Image',
-                            onPressed: () {
-                              //갤러리에서 이미지 가져오기
-                              getImage(ImageSource.gallery);
-                            },
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                Container(color: Colors.white),
-                Container(color: Colors.white)
+                imageUpload(),
+                imageUpload(),
+                imageUpload(),
+                imageUpload(),
               ],
             ),
           ),
