@@ -11,6 +11,8 @@ import 'ResultScreen.dart';
 import 'HomeScreen.dart';
 import '../model/ConnectServer.dart';
 import '../utils.dart';
+import 'dart:math' as math;
+import '../widget/ImageUploader.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -20,72 +22,12 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  File? _image;
-  final picker = ImagePicker();
   final connectServer = ConnectServer();
-
-  // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
-  Future getImage(ImageSource imageSource) async {
-    final image = await picker.pickImage(source: imageSource);
-
-    if (image != null) {
-      String imagepath = "";
-      imagepath = await connectServer.uploading(image);
-      if (imagepath != "fail") {
-        setState(() {
-          _image = File(image!.path); // 가져온 이미지를 _image에 저장
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ResultScreen(imagepath)));
-        });
-      }
-      //Connect Server로 이동하여 연결
-      else {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ResultScreen("fail")));
-      }
-    } else {
-      print("_image is null");
-    }
-  }
 
   // DatePicker 위젯
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-
-  // 이미지 업로더 위젯
-  Widget imageUpload() {
-    return Container(
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: _image == null
-                ? <Widget>[
-                    // 카메라 촬영 버튼 동작
-                    FloatingActionButton(
-                      backgroundColor: Color(0xFF3617CE),
-                      child: Icon(Icons.add_a_photo),
-                      tooltip: 'pick Image',
-                      onPressed: () {
-                        //카메라에서 이미지 가져오기
-                        getImage(ImageSource.camera);
-                      },
-                    ),
-                    // 갤러리에서 이미지를 가져오는 버튼
-                    FloatingActionButton(
-                      backgroundColor: Color(0xFF3617CE),
-                      child: Icon(Icons.wallpaper),
-                      tooltip: 'pick Image',
-                      onPressed: () {
-                        //갤러리에서 이미지 가져오기
-                        getImage(ImageSource.gallery);
-                      },
-                    ),
-                  ]
-                : <Widget>[Image.file(File(_image!.path))])
-      ]),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -404,10 +346,10 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ],
               views: [
-                imageUpload(),
-                imageUpload(),
-                imageUpload(),
-                imageUpload(),
+                ImageUploader(),
+                ImageUploader(),
+                ImageUploader(),
+                ImageUploader(),
               ],
             ),
           ),
