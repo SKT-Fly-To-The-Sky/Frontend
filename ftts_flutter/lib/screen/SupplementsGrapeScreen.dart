@@ -4,8 +4,6 @@ import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 
-import 'ResultScreen.dart';
-
 class GrapeScreen extends StatelessWidget{
   // final String? _image;
   final List<String>? _result;
@@ -21,68 +19,68 @@ class GrapeScreen extends StatelessWidget{
           colors: [Colors.green, Colors.teal],
           jumlah: 83,
           tooltip: "83%",
-          label: '칼로리'
+          label: '비타민A'
       ),
       const VBarChartModel(
           index: 1,
           colors: [Colors.deepOrange, Colors.red],
           jumlah: 100,
           tooltip: "152%",
-          label: '탄수화물'
+          label: '비타민D(D2+D3)'
       ),
       const VBarChartModel(
           index: 2,
           colors: [Colors.deepOrange, Colors.red],
           jumlah: 100,
           tooltip: "114%",
-          label: '단백질'
+          label: '비타민 E'
       ),
       const VBarChartModel(
           index: 3,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 89,
           tooltip: "89%",
-          label: '지방'
+          label: '비타민K'
       ),
       const VBarChartModel(
           index: 4,
           colors: [Colors.green, Colors.teal],
           jumlah: 87,
           tooltip: "87%",
-          label: '설탕'
+          label: '팥토텐산'
       ),
       const VBarChartModel(
           index: 5,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 56,
           tooltip: "56%",
-          label: '식이섬유'
+          label: '비타민 B6'
       ),
       const VBarChartModel(
           index: 6,
           colors: [Colors.green, Colors.teal],
           jumlah: 65,
           tooltip: "65%",
-          label: '포화지방'
+          label: '비오틴'
       ),
       const VBarChartModel(
           index: 7,
           colors: [Colors.green, Colors.teal],
           jumlah: 89,
           tooltip: "89%",
-          label: '콜레스트롤'
+          label: '엽산(DFE)'
       ),
       const VBarChartModel(
           index: 8,
           colors: [Colors.deepOrange, Colors.red],
           jumlah: 100,
-          label: '트랜스지방'
+          label: '비타민 B12'
       ),
       const VBarChartModel(
           index: 9,
           colors: [Colors.deepOrange, Colors.red],
           jumlah: 100,
-          label: '나트륨'
+          label: '비타민 C'
       ),
       const VBarChartModel(
           index: 10,
@@ -96,35 +94,35 @@ class GrapeScreen extends StatelessWidget{
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 19,
           tooltip: "19%",
-          label: '비타민A'
+          label: '마그네슘'
       ),
       const VBarChartModel(
           index: 12,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 73,
           tooltip: "73%",
-          label: '비타민B'
+          label: '인'
       ),
       const VBarChartModel(
           index: 13,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 15,
           tooltip: "15%",
-          label: '비타민C'
+          label: '칼륨'
       ),
       const VBarChartModel(
           index: 14,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 0,
           tooltip: "0%",
-          label: '비타민D'
+          label: '철'
       ),
       const VBarChartModel(
           index: 15,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 67,
           tooltip: "67%",
-          label: '비타민E'
+          label: '아연'
       ),
 
     ];
@@ -155,6 +153,27 @@ class GrapeScreen extends StatelessWidget{
         ],
       );
     }
+    Widget Specialities(){
+      return Container(
+        margin: EdgeInsets.only(left:0, top:10,right: 10,bottom: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          color:Colors.blueGrey,
+        ),
+        padding: EdgeInsets.fromLTRB(10,10,10,10),
+        child:Column(children: <Widget>[
+          Text("비타민 D가 부족해요!"),
+          Row(
+            children: <Widget>[
+              Expanded(flex:1,child:ClipRRect(borderRadius: BorderRadius.circular(8.0),child: Image(image: AssetImage('assets/salad.jpg')))),
+              Expanded(flex:2,child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children:<Widget>[Text("영양제 이름"),Text("최저가"),Text("14,240원"),TextButton(onPressed: (){}, child: Text("11번가에서 구입하기"))]),),
+          ],
+        ),
+        ],)
+      );
+    }
     Widget Container1() {
       return Container(
         margin: EdgeInsets.all(10),
@@ -167,18 +186,7 @@ class GrapeScreen extends StatelessWidget{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(children: <Widget>[
-              Expanded(
-                  flex:1 ,
-                  child: (_result![0]!='fail')?Expanded(child:Image.network(_result![0])):
-                  Expanded(child:ClipRRect(borderRadius: BorderRadius.circular(8.0),child:Image(image:AssetImage('assets/kimchi.jpg'),fit:BoxFit.fitWidth)))),
-              Expanded(flex:2 ,child: Column(children: <Widget>[(_result![1]!='fail')?Text(_result![1]):Text("test error"),],))
-            ],
-            ),
-
             Grape(),
-            TextButton(onPressed:(){ Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ResultScreen(_result)));}, child: Text("닫기"))
           ],
         ),
       );
@@ -193,7 +201,7 @@ class GrapeScreen extends StatelessWidget{
         centerTitle: true,
         elevation: 1.0, // 그림자 농도 0
         title: const Text(
-          "A.식단",
+          "A.영양제",
           style: TextStyle(
               fontFamily: 'NotoSansKR', color: Colors.black, fontSize: 18),
         ),
@@ -212,7 +220,7 @@ class GrapeScreen extends StatelessWidget{
         children: [
           Row(
             children: <Widget>[Container(margin:EdgeInsets.only(left: 15,top:10),
-                child:Row(children: [Icon(Icons.restaurant),Text("추가한 식단"),],))],
+                child:Row(children: [Icon(Icons.medication_outlined),Text("섭취 영양성분"),],))],
           ),
           Expanded(child: Container1()),
 
