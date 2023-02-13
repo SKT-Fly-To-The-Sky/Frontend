@@ -1,16 +1,8 @@
-import 'package:table_calendar/table_calendar.dart';
-import '../screen/MainScreen.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import '../screen/ResultScreen.dart';
-import '../screen/HomeScreen.dart';
 import '../model/ConnectServer.dart';
-import '../utils.dart';
 import 'dart:math' as math;
 
 class ImageUploader extends StatefulWidget {
@@ -23,6 +15,8 @@ class ImageUploader extends StatefulWidget {
 class _ImageUploaderState extends State<ImageUploader> {
   File? _image;
   final picker = ImagePicker();
+  // List<File> _imgList = [];
+  File? image0, _image1, _image2, _image3;
   final connectServer = ConnectServer();
 
   // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
@@ -31,6 +25,7 @@ class _ImageUploaderState extends State<ImageUploader> {
 
     setState(() {
       _image = File(image!.path); // 가져온 이미지를 _image에 저장
+      // _imgList.add(_image!);
     });
 
     if (image != null) {

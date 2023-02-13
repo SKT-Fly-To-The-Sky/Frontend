@@ -2,16 +2,11 @@ import 'package:table_calendar/table_calendar.dart';
 import 'MenuScreen.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-import 'ResultScreen.dart';
 import 'HomeScreen.dart';
 import '../model/ConnectServer.dart';
 import '../utils.dart';
-import 'dart:math' as math;
 import '../widget/ImageUploader.dart';
 
 class MainScreen extends StatefulWidget {
