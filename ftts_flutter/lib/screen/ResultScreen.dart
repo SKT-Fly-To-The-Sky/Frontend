@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ResultScreen extends StatelessWidget {
-  final String? _image;
-  const ResultScreen(this._image, {super.key});
-
+  // final String? _image;
+  // const ResultScreen(this._image, {super.key});
+  final List<String>? _result;
+  const ResultScreen(this._result,{super.key});
   @override
   Widget build(BuildContext context) {
     //이미지를 보여주는 위젯으로 image를 받으면 A.식단 결과 페이지가 나타난다
@@ -13,7 +14,7 @@ class ResultScreen extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.width,
         child:Center(
-            child: Image.network(_image!)
+            child: (_result![0]!='fail')?Image.network(_result![0]):Image(image: AssetImage('assets/kimchi.jpg'),)
         ) ,
       );
     }

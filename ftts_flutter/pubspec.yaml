@@ -69,6 +69,8 @@ flutter:
     - assets/adot_logo.png
     - assets/adot_home.gif
     - assets/adot_menu.jpg
+    - assets/kimchi.jpg
+    - assets/salad.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
