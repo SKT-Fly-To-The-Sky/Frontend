@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:table_calendar/table_calendar.dart';
 import 'MenuScreen.dart';
 import 'dart:io';
@@ -26,26 +28,46 @@ class _MainScreenState extends State<MainScreen> {
 
   // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
   Future getImage(ImageSource imageSource) async {
-    final image = await picker.pickImage(source: imageSource);
+    Timeline.startSync('interesting function');
+    final image = await picker.pickImage(source: imageSource,
+        maxHeight: 448,
+        maxWidth: 448,
+        imageQuality: 100
+      //이미지 resize 부분, height, width 설정, Quality 설정
+    );
 
+    // if (image != null) {
+    //   String imagepath = "";
+    //   imagepath = await connectServer.uploading(image);
+    //   if (imagepath != "fail") {
+    //     setState(() {
+    //       _image = File(image!.path); // 가져온 이미지를 _image에 저장
+    //       Navigator.push(context,
+    //           MaterialPageRoute(builder: (context) => ResultScreen(imagepath)));
+    //     });
+    //   }
+    //   //Connect Server로 이동하여 연결
+    //   else {
+    //     Navigator.push(context,
+    //         MaterialPageRoute(builder: (context) => ResultScreen("fail")));
+    //   }
+    // } else {
+    //   print("_image is null");
+    // }
     if (image != null) {
-      String imagepath = "";
-      imagepath = await connectServer.uploading(image);
-      if (imagepath != "fail") {
-        setState(() {
-          _image = File(image!.path); // 가져온 이미지를 _image에 저장
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ResultScreen(imagepath)));
-        });
-      }
-      //Connect Server로 이동하여 연결
-      else {
+      List<String> result;
+      result = await connectServer.uploading(image);
+      Timeline.finishSync();
+
+      setState(() {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ResultScreen("fail")));
-      }
-    } else {
+            MaterialPageRoute(builder: (context) => ResultScreen(result)));
+      });
+    }
+    else {
       print("_image is null");
     }
+
   }
 
   // DatePicker 위젯
