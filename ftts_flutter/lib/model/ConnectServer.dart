@@ -24,11 +24,15 @@ class ConnectServer {
         responseHeader: false,
         request: false,
         requestBody: false));
-
+    dio.options.connectTimeout = 3000;
+    dio.options.receiveTimeout= 3000;
     try{
       //post image
       var response =
       await dio.post('${Url}api/picture/classification', data: formData);
+
+      print("response");
+      print(response);
       //현재 정보값 이름을 몰라서 비워둔 부분. 이후 추가 예정
       var responseClass=response.data>[''];
       String result='${Url}api/picture/images/$responseClass';
