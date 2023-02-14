@@ -22,26 +22,30 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  File? _image;
+  XFile? _image;
   final picker = ImagePicker();
   final connectServer = ConnectServer();
 
   // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
   Future getImage(ImageSource imageSource) async {
     Timeline.startSync('interesting function');
-    final image = await picker.pickImage(
+    _image = await picker.pickImage(
         source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
         //이미지 resize 부분, height, width 설정, Quality 설정
         );
 
-    if (image != null) {
-      List<String> result;
-      result = await connectServer.uploading(image);
+
+    if (_image != null) {
+      String result;
+      //classfication 결과 받아오기
+      result = await connectServer.uploading(_image!);
+
       Timeline.finishSync();
 
       setState(() {
+        //ResultScreen에 이미지와 classfication 결과 전달
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ResultScreen(result)));
+            MaterialPageRoute(builder: (context) => ResultScreen(_image,result)));
       });
     } else {
       print("_image is null");
