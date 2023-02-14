@@ -30,7 +30,7 @@ class _ImageUploaderState extends State<ImageUploader> {
 
     if (image != null) {
       String imagepath = "";
-      imagepath = await connectServer.uploading(image);
+      // imagepath = await connectServer.uploading(image);
       if (imagepath != "fail") {
         setState(() {
           // _image = File(image!.path); // 가져온 이미지를 _image에 저장
@@ -40,8 +40,8 @@ class _ImageUploaderState extends State<ImageUploader> {
       }
       //Connect Server로 이동하여 연결
       else {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ResultScreen("fail")));
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => ResultScreen("fail")));
       }
     } else {
       print("_image is null");

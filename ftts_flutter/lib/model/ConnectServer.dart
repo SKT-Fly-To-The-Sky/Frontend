@@ -3,10 +3,14 @@ import 'package:image_picker/image_picker.dart';
 
 class ConnectServer {
   XFile? file;
-  final String Url = 'http://210.109.63.74:11003/';
+  final String Url = 'http://jeongsuri.iptime.org:11003/';
   final dio = Dio();
-  Future<String> uploading(XFile file) async {
+
+  var data=new List<String>.filled(2, 'fail', growable: false);
+
+  //Future<String> uploading(XFile file) async {
     //데이터 변환
+  Future<List<String>> uploading(XFile file) async {
     FormData formData = FormData.fromMap({
       'file': await MultipartFile.fromFile(
         file.path,
@@ -22,13 +26,31 @@ class ConnectServer {
         request: false,
         requestBody: false));
 
-    //post image
-    var response =
-        await dio.post('${Url}api/picture/upload-images', data: formData);
-    var responseData = response.data?['fileName'];
-    String imagePath = '${Url}api/picture/images/$responseData';
+    // //post image
+    // var response =
+    //     await dio.post('${Url}api/picture/upload-images', data: formData);
+    // var responseData = response.data?['fileName'];
+    // String imagePath = '${Url}api/picture/images/$responseData';
+    //
+    // return imagePath;
+    try{
+      //post image
+      var response =
+      await dio.post('${Url}api/picture/classification', data: formData);
+      var responseImage = response.data?['fileName'];
+      //classfication 내용 추가 (수정 필요)
+      var responseClass = response.data?['class'];
+      String imagePath = '${Url}api/picture/images/$responseImage';
+      //String classfication = '${Url}api/picture/images/$responseClass';
+      data[0]=imagePath;
+      //data[1]=classfication;
+    }
+    catch(e){
+      data[0]='fail';
+      data[1]='fail';
+    }
 
-    return imagePath;
+    return data;
   }
 
   //image list를 불러오는 기능
