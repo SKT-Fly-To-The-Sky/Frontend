@@ -12,6 +12,7 @@ import 'ResultScreen.dart';
 import 'HomeScreen.dart';
 import '../model/ConnectServer.dart';
 import '../utils.dart';
+import '../widget/ImageUploader.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -33,28 +34,12 @@ class _MainScreenState extends State<MainScreen> {
         //이미지 resize 부분, height, width 설정, Quality 설정
         );
 
-    // if (image != null) {
-    //   String imagepath = "";
-    //   imagepath = await connectServer.uploading(image);
-    //   if (imagepath != "fail") {
-    //     setState(() {
-    //       _image = File(image!.path); // 가져온 이미지를 _image에 저장
-    //       Navigator.push(context,
-    //           MaterialPageRoute(builder: (context) => ResultScreen(imagepath)));
-    //     });
-    //   }
-    //   //Connect Server로 이동하여 연결
-    //   else {
-    //     Navigator.push(context,
-    //         MaterialPageRoute(builder: (context) => ResultScreen("fail")));
-    //   }
-    // } else {
-    //   print("_image is null");
-    // }
+
     if (_image != null) {
       String result;
       //classfication 결과 받아오기
       result = await connectServer.uploading(_image!);
+
       Timeline.finishSync();
 
       setState(() {
@@ -71,40 +56,6 @@ class _MainScreenState extends State<MainScreen> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-
-  // 이미지 업로더 위젯
-  Widget imageUpload() {
-    return Container(
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: _image == null
-                ? <Widget>[
-                    // 카메라 촬영 버튼 동작
-                    FloatingActionButton(
-                      backgroundColor: Color(0xFF3617CE),
-                      child: Icon(Icons.add_a_photo),
-                      tooltip: 'pick Image',
-                      onPressed: () {
-                        //카메라에서 이미지 가져오기
-                        getImage(ImageSource.camera);
-                      },
-                    ),
-                    // 갤러리에서 이미지를 가져오는 버튼
-                    FloatingActionButton(
-                      backgroundColor: Color(0xFF3617CE),
-                      child: Icon(Icons.wallpaper),
-                      tooltip: 'pick Image',
-                      onPressed: () {
-                        //갤러리에서 이미지 가져오기
-                        getImage(ImageSource.gallery);
-                      },
-                    ),
-                  ]
-                : <Widget>[Image.file(File(_image!.path))])
-      ]),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,16 +112,10 @@ class _MainScreenState extends State<MainScreen> {
             focusedDay: _focusedDay,
             calendarFormat: _calendarFormat,
             selectedDayPredicate: (day) {
-              // Use `selectedDayPredicate` to determine which day is currently selected.
-              // If this returns true, then `day` will be marked as selected.
-
-              // Using `isSameDay` is recommended to disregard
-              // the time-part of compared DateTime objects.
               return isSameDay(_selectedDay, day);
             },
             onDaySelected: (selectedDay, focusedDay) {
               if (!isSameDay(_selectedDay, selectedDay)) {
-                // Call `setState()` when updating the selected day
                 setState(() {
                   _selectedDay = selectedDay;
                   _focusedDay = focusedDay;
@@ -179,18 +124,15 @@ class _MainScreenState extends State<MainScreen> {
             },
             onFormatChanged: (format) {
               if (_calendarFormat != format) {
-                // Call `setState()` when updating calendar format
                 setState(() {
                   _calendarFormat = format;
                 });
               }
             },
             onPageChanged: (focusedDay) {
-              // No need to call `setState()` here
               _focusedDay = focusedDay;
             },
             calendarStyle: CalendarStyle(
-              // cellMargin: EdgeInsets.all(5.0),
               selectedDecoration: const BoxDecoration(
                 color: const Color(0xFF3617CE),
                 shape: BoxShape.circle,
@@ -423,10 +365,10 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ],
               views: [
-                imageUpload(),
-                imageUpload(),
-                imageUpload(),
-                imageUpload(),
+                ImageUploader(),
+                ImageUploader(),
+                ImageUploader(),
+                ImageUploader(),
               ],
             ),
           ),
