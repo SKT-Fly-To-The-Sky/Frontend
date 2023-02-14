@@ -1,16 +1,18 @@
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
-
+import 'dart:io';
 import 'ResultScreen.dart';
 
 class GrapeScreen extends StatelessWidget{
-  // final String? _image;
-  final List<String>? _result;
-//  const ResultScreen(this._image, {super.key});
-  const GrapeScreen(this._result,{super.key});
+
+  final XFile? _image;
+  final String? _result;
+
+  const GrapeScreen(this._image,this._result,{super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -170,15 +172,14 @@ class GrapeScreen extends StatelessWidget{
             Row(children: <Widget>[
               Expanded(
                   flex:1 ,
-                  child: (_result![0]!='fail')?Expanded(child:Image.network(_result![0])):
+                  child:(_image!='fail')?Expanded(child:ClipRRect(borderRadius: BorderRadius.circular(8.0),child:Image.file(File(_image!.path)))):
                   Expanded(child:ClipRRect(borderRadius: BorderRadius.circular(8.0),child:Image(image:AssetImage('assets/kimchi.jpg'),fit:BoxFit.fitWidth)))),
-              Expanded(flex:2 ,child: Column(children: <Widget>[(_result![1]!='fail')?Text(_result![1]):Text("test error"),],))
-            ],
+              Expanded(flex:2 ,child: Column(children: <Widget>[(_result!='fail')?Text(_result!):Text("test error"),],))            ],
             ),
 
             Grape(),
             TextButton(onPressed:(){ Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ResultScreen(_result)));}, child: Text("닫기"))
+                MaterialPageRoute(builder: (context) => ResultScreen(_image,_result)));}, child: Text("닫기"))
           ],
         ),
       );
