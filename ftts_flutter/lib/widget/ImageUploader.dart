@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +14,7 @@ class ImageUploader extends StatefulWidget {
 }
 
 class _ImageUploaderState extends State<ImageUploader> {
-  File? _image;
+  XFile? _image;
   final picker = ImagePicker();
   // List<File> _imgList = [];
   File? image0, _image1, _image2, _image3;
@@ -21,28 +22,25 @@ class _ImageUploaderState extends State<ImageUploader> {
 
   // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
   Future getImage(ImageSource imageSource) async {
-    final image = await picker.pickImage(source: imageSource);
+    Timeline.startSync('interesting function');
+    _image = await picker.pickImage(
+        source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
+      //이미지 resize 부분, height, width 설정, Quality 설정
+    );
 
-    setState(() {
-      _image = File(image!.path); // 가져온 이미지를 _image에 저장
-      // _imgList.add(_image!);
-    });
 
-    if (image != null) {
-      String imagepath = "";
-      // imagepath = await connectServer.uploading(image);
-      if (imagepath != "fail") {
-        setState(() {
-          // _image = File(image!.path); // 가져온 이미지를 _image에 저장
-          // Navigator.push(context,
-          //     MaterialPageRoute(builder: (context) => ResultScreen(imagepath)));
-        });
-      }
-      //Connect Server로 이동하여 연결
-      else {
-        // Navigator.push(context,
-        //     MaterialPageRoute(builder: (context) => ResultScreen("fail")));
-      }
+    if (_image != null) {
+      String result;
+      //classfication 결과 받아오기
+      result = await connectServer.uploading(_image!);
+
+      Timeline.finishSync();
+
+      setState(() {
+        //ResultScreen에 이미지와 classfication 결과 전달
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ResultScreen(_image,result)));
+      });
     } else {
       print("_image is null");
     }
