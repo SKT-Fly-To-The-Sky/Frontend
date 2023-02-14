@@ -88,28 +88,32 @@ class _ImageUploaderState extends State<ImageUploader> {
                   ]
                 : <Widget>[
                     SingleChildScrollView(
-                      child: Column(children: [
-                        Transform.rotate(
-                          angle: radians,
-                          child: Image.file(
-                            File(_image!.path),
-                            width: screenWidth * 0.8,
-                          ),
-                        ),
-                        Row(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              child: Text("음식 메뉴"),
+                            Transform.rotate(
+                              angle: radians,
+                              child: Image.file(
+                                File(_image!.path),
+                                width: screenWidth * 0.8,
+                                height: screenWidth * 0.8 * 0.75,
+                              ),
                             ),
-                            Container(
-                              child: Text("칼로리"),
-                            ),
-                            Container(
-                              child: Text("영양 성분"),
+                            Row(
+                              children: [
+                                Container(
+                                  child: Text("음식 메뉴"),
+                                ),
+                                Container(
+                                  child: Text("칼로리"),
+                                ),
+                                Container(
+                                  child: Text("영양 성분"),
+                                )
+                              ],
                             )
-                          ],
-                        )
-                      ]),
+                          ]),
                     )
                   ])
       ],

@@ -34,7 +34,6 @@ class _MainScreenState extends State<MainScreen> {
         //이미지 resize 부분, height, width 설정, Quality 설정
         );
 
-
     if (_image != null) {
       String result;
       //classfication 결과 받아오기
@@ -44,8 +43,10 @@ class _MainScreenState extends State<MainScreen> {
 
       setState(() {
         //ResultScreen에 이미지와 classfication 결과 전달
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ResultScreen(_image,result)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ResultScreen(_image, result)));
       });
     } else {
       print("_image is null");
@@ -287,7 +288,7 @@ class _MainScreenState extends State<MainScreen> {
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
             ),
-            height: 300,
+            height: 400,
             child: ContainedTabBarView(
               onChange: (index) => print(index),
               tabs: [
