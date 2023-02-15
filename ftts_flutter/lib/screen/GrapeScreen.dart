@@ -171,9 +171,23 @@ class GrapeScreen extends StatelessWidget{
           children: <Widget>[
             Row(children: <Widget>[
               Expanded(
-                  flex:1 ,
-                  child:(_image!='fail')?Expanded(child:ClipRRect(borderRadius: BorderRadius.circular(8.0),child:Image.file(File(_image!.path)))):
-                  Expanded(child:ClipRRect(borderRadius: BorderRadius.circular(8.0),child:Image(image:AssetImage('assets/kimchi.jpg'),fit:BoxFit.fitWidth)))),
+                  flex: 1,
+                  //child: (_image!='fail')?Expanded(child:Image.network(_result![0])):
+                  child: (_image != 'fail')
+                      ? Expanded(
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: AspectRatio(aspectRatio: 16/9,child: Image.file(File(_image!.path)),)
+                      ))
+                      : Expanded(
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: AspectRatio(aspectRatio: 16/9,
+                            child: Image(image: AssetImage('assets/kimchi.jpg')),
+                          )
+                      )
+                  )
+              ),
               Expanded(flex:2 ,child: Column(children: <Widget>[(_result!='fail')?Text(_result!):Text("test error"),],))            ],
             ),
 
