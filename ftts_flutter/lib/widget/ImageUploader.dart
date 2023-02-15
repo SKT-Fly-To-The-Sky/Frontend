@@ -13,9 +13,10 @@ class ImageUploader extends StatefulWidget {
   State<ImageUploader> createState() => _ImageUploaderState();
 }
 
+XFile? _image;
+
 class _ImageUploaderState extends State<ImageUploader> {
-  XFile? _image;
-  XFile? _imageBreakfast, _imageLunch, _imageDinner, _imageSnack;
+  // XFile? _image;
   final picker = ImagePicker();
   final connectServer = ConnectServer();
 
@@ -26,8 +27,6 @@ class _ImageUploaderState extends State<ImageUploader> {
         source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
         //이미지 resize 부분, height, width 설정, Quality 설정
         );
-
-    final image = await picker.pickImage(source: imageSource);
 
     if (_image != null) {
       String result;
@@ -63,25 +62,21 @@ class _ImageUploaderState extends State<ImageUploader> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: _image == null
                 ? <Widget>[
-                    // 카메라 촬영 버튼 동작
                     FloatingActionButton(
                       heroTag: 'camera',
                       backgroundColor: Color(0xFF3617CE),
                       child: Icon(Icons.add_a_photo),
                       tooltip: 'pick Image',
                       onPressed: () {
-                        //카메라에서 이미지 가져오기
                         getImage(ImageSource.camera);
                       },
                     ),
-                    // 갤러리에서 이미지를 가져오는 버튼
                     FloatingActionButton(
                       heroTag: 'gallery',
                       backgroundColor: Color(0xFF3617CE),
                       child: Icon(Icons.wallpaper),
                       tooltip: 'pick Image',
                       onPressed: () {
-                        //갤러리에서 이미지 가져오기
                         getImage(ImageSource.gallery);
                       },
                     ),
@@ -106,11 +101,41 @@ class _ImageUploaderState extends State<ImageUploader> {
                                   child: Text("음식 메뉴"),
                                 ),
                                 Container(
-                                  child: Text("칼로리"),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            child: Text("총 칼로리"),
+                                          ),
+                                          Container(
+                                            child: Text("566kcal"),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            child: Text("탄수화물"),
+                                          ),
+                                          Container(
+                                            child: Text("17mg"),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            child: Text("단백질"),
+                                          ),
+                                          Container(
+                                            child: Text("12mg"),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                Container(
-                                  child: Text("영양 성분"),
-                                )
                               ],
                             )
                           ]),
@@ -118,5 +143,37 @@ class _ImageUploaderState extends State<ImageUploader> {
                   ])
       ],
     ));
+  }
+}
+
+class StaticUploader extends StatelessWidget {
+  const StaticUploader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return Container(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[
+        FloatingActionButton(
+          heroTag: 'camera',
+          backgroundColor: Color(0xFF3617CE),
+          child: Icon(Icons.add_a_photo),
+          tooltip: 'pick Image',
+          onPressed: () {
+            // getImage(ImageSource.camera);
+          },
+        ),
+        FloatingActionButton(
+          heroTag: 'gallery',
+          backgroundColor: Color(0xFF3617CE),
+          child: Icon(Icons.wallpaper),
+          tooltip: 'pick Image',
+          onPressed: () {
+            // getImage(ImageSource.gallery);
+          },
+        ),
+      ])
+    ]));
   }
 }

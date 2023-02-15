@@ -328,10 +328,10 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ],
               views: [
+                StaticUploader(),
                 ImageUploader(),
-                ImageUploader(),
-                ImageUploader(),
-                ImageUploader(),
+                StaticUploader(),
+                StaticUploader(),
               ],
             ),
           ),
