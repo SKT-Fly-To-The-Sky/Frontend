@@ -5,7 +5,7 @@ import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 import 'dart:io';
-import 'GrapeScreen.dart';
+import 'GraphScreen.dart';
 import 'MainScreen.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -80,7 +80,7 @@ class ResultScreen extends StatelessWidget {
       );
     }
 
-    Widget Grape() {
+    Widget Graph() {
       return VerticalBarchart(
         background: Colors.transparent,
         data: bardata,
@@ -96,7 +96,7 @@ class ResultScreen extends StatelessWidget {
       );
     }
 
-    Widget CircleGrape() {
+    Widget CircleGraph() {
       return Container(
           height: 150,
           width: 150,
@@ -113,7 +113,7 @@ class ResultScreen extends StatelessWidget {
           ]));
     }
 
-    Widget CircleGrape2() {
+    Widget Circleh2() {
       return Container(
           height: 150,
           width: 150,
@@ -169,13 +169,13 @@ class ResultScreen extends StatelessWidget {
                     ))
               ],
             ),
-            Grape(),
+            Graph(),
             TextButton(
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => GrapeScreen(_image, _result)));
+                          builder: (context) => GraphScreen(_image, _result)));
                 },
                 child: Text("영양성분 더보기"))
           ],
@@ -203,12 +203,10 @@ class ResultScreen extends StatelessWidget {
                       children: <Widget>[
                         Column(children: <Widget>[
                           Text("오늘 섭취 영양소"),
-                          CircleGrape(),
+                          CircleGraph(),
                         ]),
-                        Column(children: <Widget>[
-                          Text("권장 섭취 영양소"),
-                          CircleGrape2()
-                        ])
+                        Column(
+                            children: <Widget>[Text("권장 섭취 영양소"), Circleh2()])
                       ],
                     ),
                   ))
