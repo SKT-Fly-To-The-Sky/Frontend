@@ -20,33 +20,6 @@ class _ImageUploaderState extends State<ImageUploader> {
   final picker = ImagePicker();
   final connectServer = ConnectServer();
 
-  // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
-  Future getImage(ImageSource imageSource) async {
-    Timeline.startSync('interesting function');
-    _image = await picker.pickImage(
-        source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
-        //이미지 resize 부분, height, width 설정, Quality 설정
-        );
-
-    if (_image != null) {
-      String result;
-      //classfication 결과 받아오기
-      result = await connectServer.uploading(_image!);
-
-      Timeline.finishSync();
-
-      setState(() {
-        //ResultScreen에 이미지와 classfication 결과 전달
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ResultScreen(_image, result)));
-      });
-    } else {
-      print("_image is null");
-    }
-  }
-
   // 이미지 회전시키기
   double radians = 90 * math.pi / 180;
 
@@ -54,6 +27,39 @@ class _ImageUploaderState extends State<ImageUploader> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
+    // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
+    Future getImage(ImageSource imageSource) async {
+      // Timeline.startSync('interesting function');
+      _image = await picker.pickImage(
+          source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
+          //이미지 resize 부분, height, width 설정, Quality 설정
+          );
+
+      if (_image != null) {
+        String? result;
+        //classfication 결과 받아오기
+        // result = await connectServer.uploading(_image!);
+
+        if (result != null) {
+          //ResultScreen에 이미지와 classfication 결과 전달
+          await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ResultScreen(_image, result)));
+        } else {
+          await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ResultScreen(_image, "모름")));
+        }
+
+        // Timeline.finishSync();
+      } else {
+        print("_image is null");
+      }
+    }
+
     return Container(
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
