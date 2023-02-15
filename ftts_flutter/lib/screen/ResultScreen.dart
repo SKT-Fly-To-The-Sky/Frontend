@@ -7,6 +7,7 @@ import 'package:vertical_barchart/vertical-legend.dart';
 import 'dart:io';
 import 'GraphScreen.dart';
 import 'MainScreen.dart';
+import '../widget/DailyGraph.dart';
 
 class ResultScreen extends StatelessWidget {
   final XFile? _image;
