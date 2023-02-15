@@ -1,16 +1,9 @@
-import 'dart:developer';
 import 'package:table_calendar/table_calendar.dart';
 import 'MenuScreen.dart';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-import 'ResultScreen.dart';
 import 'HomeScreen.dart';
-import '../model/ConnectServer.dart';
 import '../utils.dart';
 import '../widget/ImageUploader.dart';
 
@@ -22,37 +15,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  XFile? _image;
-  final picker = ImagePicker();
-  final connectServer = ConnectServer();
-
-  // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
-  Future getImage(ImageSource imageSource) async {
-    Timeline.startSync('interesting function');
-    _image = await picker.pickImage(
-        source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
-        //이미지 resize 부분, height, width 설정, Quality 설정
-        );
-
-    if (_image != null) {
-      String result;
-      //classfication 결과 받아오기
-      result = await connectServer.uploading(_image!);
-
-      Timeline.finishSync();
-
-      setState(() {
-        //ResultScreen에 이미지와 classfication 결과 전달
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ResultScreen(_image, result)));
-      });
-    } else {
-      print("_image is null");
-    }
-  }
-
   // DatePicker 위젯
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
