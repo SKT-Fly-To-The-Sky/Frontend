@@ -75,7 +75,11 @@ class ResultScreen extends StatelessWidget {
                 flex: 1,
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                    child: Image(image: AssetImage('assets/salad.jpg'))))
+                    child: AspectRatio(aspectRatio: 4/3,
+                      child: Image(image: AssetImage('assets/salad.jpg')),
+                    )
+                )
+            )
           ],
         ),
       );
@@ -152,13 +156,17 @@ class ResultScreen extends StatelessWidget {
                         ? Expanded(
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
-                                child: Image.file(File(_image!.path))))
+                                child: AspectRatio(aspectRatio: 16/9,child: Image.file(File(_image!.path)),)
+                                ))
                         : Expanded(
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
-                                child: Image(
-                                    image: AssetImage('assets/kimchi.jpg'),
-                                    fit: BoxFit.fitWidth)))),
+                                child: AspectRatio(aspectRatio: 16/9,
+                                  child: Image(image: AssetImage('assets/kimchi.jpg')),
+                                )
+                            )
+                    )
+                ),
                 Expanded(
                     flex: 2,
                     child: Column(

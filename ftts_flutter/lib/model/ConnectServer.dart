@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 
 class ConnectServer {
   XFile? file;
-  final String Url = 'http://jeongsuri.iptime.org:11003/';
+  final String Url = 'http://jeongsuri.iptime.org:10019/';
   final dio = Dio();
 
   String data="";
@@ -29,9 +29,27 @@ class ConnectServer {
       //post image
       var response =
       await dio.post('${Url}api/picture/classification', data: formData);
-      //현재 정보값 이름을 몰라서 비워둔 부분. 이후 추가 예정
-      var responseClass=response.data>[''];
-      String result='${Url}api/picture/images/$responseClass';
+
+      print("response");
+      print(response);
+
+      print("--------------------------------------");
+      var responseClass=await response.data['fileName'];
+      print("filename");
+      print(responseClass.runtimeType);
+      print(responseClass);
+      var classfication=response.data['object'];
+      print("object 출력");
+      print(classfication.runtimeType);
+      print(classfication);
+      var testresult=response.data['name'];
+      print("name");
+      print(testresult);
+
+      print("*****************************");
+      String result=testresult;
+      print(result);
+      // String result='${Url}api/picture/images/$responseClass';
       data=result;
     }
     catch(e){
