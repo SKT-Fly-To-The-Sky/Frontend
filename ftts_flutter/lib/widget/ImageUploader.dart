@@ -55,6 +55,15 @@ class _ImageUploaderState extends State<ImageUploader> {
         }
 
         // Timeline.finishSync();
+
+        setState(() {
+          //ResultScreen에 이미지와 classfication 결과 전달
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ResultScreen(_image, result)));
+        });
       } else {
         print("_image is null");
       }
