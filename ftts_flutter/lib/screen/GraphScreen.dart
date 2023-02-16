@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vertical_barchart/vertical-barchart.dart';
@@ -7,130 +6,111 @@ import 'package:vertical_barchart/vertical-legend.dart';
 import 'dart:io';
 import 'ResultScreen.dart';
 
-class GrapeScreen extends StatelessWidget{
-
+class GraphScreen extends StatelessWidget {
   final XFile? _image;
   final String? _result;
 
-  const GrapeScreen(this._image,this._result,{super.key});
+  const GraphScreen(this._image, this._result, {super.key});
 
   @override
   Widget build(BuildContext context) {
-
     List<VBarChartModel> bardata = [
       const VBarChartModel(
           index: 0,
           colors: [Colors.green, Colors.teal],
           jumlah: 83,
           tooltip: "83%",
-          label: '칼로리'
-      ),
+          label: '칼로리'),
       const VBarChartModel(
           index: 1,
           colors: [Colors.deepOrange, Colors.red],
           jumlah: 100,
           tooltip: "152%",
-          label: '탄수화물'
-      ),
+          label: '탄수화물'),
       const VBarChartModel(
           index: 2,
           colors: [Colors.deepOrange, Colors.red],
           jumlah: 100,
           tooltip: "114%",
-          label: '단백질'
-      ),
+          label: '단백질'),
       const VBarChartModel(
           index: 3,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 89,
           tooltip: "89%",
-          label: '지방'
-      ),
+          label: '지방'),
       const VBarChartModel(
           index: 4,
           colors: [Colors.green, Colors.teal],
           jumlah: 87,
           tooltip: "87%",
-          label: '설탕'
-      ),
+          label: '설탕'),
       const VBarChartModel(
           index: 5,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 56,
           tooltip: "56%",
-          label: '식이섬유'
-      ),
+          label: '식이섬유'),
       const VBarChartModel(
           index: 6,
           colors: [Colors.green, Colors.teal],
           jumlah: 65,
           tooltip: "65%",
-          label: '포화지방'
-      ),
+          label: '포화지방'),
       const VBarChartModel(
           index: 7,
           colors: [Colors.green, Colors.teal],
           jumlah: 89,
           tooltip: "89%",
-          label: '콜레스트롤'
-      ),
+          label: '콜레스트롤'),
       const VBarChartModel(
           index: 8,
           colors: [Colors.deepOrange, Colors.red],
           jumlah: 100,
-          label: '트랜스지방'
-      ),
+          label: '트랜스지방'),
       const VBarChartModel(
           index: 9,
           colors: [Colors.deepOrange, Colors.red],
           jumlah: 100,
-          label: '나트륨'
-      ),
+          label: '나트륨'),
       const VBarChartModel(
           index: 10,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 36,
           tooltip: "36%",
-          label: '칼슘'
-      ),
+          label: '칼슘'),
       const VBarChartModel(
           index: 11,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 19,
           tooltip: "19%",
-          label: '비타민A'
-      ),
+          label: '비타민A'),
       const VBarChartModel(
           index: 12,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 73,
           tooltip: "73%",
-          label: '비타민B'
-      ),
+          label: '비타민B'),
       const VBarChartModel(
           index: 13,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 15,
           tooltip: "15%",
-          label: '비타민C'
-      ),
+          label: '비타민C'),
       const VBarChartModel(
           index: 14,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 0,
           tooltip: "0%",
-          label: '비타민D'
-      ),
+          label: '비타민D'),
       const VBarChartModel(
           index: 15,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 67,
           tooltip: "67%",
-          label: '비타민E'
-      ),
-
+          label: '비타민E'),
     ];
-    Widget Grape(){
+    Widget Graph() {
       return VerticalBarchart(
         background: Colors.transparent,
         data: bardata,
@@ -139,65 +119,64 @@ class GrapeScreen extends StatelessWidget{
         showLegend: true,
         barStyle: BarStyle.DEFAULT,
         legend: [
-          Vlegend(
-              isSquare: false,
-              color: Colors.green,
-              text:"적정"
-          ),
-          Vlegend(
-              isSquare: false,
-              color: Colors.red,
-              text:"과잉"
-          ),
-          Vlegend(
-              isSquare: false,
-              color: Colors.yellow,
-              text:"부족"
-          ),
+          Vlegend(isSquare: false, color: Colors.green, text: "적정"),
+          Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
+          Vlegend(isSquare: false, color: Colors.yellow, text: "부족"),
         ],
       );
     }
+
     Widget Container1() {
       return Container(
         margin: EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
-          color:Colors.white,
+          color: Colors.white,
         ),
-        padding: EdgeInsets.fromLTRB(10,10,0,0),
-
+        padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(children: <Widget>[
-              Expanded(
-                  flex: 1,
-                  //child: (_image!='fail')?Expanded(child:Image.network(_result![0])):
-                  child: (_image != 'fail')
-                      ? Expanded(
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: AspectRatio(aspectRatio: 16/9,child: Image.file(File(_image!.path)),)
-                      ))
-                      : Expanded(
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: AspectRatio(aspectRatio: 16/9,
-                            child: Image(image: AssetImage('assets/kimchi.jpg')),
-                          )
-                      )
-                  )
-              ),
-              Expanded(flex:2 ,child: Column(children: <Widget>[(_result!='fail')?Text(_result!):Text("test error"),],))            ],
+            Row(
+              children: <Widget>[
+                Expanded(
+                    flex: 1,
+                    child: (_image != 'fail')
+                        ? Expanded(
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.file(File(_image!.path))))
+                        : Expanded(
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image(
+                                    image: AssetImage('assets/kimchi.jpg'),
+                                    fit: BoxFit.fitWidth)))),
+                Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: <Widget>[
+                        (_result != 'fail')
+                            ? Text(_result!)
+                            : Text("test error"),
+                      ],
+                    ))
+              ],
             ),
-
-            Grape(),
-            TextButton(onPressed:(){ Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ResultScreen(_image,_result)));}, child: Text("닫기"))
+            Graph(),
+            TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ResultScreen(_image, _result)));
+                },
+                child: Text("닫기"))
           ],
         ),
       );
     }
+
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F9),
       appBar: AppBar(
@@ -222,20 +201,23 @@ class GrapeScreen extends StatelessWidget{
           )
         ],
       ),
-
       body: Column(
         children: [
           Row(
-            children: <Widget>[Container(margin:EdgeInsets.only(left: 15,top:10),
-                child:Row(children: [Icon(Icons.restaurant),Text("추가한 식단"),],))],
+            children: <Widget>[
+              Container(
+                  margin: EdgeInsets.only(left: 15, top: 10),
+                  child: Row(
+                    children: [
+                      Icon(Icons.restaurant),
+                      Text("추가한 식단"),
+                    ],
+                  ))
+            ],
           ),
           Expanded(child: Container1()),
-
         ],
       ),
-
     );
-
   }
-
 }

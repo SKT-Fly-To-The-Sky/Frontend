@@ -6,7 +6,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'HomeScreen.dart';
 import '../utils.dart';
 import '../widget/ImageUploader.dart';
-import '../widget/DailyGraph.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -24,6 +23,17 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
+    final List<DoughnutChartData> doughnutChartData = [
+      DoughnutChartData('섭취한 칼로리', 1700, Color(0xFF3617CE)),
+      DoughnutChartData('남은 칼로리', 400, Color(0xFFe8e8e8)),
+    ];
+
+    List<StackedBarChartData> stackedBarChartData = [
+      StackedBarChartData('지방', 65, 35, Color(0xFF6ec0ff)),
+      StackedBarChartData('단백질', 45, 55, Color(0xFF6eff8d)),
+      StackedBarChartData('탄수화물', 70, 30, Color(0xFFff6775)),
+    ];
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -125,7 +135,95 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ],
                 views: [
-                  DailyGraph(),
+                  Container(
+                    width: screenWidth * 0.9,
+                    margin: EdgeInsets.all(0),
+                    color: Colors.white,
+                    child: Row(
+                      children: [
+                        Container(
+                            width: screenWidth * 0.45,
+                            margin: EdgeInsets.all(0),
+                            child: SfCircularChart(
+                                annotations: <CircularChartAnnotation>[
+                                  CircularChartAnnotation(
+                                      widget: Container(
+                                    child: const Text(
+                                      "남은 칼로리\n1700kcal",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                    ),
+                                  ))
+                                ],
+                                series: <CircularSeries>[
+                                  // Renders doughnut chart
+                                  DoughnutSeries<DoughnutChartData, String>(
+                                      dataSource: doughnutChartData,
+                                      pointColorMapper:
+                                          (DoughnutChartData data, _) =>
+                                              data.color,
+                                      xValueMapper:
+                                          (DoughnutChartData data, _) => data.x,
+                                      yValueMapper:
+                                          (DoughnutChartData data, _) => data.y,
+                                      innerRadius: '70%'
+                                      // cornerStyle: CornerStyle.bothCurve
+                                      )
+                                ])),
+                        Container(
+                          width: screenWidth * 0.45,
+                          child: Container(
+                            child: SfCartesianChart(
+                              plotAreaBorderColor: Colors.transparent,
+                              primaryXAxis: CategoryAxis(
+                                  // isVisible: false,
+                                  borderColor: Colors.transparent,
+                                  axisLine: AxisLine(color: Colors.transparent),
+                                  labelStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13),
+                                  majorGridLines: MajorGridLines(
+                                      color: Colors.transparent)),
+                              primaryYAxis: CategoryAxis(
+                                isVisible: false,
+                              ),
+                              palette: <Color>[
+                                Color(0xFFe8e8e8),
+                              ],
+                              series: <ChartSeries>[
+                                StackedBar100Series<StackedBarChartData,
+                                        String>(
+                                    dataSource: stackedBarChartData,
+                                    pointColorMapper:
+                                        (StackedBarChartData data, _) =>
+                                            data.color,
+                                    xValueMapper:
+                                        (StackedBarChartData data, _) => data.x,
+                                    yValueMapper:
+                                        (StackedBarChartData data, _) =>
+                                            data.y1,
+                                    width: 0.4,
+                                    spacing: 0.2),
+                                StackedBar100Series<StackedBarChartData,
+                                        String>(
+                                    dataSource: stackedBarChartData,
+                                    xValueMapper:
+                                        (StackedBarChartData data, _) => data.x,
+                                    yValueMapper:
+                                        (StackedBarChartData data, _) =>
+                                            data.y2,
+                                    width: 0.4,
+                                    spacing: 0.2)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Container(
                     color: Colors.white,
                   ),
@@ -239,4 +337,19 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ])));
   }
+}
+
+class DoughnutChartData {
+  DoughnutChartData(this.x, this.y, this.color);
+  final String x;
+  final double y;
+  final Color color;
+}
+
+class StackedBarChartData {
+  final String x;
+  final num y1;
+  final num y2;
+  final Color color;
+  StackedBarChartData(this.x, this.y1, this.y2, this.color);
 }
