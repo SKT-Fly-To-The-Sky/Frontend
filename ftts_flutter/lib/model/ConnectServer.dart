@@ -25,30 +25,26 @@ class ConnectServer {
         request: false,
         requestBody: false));
 
+    //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
+    dio.options.connectTimeout=5000;
+    dio.options.receiveTimeout=5000;
+
     try{
       //post image
       var response =
       await dio.post('${Url}api/picture/classification', data: formData);
 
-      print("response");
-      print(response);
+      print("[SERVER] LOG response :"+response.toString());
 
+      //현재 name 값이 null이면 error 발생. 'fail' 반환
       print("--------------------------------------");
-      var responseClass=await response.data['fileName'];
-      print("filename");
-      print(responseClass.runtimeType);
-      print(responseClass);
-      var classfication=response.data['object'];
-      print("object 출력");
-      print(classfication.runtimeType);
-      print(classfication);
       var testresult=response.data['name'];
-      print("name");
-      print(testresult);
+      print("[SERVER] LOG name :"+testresult.toString());
 
       print("*****************************");
       String result=testresult;
-      print(result);
+      print("[SERVER] LOG result :"+result);
+
       // String result='${Url}api/picture/images/$responseClass';
       data=result;
     }

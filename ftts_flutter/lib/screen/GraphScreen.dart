@@ -141,7 +141,7 @@ class GraphScreen extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                     flex: 1,
-                    child: (_image != 'fail')
+                    child: (_result != 'fail')
                         ? Expanded(
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
@@ -158,7 +158,7 @@ class GraphScreen extends StatelessWidget {
                       children: <Widget>[
                         (_result != 'fail')
                             ? Text(_result!)
-                            : Text("test error"),
+                            : Text("김치전"),
                       ],
                     ))
               ],
@@ -171,7 +171,7 @@ class GraphScreen extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => ResultScreen(_image, _result)));
                 },
-                child: Text("닫기"))
+                child: Text("닫기",style: TextStyle(fontSize: 10)))
           ],
         ),
       );
@@ -210,6 +210,7 @@ class GraphScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.restaurant),
+                      Container(width: 5,),
                       Text("추가한 식단"),
                     ],
                   ))

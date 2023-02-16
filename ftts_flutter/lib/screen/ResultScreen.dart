@@ -57,7 +57,7 @@ class ResultScreen extends StatelessWidget {
         margin: EdgeInsets.only(left: 0, top: 10, right: 10, bottom: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
-          color: Colors.blueGrey,
+          color: Color(0xFFE6E9FD),
         ),
         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
         child: Row(
@@ -67,7 +67,11 @@ class ResultScreen extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("탄수화물 위주의 식사를 했어요"),
+                    Text("탄수화물 위주의 식사를 했어요",
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+                    Container(height: 5,),
                     Text("다음식사는 샐러드 어때요?"),
                   ]),
             ),
@@ -118,7 +122,7 @@ class ResultScreen extends StatelessWidget {
           ]));
     }
 
-    Widget Circleh2() {
+    Widget CircleGraph2() {
       return Container(
           height: 150,
           width: 150,
@@ -152,7 +156,8 @@ class ResultScreen extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     //child: (_image!='fail')?Expanded(child:Image.network(_result![0])):
-                    child: (_image != 'fail')
+                    child: (_result != 'fail')
+                    //음식 추정 실패시 김치전 사진이 나오도록
                         ? Expanded(
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
@@ -161,9 +166,8 @@ class ResultScreen extends StatelessWidget {
                         : Expanded(
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
-                                child: AspectRatio(aspectRatio: 16/9,
-                                  child: Image(image: AssetImage('assets/kimchi.jpg')),
-                                )
+                                child:  Image(image: AssetImage('assets/kimchi.jpg')),
+
                             )
                     )
                 ),
@@ -173,7 +177,7 @@ class ResultScreen extends StatelessWidget {
                       children: <Widget>[
                         (_result != 'fail')
                             ? Text(_result!)
-                            : Text("test error"),
+                            : Text("김치전"),
                       ],
                     ))
               ],
@@ -186,7 +190,7 @@ class ResultScreen extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => GraphScreen(_image, _result)));
                 },
-                child: Text("영양성분 더보기"))
+                child: Text("영양성분 더보기",style: TextStyle(fontSize: 10)))
           ],
         ),
       );
@@ -211,11 +215,15 @@ class ResultScreen extends StatelessWidget {
                     child: Row(
                       children: <Widget>[
                         Column(children: <Widget>[
-                          Text("오늘 섭취 영양소"),
+                          Text("오늘 섭취 영양소",
+                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                           CircleGraph(),
                         ]),
                         Column(
-                            children: <Widget>[Text("권장 섭취 영양소"), Circleh2()])
+                            children: <Widget>[
+                              Text("권장 섭취 영양소",
+                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                              CircleGraph2()])
                       ],
                     ),
                   ))
@@ -259,6 +267,7 @@ class ResultScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.restaurant),
+                      Container(width: 5,),
                       Text("추가한 식단"),
                     ],
                   ))

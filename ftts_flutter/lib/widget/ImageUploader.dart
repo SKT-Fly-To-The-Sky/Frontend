@@ -39,21 +39,21 @@ class _ImageUploaderState extends State<ImageUploader> {
 
       if (_image != null) {
         String? result;
-        //classfication 결과 받아오기
-        // result = await connectServer.uploading(_image!);
+        //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 'fail'를 반환한다.
+        result = await connectServer.uploading(_image!);
 
-        if (result != null) {
-          //ResultScreen에 이미지와 classfication 결과 전달
-          await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ResultScreen(_image, result)));
-        } else {
-          await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ResultScreen(_image, "모름")));
-        }
+        // if (result != null) {
+        //   //ResultScreen에 이미지와 classfication 결과 전달
+        //   await Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //           builder: (context) => ResultScreen(_image, result)));
+        // } else {
+        //   await Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //           builder: (context) => ResultScreen(_image, "모름")));
+        // }
 
         // Timeline.finishSync();
 
