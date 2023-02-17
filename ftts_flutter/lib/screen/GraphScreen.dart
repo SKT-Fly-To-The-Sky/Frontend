@@ -156,9 +156,7 @@ class GraphScreen extends StatelessWidget {
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        (_result != 'fail')
-                            ? Text(_result!)
-                            : Text("김치전"),
+                        (_result != 'fail') ? Text(_result!) : Text("김치전"),
                       ],
                     ))
               ],
@@ -171,7 +169,7 @@ class GraphScreen extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => ResultScreen(_image, _result)));
                 },
-                child: Text("닫기",style: TextStyle(fontSize: 10)))
+                child: Text("닫기", style: TextStyle(fontSize: 10)))
           ],
         ),
       );
@@ -183,9 +181,11 @@ class GraphScreen extends StatelessWidget {
         //AppBar 설정(UI 적용 완료)
         iconTheme: const IconThemeData(color: Colors.black),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white, //appbar 투명색
+        backgroundColor: Colors.white,
+        //appbar 투명색
         centerTitle: true,
-        elevation: 1.0, // 그림자 농도 0
+        elevation: 1.0,
+        // 그림자 농도 0
         title: const Text(
           "A.식단",
           style: TextStyle(
@@ -210,7 +210,9 @@ class GraphScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.restaurant),
-                      Container(width: 5,),
+                      Container(
+                        width: 5,
+                      ),
                       Text("추가한 식단"),
                     ],
                   ))

@@ -54,6 +54,51 @@ class ConnectServer {
     return data;
   }
 
+  //약 이미지 전달
+  Future<String> Supplementsuploading(XFile file) async{
+    FormData formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(
+        file.path,
+      )
+    });
+
+    //log 설정
+    dio.interceptors.add(LogInterceptor(
+        responseBody: true,
+        error: true,
+        requestHeader: false,
+        responseHeader: false,
+        request: false,
+        requestBody: false));
+
+    //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
+    dio.options.connectTimeout=5000;
+    dio.options.receiveTimeout=5000;
+
+    try{
+      //post image
+      var response =
+      await dio.post('${Url}api/picture/classification', data: formData);
+
+      print("[SERVER] LOG response :"+response.toString());
+
+      //현재 name 값이 null이면 error 발생. 'fail' 반환
+      print("--------------------------------------");
+      var testresult=response.data['name'];
+      print("[SERVER] LOG name :"+testresult.toString());
+
+      print("*****************************");
+      String result=testresult;
+      print("[SERVER] LOG result :"+result);
+
+      // String result='${Url}api/picture/images/$responseClass';
+      data=result;
+    }
+    catch(e){
+      data='fail';
+    }
+    return data;
+  }
   //image list를 불러오는 기능
 
   // Future<String> getImagepath() async{
