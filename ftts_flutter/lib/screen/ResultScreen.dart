@@ -12,7 +12,9 @@ import '../widget/DailyGraph.dart';
 class ResultScreen extends StatelessWidget {
   final XFile? _image;
   final String? _result;
+
   const ResultScreen(this._image, this._result, {super.key});
+
   @override
   Widget build(BuildContext context) {
     List<VBarChartModel> bardata = [
@@ -67,23 +69,27 @@ class ResultScreen extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("탄수화물 위주의 식사를 했어요",
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-                    Container(height: 5,),
+                    Text(
+                      "탄수화물 위주의 식사를 했어요",
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    Container(
+                      height: 5,
+                    ),
                     Text("다음식사는 샐러드 어때요?"),
                   ]),
             ),
-            Expanded(
-                flex: 1,
-                child: ClipRRect(
+            Expanded(flex:1,
+                child:ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                    child: AspectRatio(aspectRatio: 4/3,
-                      child: Image(image: AssetImage('assets/salad.jpg')),
+                    child: Container(width:200,height:100,
+                        child:Image(
+                          image: AssetImage('assets/salad.jpg'),fit: BoxFit.fill,
+                        )
                     )
                 )
-            )
+            ),
           ],
         ),
       );
@@ -157,27 +163,23 @@ class ResultScreen extends StatelessWidget {
                     flex: 1,
                     //child: (_image!='fail')?Expanded(child:Image.network(_result![0])):
                     child: (_result != 'fail')
-                    //음식 추정 실패시 김치전 사진이 나오도록
+                        //음식 추정 실패시 김치전 사진이 나오도록
                         ? Expanded(
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
-                                child: AspectRatio(aspectRatio: 16/9,child: Image.file(File(_image!.path)),)
+                                  child: Container(width:200, height:100,child:Image.file(File(_image!.path),fit: BoxFit.fill)),
                                 ))
                         : Expanded(
                             child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child:  Image(image: AssetImage('assets/kimchi.jpg')),
-
-                            )
-                    )
-                ),
+                            borderRadius: BorderRadius.circular(8.0),
+                            child:
+                                Container(width:200,height:100,child: Image(image: AssetImage('assets/kimchi.jpg'),fit: BoxFit.fill),),
+                          ))),
                 Expanded(
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        (_result != 'fail')
-                            ? Text(_result!)
-                            : Text("김치전"),
+                        (_result != 'fail') ? Text(_result!) : Text("김치전"),
                       ],
                     ))
               ],
@@ -190,7 +192,7 @@ class ResultScreen extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => GraphScreen(_image, _result)));
                 },
-                child: Text("영양성분 더보기",style: TextStyle(fontSize: 10)))
+                child: Text("영양성분 더보기", style: TextStyle(fontSize: 10)))
           ],
         ),
       );
@@ -216,14 +218,18 @@ class ResultScreen extends StatelessWidget {
                       children: <Widget>[
                         Column(children: <Widget>[
                           Text("오늘 섭취 영양소",
-                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
                           CircleGraph(),
                         ]),
-                        Column(
-                            children: <Widget>[
-                              Text("권장 섭취 영양소",
-                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                              CircleGraph2()])
+                        Column(children: <Widget>[
+                          Text("권장 섭취 영양소",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
+                          CircleGraph2()
+                        ])
                       ],
                     ),
                   ))
@@ -240,9 +246,11 @@ class ResultScreen extends StatelessWidget {
         //AppBar 설정(UI 적용 완료)
         iconTheme: const IconThemeData(color: Colors.black),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white, //appbar 투명색
+        backgroundColor: Colors.white,
+        //appbar 투명색
         centerTitle: true,
-        elevation: 1.0, // 그림자 농도 0
+        elevation: 1.0,
+        // 그림자 농도 0
         title: const Text(
           "A.식단",
           style: TextStyle(
@@ -267,7 +275,9 @@ class ResultScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.restaurant),
-                      Container(width: 5,),
+                      Container(
+                        width: 5,
+                      ),
                       Text("추가한 식단"),
                     ],
                   ))

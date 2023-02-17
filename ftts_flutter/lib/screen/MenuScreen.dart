@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'MainScreen.dart';
+import 'SupplementsMainScreen.dart';
 
 class MenuScreen extends StatelessWidget {
   @override
@@ -53,13 +54,35 @@ class MenuScreen extends StatelessWidget {
               margin: EdgeInsets.all(15),
               child: Row(
                 children: [
-                  IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => const MainScreen())));
-                      },
-                      icon: const Icon(Icons.restaurant)),
-                  Text("식단")
+                  // IconButton(
+                  //     onPressed: () {
+                  //       Navigator.of(context).push(MaterialPageRoute(
+                  //           builder: ((context) => const MainScreen())));
+                  //     },
+                  //     icon: const Icon(Icons.restaurant)),
+                  // Text("식단")
+                  TextButton.icon(
+                      onPressed: (){
+                        Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: ((context) => const MainScreen())
+                            )
+                          );
+                        },style: TextButton.styleFrom(foregroundColor: Colors.black),
+                      icon: Icon(Icons.restaurant), label: Text("식단")
+                  ),
+                  Container(width: 100,),
+                  TextButton.icon(
+                      onPressed: (){
+                        Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: ((context) => SupplementsMainScreen())
+                            )
+                        );
+                      },style: TextButton.styleFrom(foregroundColor: Colors.black),
+                      icon: Icon(Icons.medication), label: Text("영양제")
+                  ),
+
                 ],
               ),
             ),
