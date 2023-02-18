@@ -79,68 +79,67 @@ class _DailyGraphState extends State<DailyGraph> {
       color: Colors.white,
       child: Row(
         children: [
-          SingleChildScrollView(
-            child: Container(
-                width: screenWidth * 0.45,
-                margin: EdgeInsets.all(0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 20.0),
-                      child: Text(
-                        "남은 칼로리",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                    ),
-                    SfCircularChart(
-                        centerY: '90',
-                        margin: EdgeInsets.zero,
-                        annotations: <CircularChartAnnotation>[
-                          CircularChartAnnotation(
-                              widget: Container(
-                            child: const Text(
-                              "1700kcal",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
-                            ),
-                          ))
-                        ],
-                        series: <CircularSeries>[
-                          // Renders doughnut chart
-                          DoughnutSeries<DoughnutChartData, String>(
-                              dataSource: doughnutChartData,
-                              pointColorMapper: (DoughnutChartData data, _) =>
-                                  data.color,
-                              xValueMapper: (DoughnutChartData data, _) =>
-                                  data.x,
-                              yValueMapper: (DoughnutChartData data, _) =>
-                                  data.y,
-                              innerRadius: '70%'
-                              // cornerStyle: CornerStyle.bothCurve
-                              )
-                        ]),
-                  ],
-                )),
-          ),
+          Container(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 20.0),
+                child: Text(
+                  "남은 칼로리",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+              ),
+              Container(
+                height: 150,
+                width: 150,
+                child: SfCircularChart(
+                    centerY: '90',
+                    margin: EdgeInsets.zero,
+                    annotations: <CircularChartAnnotation>[
+                      CircularChartAnnotation(
+                          widget: Container(
+                        child: const Text(
+                          "1700kcal",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ))
+                    ],
+                    series: <CircularSeries>[
+                      DoughnutSeries<DoughnutChartData, String>(
+                          dataSource: doughnutChartData,
+                          pointColorMapper: (DoughnutChartData data, _) =>
+                              data.color,
+                          xValueMapper: (DoughnutChartData data, _) => data.x,
+                          yValueMapper: (DoughnutChartData data, _) => data.y,
+                          innerRadius: '70%')
+                    ]),
+              ),
+            ],
+          )),
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
                   width: screenWidth * 0.50,
                   child: VerticalBarchart(
                     background: Colors.transparent,
+                    labelColor: Colors.black,
+                    labelSizeFactor: 0.45,
+                    tooltipColor: Colors.black,
                     data: barChartData,
                     showBackdrop: true,
                     barStyle: BarStyle.DEFAULT,
+                    barSize: 12,
                     maxX: 100,
-                    // showLegend: true,
-                    // legend: [
-                    //   Vlegend(isSquare: false, color: Colors.green, text: "적정"),
-                    //   Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
-                    //   Vlegend(isSquare: false, color: Colors.yellow, text: "부족"),
-                    // ],
+                    showLegend: true,
+                    legend: [
+                      Vlegend(isSquare: false, color: Colors.green, text: "적정"),
+                      Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
+                      Vlegend(
+                          isSquare: false, color: Colors.yellow, text: "부족"),
+                    ],
                   ))),
         ],
       ),

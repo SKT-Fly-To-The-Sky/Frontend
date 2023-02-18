@@ -101,8 +101,6 @@ class _MainScreenState extends State<MainScreen> {
                 titleTextStyle: const TextStyle(fontSize: 17.0)),
           ),
           Container(
-              // padding: const EdgeInsets.all(8.0),
-              // width: screenWidth * 0.9,
               margin: const EdgeInsets.only(
                   left: 20, right: 20, bottom: 15, top: 10),
               decoration: BoxDecoration(
@@ -152,7 +150,7 @@ class _MainScreenState extends State<MainScreen> {
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
             ),
-            height: 400,
+            height: 360,
             child: ContainedTabBarView(
               onChange: (index) => print(index),
               tabs: [
