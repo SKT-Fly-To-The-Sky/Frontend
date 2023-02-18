@@ -79,59 +79,69 @@ class _DailyGraphState extends State<DailyGraph> {
       color: Colors.white,
       child: Row(
         children: [
-          Container(
-              width: screenWidth * 0.45,
-              margin: EdgeInsets.all(0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(0),
-                    child: Text(
-                      "남은 칼로리",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                    ),
-                  ),
-                  SfCircularChart(annotations: <CircularChartAnnotation>[
-                    CircularChartAnnotation(
-                        widget: Container(
-                      child: const Text(
-                        "1700kcal",
+          SingleChildScrollView(
+            child: Container(
+                width: screenWidth * 0.45,
+                margin: EdgeInsets.all(0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 20.0),
+                      child: Text(
+                        "남은 칼로리",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                            fontWeight: FontWeight.bold, fontSize: 18),
                       ),
-                    ))
-                  ], series: <CircularSeries>[
-                    // Renders doughnut chart
-                    DoughnutSeries<DoughnutChartData, String>(
-                        dataSource: doughnutChartData,
-                        pointColorMapper: (DoughnutChartData data, _) =>
-                            data.color,
-                        xValueMapper: (DoughnutChartData data, _) => data.x,
-                        yValueMapper: (DoughnutChartData data, _) => data.y,
-                        innerRadius: '70%'
-                        // cornerStyle: CornerStyle.bothCurve
-                        )
-                  ])
-                ],
-              )),
-          Container(
-              width: screenWidth * 0.50,
-              child: VerticalBarchart(
-                background: Colors.transparent,
-                data: barChartData,
-                maxX: 100,
-                showBackdrop: true,
-                showLegend: true,
-                barStyle: BarStyle.DEFAULT,
-                // legend: [
-                //   Vlegend(isSquare: false, color: Colors.green, text: "적정"),
-                //   Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
-                //   Vlegend(isSquare: false, color: Colors.yellow, text: "부족"),
-                // ],
-              ))
+                    ),
+                    SfCircularChart(
+                        centerY: '90',
+                        margin: EdgeInsets.zero,
+                        annotations: <CircularChartAnnotation>[
+                          CircularChartAnnotation(
+                              widget: Container(
+                            child: const Text(
+                              "1700kcal",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                          ))
+                        ],
+                        series: <CircularSeries>[
+                          // Renders doughnut chart
+                          DoughnutSeries<DoughnutChartData, String>(
+                              dataSource: doughnutChartData,
+                              pointColorMapper: (DoughnutChartData data, _) =>
+                                  data.color,
+                              xValueMapper: (DoughnutChartData data, _) =>
+                                  data.x,
+                              yValueMapper: (DoughnutChartData data, _) =>
+                                  data.y,
+                              innerRadius: '70%'
+                              // cornerStyle: CornerStyle.bothCurve
+                              )
+                        ]),
+                  ],
+                )),
+          ),
+          SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                  width: screenWidth * 0.50,
+                  child: VerticalBarchart(
+                    background: Colors.transparent,
+                    data: barChartData,
+                    showBackdrop: true,
+                    barStyle: BarStyle.DEFAULT,
+                    maxX: 100,
+                    // showLegend: true,
+                    // legend: [
+                    //   Vlegend(isSquare: false, color: Colors.green, text: "적정"),
+                    //   Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
+                    //   Vlegend(isSquare: false, color: Colors.yellow, text: "부족"),
+                    // ],
+                  ))),
         ],
       ),
     );
