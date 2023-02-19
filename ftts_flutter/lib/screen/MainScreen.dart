@@ -7,6 +7,7 @@ import 'HomeScreen.dart';
 import '../utils.dart';
 import '../widget/ImageUploader.dart';
 import '../widget/DailyGraph.dart';
+import '../widget/CustomCalendar.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -16,7 +17,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  // DatePicker 위젯
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -51,55 +51,13 @@ class _MainScreenState extends State<MainScreen> {
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomeScreen()));
-                // Navigator.pop(context);
               },
             )
           ],
         ),
         body: SingleChildScrollView(
             child: Column(children: [
-          TableCalendar(
-            locale: 'ko-KR',
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              if (!isSameDay(_selectedDay, selectedDay)) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay;
-                });
-              }
-            },
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-            calendarStyle: CalendarStyle(
-              selectedDecoration: const BoxDecoration(
-                color: const Color(0xFF3617CE),
-                shape: BoxShape.circle,
-              ),
-              todayDecoration: const BoxDecoration(
-                color: const Color(0xFFaea2eb),
-                shape: BoxShape.circle,
-              ),
-            ),
-            headerStyle: HeaderStyle(
-                titleCentered: true,
-                formatButtonVisible: false,
-                titleTextStyle: const TextStyle(fontSize: 17.0)),
-          ),
+          CustomCalendar(),
           Container(
               margin: const EdgeInsets.only(
                   left: 20, right: 20, bottom: 15, top: 10),

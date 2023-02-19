@@ -95,7 +95,7 @@ class _DailyGraphState extends State<DailyGraph> {
                 height: 150,
                 width: 150,
                 child: SfCircularChart(
-                    centerY: '90',
+                    centerY: '80',
                     margin: EdgeInsets.zero,
                     annotations: <CircularChartAnnotation>[
                       CircularChartAnnotation(
@@ -103,7 +103,8 @@ class _DailyGraphState extends State<DailyGraph> {
                         child: const Text(
                           "1700kcal",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                              // fontWeight: FontWeight.bold,
+                              fontSize: 18),
                         ),
                       ))
                     ],
