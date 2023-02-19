@@ -34,7 +34,7 @@ class MenuScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
               child: Center(
-                child: Image(image: AssetImage('assets/adot_menu.jpg')),
+                child: Image(image: AssetImage('assets/adot_profile.jpg')),
               ),
             ),
             Container(
@@ -62,27 +62,26 @@ class MenuScreen extends StatelessWidget {
                   //     icon: const Icon(Icons.restaurant)),
                   // Text("식단")
                   TextButton.icon(
-                      onPressed: (){
-                        Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: ((context) => const MainScreen())
-                            )
-                          );
-                        },style: TextButton.styleFrom(foregroundColor: Colors.black),
-                      icon: Icon(Icons.restaurant), label: Text("식단")
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => const MainScreen())));
+                      },
+                      style:
+                          TextButton.styleFrom(foregroundColor: Colors.black),
+                      icon: Icon(Icons.restaurant),
+                      label: Text("식단")),
+                  Container(
+                    width: 100,
                   ),
-                  Container(width: 100,),
                   TextButton.icon(
-                      onPressed: (){
-                        Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: ((context) => SupplementsMainScreen())
-                            )
-                        );
-                      },style: TextButton.styleFrom(foregroundColor: Colors.black),
-                      icon: Icon(Icons.medication), label: Text("영양제")
-                  ),
-
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => SupplementsMainScreen())));
+                      },
+                      style:
+                          TextButton.styleFrom(foregroundColor: Colors.black),
+                      icon: Icon(Icons.medication),
+                      label: Text("영양제")),
                 ],
               ),
             ),

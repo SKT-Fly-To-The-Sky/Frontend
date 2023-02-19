@@ -70,7 +70,12 @@ flutter:
   assets:
     - assets/adot_logo.png
     - assets/adot_home.gif
-    - assets/adot_menu.jpg
+    - assets/adot_profile.jpg
+    - assets/adot_refresh.png
+    - assets/adot_menu.png
+    - assets/adot_notification.png
+    - assets/adot_share.png
+    - assets/11th_logo.png
     - assets/kimchi.jpg
     - assets/salad.jpg
   #   - images/a_dot_ham.jpeg
