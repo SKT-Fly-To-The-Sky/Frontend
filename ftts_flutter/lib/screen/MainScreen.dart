@@ -7,6 +7,7 @@ import 'HomeScreen.dart';
 import '../utils.dart';
 import '../widget/ImageUploader.dart';
 import '../widget/DailyGraph.dart';
+import '../widget/WeeklyGraph.dart';
 import '../widget/CustomCalendar.dart';
 
 class MainScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _MainScreenState extends State<MainScreen> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           centerTitle: true,
-          elevation: 1.0, // 그림자 농도 0
+          elevation: 0.0, // 그림자 농도 0
           title: const Text(
             "A.식단",
             style: TextStyle(color: Colors.black, fontSize: 18),
@@ -82,9 +83,7 @@ class _MainScreenState extends State<MainScreen> {
                 ],
                 views: [
                   DailyGraph(),
-                  Container(
-                    color: Colors.white,
-                  ),
+                  WeeklyGraph(),
                 ],
               )),
           Container(
@@ -97,6 +96,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 Text(
                   "하루 섭취량",
+                  style: TextStyle(fontSize: 17.0),
                 )
               ],
             ),
