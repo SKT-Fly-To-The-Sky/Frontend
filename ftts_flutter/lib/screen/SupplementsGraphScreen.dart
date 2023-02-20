@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SupplementsGrapeScreen extends StatelessWidget {
   final String? _result;
@@ -166,30 +168,17 @@ class SupplementsGrapeScreen extends StatelessWidget {
                                 Container(
                                   padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                   child: Text(
-                                    "영양제 이름",
+                                    "Life Extension, Two-Per-Day Multivitamin, 120 Capsules",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 Container(
-                                  padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                  child: Text("최저가",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text(
-                                    "14,240원",
-                                    style: TextStyle(
-                                        fontSize: 18, color: Colors.red),
-                                  ),
-                                ),
-                                Container(
                                     alignment: Alignment.centerRight,
                                     child: TextButton(
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          launchUrlString("https://search.11st.co.kr/MW/search?searchKeyword="+"비타민D");
+                                        },
                                         child: Text("11번가에서 구입하기")))
                               ]),
                         )),

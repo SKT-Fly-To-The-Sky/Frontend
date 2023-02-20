@@ -8,107 +8,182 @@ import 'ResultScreen.dart';
 
 class GraphScreen extends StatelessWidget {
   final XFile? _image;
-  final String? _result;
+  final List<String>? _result;
+  final Map<String, dynamic>? _nutinfo;
 
-  const GraphScreen(this._image, this._result, {super.key});
+  const GraphScreen(this._image, this._result, this._nutinfo, {super.key});
 
   @override
   Widget build(BuildContext context) {
     List<VBarChartModel> bardata = [
-      const VBarChartModel(
+      VBarChartModel(
           index: 0,
           colors: [Colors.green, Colors.teal],
-          jumlah: 83,
-          tooltip: "83%",
+          jumlah: (_nutinfo!['kcal'] / 2600) * 100,
+          tooltip: ((_nutinfo!['kcal'] / 2600) * 100).toInt().toString() + "%",
           label: '칼로리'),
-      const VBarChartModel(
+      VBarChartModel(
           index: 1,
           colors: [Colors.deepOrange, Colors.red],
-          jumlah: 100,
-          tooltip: "152%",
-          label: '탄수화물'),
-      const VBarChartModel(
+          jumlah: (_nutinfo!['protein'] / 65) * 100,
+          tooltip: ((_nutinfo!['protein'] / 65) * 100).toInt().toString() + "%",
+          label: '단백질'),
+      VBarChartModel(
           index: 2,
           colors: [Colors.deepOrange, Colors.red],
-          jumlah: 100,
-          tooltip: "114%",
-          label: '단백질'),
-      const VBarChartModel(
+          jumlah: (_nutinfo!['fat'] / 65) * 100,
+          tooltip: ((_nutinfo!['fat'] / 65) * 100).toInt().toString() + "%",
+          label: '지방'),
+      VBarChartModel(
           index: 3,
           colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: 89,
-          tooltip: "89%",
-          label: '지방'),
-      const VBarChartModel(
-          index: 4,
-          colors: [Colors.green, Colors.teal],
-          jumlah: 87,
-          tooltip: "87%",
-          label: '설탕'),
-      const VBarChartModel(
-          index: 5,
-          colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: 56,
-          tooltip: "56%",
-          label: '식이섬유'),
-      const VBarChartModel(
-          index: 6,
-          colors: [Colors.green, Colors.teal],
-          jumlah: 65,
-          tooltip: "65%",
-          label: '포화지방'),
-      const VBarChartModel(
-          index: 7,
-          colors: [Colors.green, Colors.teal],
-          jumlah: 89,
-          tooltip: "89%",
-          label: '콜레스트롤'),
-      const VBarChartModel(
-          index: 8,
-          colors: [Colors.deepOrange, Colors.red],
-          jumlah: 100,
-          label: '트랜스지방'),
-      const VBarChartModel(
-          index: 9,
-          colors: [Colors.deepOrange, Colors.red],
-          jumlah: 100,
-          label: '나트륨'),
-      const VBarChartModel(
+          jumlah: (_nutinfo!['carbon'] / 130) * 100,
+          tooltip: ((_nutinfo!['carbon'] / 130) * 100).toInt().toString() + "%",
+          label: '탄수화물'),
+      // VBarChartModel(
+      //     index: 4,
+      //     colors: [Colors.green, Colors.teal],
+      //     jumlah: (_nutinfo!['sugar'] / 100) * 100,
+      //     tooltip: ((_nutinfo!['sugar'] / 100) * 100).toInt().toString() + "%",
+      //     label: '설탕'),
+      // VBarChartModel(
+      //     index: 5,
+      //     colors: [Colors.limeAccent, Colors.yellow],
+      //     jumlah: (_nutinfo!['chole'] / 300) * 100,
+      //     tooltip: ((_nutinfo!['chole'] / 300) * 100).toInt().toString() + "%",
+      //     label: '콜레스테롤'),
+      // VBarChartModel(
+      //     index: 6,
+      //     colors: [Colors.green, Colors.teal],
+      //     jumlah: (_nutinfo!['fiber'] / 30) * 100,
+      //     tooltip: ((_nutinfo!['fiber'] / 30) * 100).toInt().toString() + "%",
+      //     label: '식이섬유'),
+      // VBarChartModel(
+      //     index: 7,
+      //     colors: [Colors.deepOrange, Colors.red],
+      //     jumlah: (_nutinfo!['calcium'] / 2500) * 100,
+      //     tooltip: ((_nutinfo!['calcium'] / 2500) * 100).toInt().toString() + "%",
+      //     label: '칼슘'),
+      // VBarChartModel(
+      //     index: 8,
+      //     colors: [Colors.deepOrange, Colors.red],
+      //     jumlah: (_nutinfo!['iron'] / 45) * 100,
+      //     tooltip: ((_nutinfo!['iron'] / 45) * 100).toInt().toString() + "%",
+      //     label: '철'),
+      // VBarChartModel(
+      //     index: 9,
+      //     colors: [Colors.limeAccent, Colors.yellow],
+      //     jumlah: (_nutinfo!['magne'] / 360) * 100,
+      //     tooltip: ((_nutinfo!['magne'] / 360) * 100).toInt().toString() + "%",
+      //     label: '마그네슘'),
+/*      VBarChartModel(
           index: 10,
           colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: 36,
-          tooltip: "36%",
-          label: '칼슘'),
-      const VBarChartModel(
+          jumlah: (_nutinfo!['potass'] / 3500) * 100,
+          tooltip: ((_nutinfo!['potass'] / 3500) * 100).toInt().toString() + "%",
+          label: '칼륨'),
+      VBarChartModel(
           index: 11,
           colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: 19,
-          tooltip: "19%",
-          label: '비타민A'),
-      const VBarChartModel(
+          jumlah: (_nutinfo!['sodium'] / 2300) * 100,
+          tooltip: ((_nutinfo!['sodium'] / 2300) * 100).toInt().toString() + "%",
+          label: '나트륨'),
+      VBarChartModel(
           index: 12,
           colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: 73,
-          tooltip: "73%",
-          label: '비타민B'),
-      const VBarChartModel(
+          jumlah: (_nutinfo!['zinc'] / 35) * 100,
+          tooltip: ((_nutinfo!['zinc'] / 35) * 100).toInt().toString() + "%",
+          label: '아연'),
+      VBarChartModel(
           index: 13,
           colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: 15,
-          tooltip: "15%",
-          label: '비타민C'),
-      const VBarChartModel(
+          jumlah: (_nutinfo!['copper'] / 10000) * 100,
+          tooltip: ((_nutinfo!['copper'] / 10000) * 100).toInt().toString() + "%",
+          label: '구리'),
+      VBarChartModel(
           index: 14,
           colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: 0,
-          tooltip: "0%",
-          label: '비타민D'),
-      const VBarChartModel(
+          jumlah: (_nutinfo!['vitA'] / 3000) * 100,
+          tooltip: ((_nutinfo!['vitA'] / 3000) * 100).toInt().toString() + "%",
+          label: '비타민 A'),
+      VBarChartModel(
           index: 15,
           colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: 67,
-          tooltip: "67%",
-          label: '비타민E'),
+          jumlah: (_nutinfo!['vitB1'] / 1.2) * 100,
+          tooltip: ((_nutinfo!['vitB1'] / 1.2) * 100).toInt().toString() + "%",
+          label: '비타민 B1'),
+      VBarChartModel(
+          index: 16,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['vitB2'] / 1.5) * 100,
+          tooltip: ((_nutinfo!['vitB2'] / 1.5) * 100).toInt().toString() + "%",
+          label: '비타민 B2'),
+      VBarChartModel(
+          index: 17,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['vitB3'] / 16) * 100,
+          tooltip: ((_nutinfo!['vitB3'] / 16) * 100).toInt().toString() + "%",
+          label: '비타민 B3'),
+      VBarChartModel(
+          index: 18,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['vitB5'] / 5) * 100,
+          tooltip: ((_nutinfo!['vitB5'] / 16) * 100).toInt().toString() + "%",
+          label: '비타민 B5'),
+      VBarChartModel(
+          index: 19,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['vitB6'] / 100) * 100,
+          tooltip: ((_nutinfo!['vitB6'] / 100) * 100).toInt().toString() + "%",
+          label: '비타민 B6'),
+      VBarChartModel(
+          index: 20,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['vitB7'] / 30) * 100,
+          tooltip: ((_nutinfo!['vitB7'] / 30) * 100).toInt().toString() + "%",
+          label: '비타민 B7'),
+      VBarChartModel(
+          index: 21,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['vitB9'] / 1000) * 100,
+          tooltip: ((_nutinfo!['vitB9'] / 1000) * 100).toInt().toString() + "%",
+          label: '비타민 B9'),
+      VBarChartModel(
+          index: 22,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['vitB12'] / 2.4) * 100,
+          tooltip: ((_nutinfo!['vitB12'] / 2.4) * 100).toInt().toString() + "%",
+          label: '비타민 B12'),
+      VBarChartModel(
+          index: 23,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['vitC'] / 2000) * 100,
+          tooltip: ((_nutinfo!['vitC'] / 2000) * 100).toInt().toString() + "%",
+          label: '비타민 C'),
+      VBarChartModel(
+          index: 24,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['vitD'] / 100) * 100,
+          tooltip: ((_nutinfo!['vitD'] / 100) * 100).toInt().toString() + "%",
+          label: '비타민 D'),
+      VBarChartModel(
+          index: 25,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['vitE'] / 540) * 100,
+          tooltip: ((_nutinfo!['vitE'] / 540) * 100).toInt().toString() + "%",
+          label: '비타민 E'),
+      VBarChartModel(
+          index: 26,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['vitK'] / 75) * 100,
+          tooltip: ((_nutinfo!['vitK'] / 75) * 100).toInt().toString() + "%",
+          label: '비타민 K'),
+      VBarChartModel(
+          index: 27,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['omega'] / 210) * 100,
+          tooltip: ((_nutinfo!['omega'] / 210) * 100).toInt().toString() + "%",
+          label: '오메가'),*/
     ];
     Widget Graph() {
       return VerticalBarchart(
@@ -139,35 +214,51 @@ class GraphScreen extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Expanded(
+                Flexible(
                     flex: 1,
-                    child: (_result != 'fail')
-                        ? Expanded(
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Image.file(File(_image!.path))))
-                        : Expanded(
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Image(
-                                    image: AssetImage('assets/kimchi.jpg'),
-                                    fit: BoxFit.fitWidth)))),
-                Expanded(
+                    child: (_result!= 'fail')
+                    //음식 추정 실패시 김치전 사진이 나오도록
+                        ?  ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Container(
+                              width: 200,
+                              height: 100,
+                              child: Image.file(File(_image!.path),
+                                  fit: BoxFit.fill)),
+                        )
+                        : ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Container(
+                            width: 200,
+                            height: 100,
+                            child: Image(
+                                image: AssetImage('assets/kimchi.jpg'),
+                                fit: BoxFit.fill),
+                          ),
+                        )),
+                Flexible(
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        (_result != 'fail') ? Text(_result!) : Text("김치전"),
+                        (_result!= 'fail')
+                            ? Column(
+                                children: [
+                                  for (var res in _result!) Text(res as String)
+                                ],
+                              )
+                            : Text("김치전"),
                       ],
                     ))
               ],
             ),
-            Graph(),
+            SingleChildScrollView(scrollDirection: Axis.vertical,child:Graph()),
             TextButton(
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ResultScreen(_image, _result)));
+                          builder: (context) =>
+                              ResultScreen(_image, _result!, _nutinfo!)));
                 },
                 child: Text("닫기", style: TextStyle(fontSize: 10)))
           ],
@@ -201,26 +292,31 @@ class GraphScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        children: [
-          Row(
-            children: <Widget>[
-              Container(
-                  margin: EdgeInsets.only(left: 15, top: 10),
-                  child: Row(
-                    children: [
-                      Icon(Icons.restaurant),
-                      Container(
-                        width: 5,
-                      ),
-                      Text("추가한 식단"),
-                    ],
-                  ))
-            ],
-          ),
-          Expanded(child: Container1()),
-        ],
-      ),
-    );
+      body:
+
+
+            Column(
+              children: [
+                Row(
+                  children: <Widget>[
+                    Container(
+                        margin: EdgeInsets.only(left: 15, top: 10),
+                        child: Row(
+                          children: [
+                            Icon(Icons.restaurant),
+                            Container(
+                              width: 5,
+                            ),
+                            Text("추가한 식단"),
+                          ],
+                        ))
+                  ],
+                ),
+                Container1(),
+              ],
+            ));
+
+
+
   }
 }

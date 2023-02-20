@@ -11,47 +11,48 @@ import '../widget/DailyGraph.dart';
 
 class ResultScreen extends StatelessWidget {
   final XFile? _image;
-  final String? _result;
+  final List<String>? _result;
+  final Map<String, dynamic>? _nutinfo;
 
-  const ResultScreen(this._image, this._result, {super.key});
+  const ResultScreen(this._image, this._result, this._nutinfo, {super.key});
 
   @override
   Widget build(BuildContext context) {
     List<VBarChartModel> bardata = [
-      const VBarChartModel(
+      VBarChartModel(
           index: 0,
           colors: [Colors.green, Colors.teal],
-          jumlah: 83,
-          tooltip: "83%",
+          jumlah: (_nutinfo!['kcal'] / 2600) * 100,
+          tooltip: ((_nutinfo!['kcal'] / 2600) * 100).toInt().toString() + "%",
           label: '칼로리'),
-      const VBarChartModel(
+      VBarChartModel(
           index: 1,
           colors: [Colors.deepOrange, Colors.red],
-          jumlah: 100,
-          tooltip: "152%",
+          jumlah: (_nutinfo!['carbo'] / 130) * 100,
+          tooltip: ((_nutinfo!['carbo'] / 130) * 100).toInt().toString() + "%",
           label: '탄수화물'),
-      const VBarChartModel(
+      VBarChartModel(
           index: 2,
           colors: [Colors.deepOrange, Colors.red],
-          jumlah: 100,
-          tooltip: "114%",
+          jumlah: (_nutinfo!['protein'] / 65) * 100,
+          tooltip: ((_nutinfo!['protein'] / 65) * 100).toInt().toString() + "%",
           label: '단백질'),
-      const VBarChartModel(
+      VBarChartModel(
           index: 3,
           colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: 89,
-          tooltip: "89%",
+          jumlah: (_nutinfo!['fat'] / 65) * 100,
+          tooltip: ((_nutinfo!['fat'] / 65) * 100).toInt().toString() + "%",
           label: '지방'),
     ];
     List<DoughnutChartData> doughnutChartData = [
-      DoughnutChartData('탄수화물', 64.7, Color(0xFF5757)),
-      DoughnutChartData('단백질', 20.5, Color(0xD81665)),
-      DoughnutChartData('지방', 14.9, Color(0xA2006E)),
+      DoughnutChartData('탄수화물',_nutinfo!['carbo']/(_nutinfo!['carbo']+_nutinfo!['protein']+_nutinfo!['fat']), Color(0xFF5757)),
+      DoughnutChartData('단백질', _nutinfo!['protein']/(_nutinfo!['carbo']+_nutinfo!['protein']+_nutinfo!['fat']), Color(0xD81665)),
+      DoughnutChartData('지방',_nutinfo!['fat']/(_nutinfo!['carbo']+_nutinfo!['protein']+_nutinfo!['fat']), Color(0xA2006E)),
     ];
     List<DoughnutChartData> doughnutChartData2 = [
-      DoughnutChartData('탄수화물', 55.1, Color(0x008037)),
-      DoughnutChartData('단백질', 23.3, Color(0x00A068)),
-      DoughnutChartData('지방', 21.6, Color(0x1DC09A)),
+      DoughnutChartData('탄수화물', 130/(130+65+65), Color(0x008037)),
+      DoughnutChartData('단백질', 65/(130+65+65), Color(0x00A068)),
+      DoughnutChartData('지방', 65/(130+65+65), Color(0x1DC09A)),
     ];
     //추천 메뉴
     Widget Specialities() {
@@ -80,16 +81,17 @@ class ResultScreen extends StatelessWidget {
                     Text("다음식사는 샐러드 어때요?"),
                   ]),
             ),
-            Expanded(flex:1,
-                child:ClipRRect(
+            Expanded(
+                flex: 1,
+                child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                    child: Container(width:200,height:100,
-                        child:Image(
-                          image: AssetImage('assets/salad.jpg'),fit: BoxFit.fill,
-                        )
-                    )
-                )
-            ),
+                    child: Container(
+                        width: 200,
+                        height: 100,
+                        child: Image(
+                          image: AssetImage('assets/salad.jpg'),
+                          fit: BoxFit.fill,
+                        )))),
           ],
         ),
       );
@@ -162,24 +164,40 @@ class ResultScreen extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     //child: (_image!='fail')?Expanded(child:Image.network(_result![0])):
-                    child: (_result != 'fail')
+                    child: (_result!= 'fail')
                         //음식 추정 실패시 김치전 사진이 나오도록
                         ? Expanded(
                             child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                  child: Container(width:200, height:100,child:Image.file(File(_image!.path),fit: BoxFit.fill)),
-                                ))
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Container(
+                                width: 200,
+                                height: 100,
+                                child: Image.file(File(_image!.path),
+                                    fit: BoxFit.fill)),
+                          ))
                         : Expanded(
                             child: ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
-                            child:
-                                Container(width:200,height:100,child: Image(image: AssetImage('assets/kimchi.jpg'),fit: BoxFit.fill),),
+                            child: Container(
+                              width: 200,
+                              height: 100,
+                              child: Image(
+                                  image: AssetImage('assets/kimchi.jpg'),
+                                  fit: BoxFit.fill),
+                            ),
                           ))),
                 Expanded(
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        (_result != 'fail') ? Text(_result!) : Text("김치전"),
+                        //classfication food_Name 결과
+                        (_result != 'fail')
+                            ? Column(
+                                children: [
+                                  for (var res in _result!) Text(res as String)
+                                ],
+                              )
+                            : Text("김치전"),
                       ],
                     ))
               ],
@@ -190,9 +208,12 @@ class ResultScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => GraphScreen(_image, _result)));
+                          builder: (context) =>
+                              GraphScreen(_image!, _result!, _nutinfo!)
+                      )
+                  );
                 },
-                child: Text("영양성분 더보기", style: TextStyle(fontSize: 10)))
+                child: Text("영양성분 더보기", style: TextStyle(fontSize: 14)))
           ],
         ),
       );
@@ -241,17 +262,17 @@ class ResultScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F6F9),
+      backgroundColor: Color(0xFFF4F6F9),
       appBar: AppBar(
         //AppBar 설정(UI 적용 완료)
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.black),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         //appbar 투명색
         centerTitle: true,
         elevation: 1.0,
         // 그림자 농도 0
-        title: const Text(
+        title: Text(
           "A.식단",
           style: TextStyle(
               fontFamily: 'NotoSansKR', color: Colors.black, fontSize: 18),
@@ -259,7 +280,7 @@ class ResultScreen extends StatelessWidget {
         actions: [
           IconButton(
             //닫기 버튼 (뒤로가기와 기능적으로 같다)
-            icon: const Icon(Icons.close),
+            icon: Icon(Icons.close),
             onPressed: () {
               Navigator.pop(context);
             },

@@ -99,9 +99,13 @@ class SerchDelegate extends SearchDelegate {
       ];
 
   @override
-  Widget buildResults(BuildContext context)=>Center(
-    child: Text(query,),
-  );
+  Widget buildResults(BuildContext context)=>Container();
+
+  @override
+  void showResults(BuildContext context){
+    //여기에 값 전달 함수 넣기
+    super.showResults(context);
+  }
 
   @override
   Widget buildSuggestions(BuildContext context) {

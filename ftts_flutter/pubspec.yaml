@@ -42,6 +42,7 @@ dependencies:
   syncfusion_flutter_charts: ^20.4.44
   intl: ^0.18.0
   vertical_barchart: ^2.0.0+2
+  url_launcher: ^6.1.9
 
 dev_dependencies:
   flutter_test:
