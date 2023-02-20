@@ -21,14 +21,14 @@ class StackedBarChartData {
   StackedBarChartData(this.x, this.y1, this.y2, this.color);
 }
 
-class DailyGraph extends StatefulWidget {
-  const DailyGraph({Key? key}) : super(key: key);
+class WeeklyGraph extends StatefulWidget {
+  const WeeklyGraph({Key? key}) : super(key: key);
 
   @override
-  State<DailyGraph> createState() => _DailyGraphState();
+  State<WeeklyGraph> createState() => _WeeklyGraphState();
 }
 
-class _DailyGraphState extends State<DailyGraph> {
+class _WeeklyGraphState extends State<WeeklyGraph> {
   final connectServer = ConnectServer();
 
   @override

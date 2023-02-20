@@ -7,6 +7,8 @@ import 'HomeScreen.dart';
 import '../utils.dart';
 import '../widget/ImageUploader.dart';
 import '../widget/DailyGraph.dart';
+import '../widget/WeeklyGraph.dart';
+import '../widget/CustomCalendar.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -16,7 +18,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  // DatePicker 위젯
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -33,7 +34,7 @@ class _MainScreenState extends State<MainScreen> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           centerTitle: true,
-          elevation: 1.0, // 그림자 농도 0
+          elevation: 0.0, // 그림자 농도 0
           title: const Text(
             "A.식단",
             style: TextStyle(color: Colors.black, fontSize: 18),
@@ -51,58 +52,14 @@ class _MainScreenState extends State<MainScreen> {
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomeScreen()));
-                // Navigator.pop(context);
               },
             )
           ],
         ),
         body: SingleChildScrollView(
             child: Column(children: [
-          TableCalendar(
-            locale: 'ko-KR',
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              if (!isSameDay(_selectedDay, selectedDay)) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay;
-                });
-              }
-            },
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-            calendarStyle: CalendarStyle(
-              selectedDecoration: const BoxDecoration(
-                color: const Color(0xFF3617CE),
-                shape: BoxShape.circle,
-              ),
-              todayDecoration: const BoxDecoration(
-                color: const Color(0xFFaea2eb),
-                shape: BoxShape.circle,
-              ),
-            ),
-            headerStyle: HeaderStyle(
-                titleCentered: true,
-                formatButtonVisible: false,
-                titleTextStyle: const TextStyle(fontSize: 17.0)),
-          ),
+          CustomCalendar(),
           Container(
-              // padding: const EdgeInsets.all(8.0),
-              // width: screenWidth * 0.9,
               margin: const EdgeInsets.only(
                   left: 20, right: 20, bottom: 15, top: 10),
               decoration: BoxDecoration(
@@ -126,9 +83,7 @@ class _MainScreenState extends State<MainScreen> {
                 ],
                 views: [
                   DailyGraph(),
-                  Container(
-                    color: Colors.white,
-                  ),
+                  WeeklyGraph(),
                 ],
               )),
           Container(
@@ -141,6 +96,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 Text(
                   "하루 섭취량",
+                  style: TextStyle(fontSize: 17.0),
                 )
               ],
             ),
@@ -152,7 +108,7 @@ class _MainScreenState extends State<MainScreen> {
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
             ),
-            height: 400,
+            height: 360,
             child: ContainedTabBarView(
               onChange: (index) => print(index),
               tabs: [
