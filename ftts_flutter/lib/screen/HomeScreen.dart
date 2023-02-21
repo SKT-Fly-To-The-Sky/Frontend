@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ftts_flutter/screen/MainScreen.dart';
+import 'package:ftts_flutter/screen/SupplementsMainScreen.dart';
 import 'MenuScreen.dart';
 
 var layoutSize;
@@ -110,6 +112,12 @@ class _HomeScreenState extends State<HomeScreen> {
       Icon(Icons.medication_outlined, color: Colors.blue),
       Icon(Icons.fitness_center, color: Colors.grey[700]),
     ];
+    final List<Widget> navigations = [
+      MainScreen(),
+      SupplementsMainScreen(),
+      HomeScreen(),
+    ];
+
     return Container(
       height: layoutSize.size.height * 0.09,
       child: ListView.builder(
@@ -131,7 +139,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(30))),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: ((context) => navigations[i])));
+                },
                 label: Text(
                   text[i],
                   style: const TextStyle(
