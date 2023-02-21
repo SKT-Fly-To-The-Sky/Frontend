@@ -8,7 +8,7 @@ import 'dart:developer';
 import 'package:rounded_background_text/rounded_background_text.dart';
 import 'dart:math' as math;
 import '../utils/NutInfo.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+// import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class ImageUploader extends StatefulWidget {
   const ImageUploader({Key? key}) : super(key: key);
