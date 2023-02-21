@@ -1,14 +1,13 @@
-import 'package:table_calendar/table_calendar.dart';
-import 'MenuScreen.dart';
-import 'package:flutter/material.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'HomeScreen.dart';
-import '../utils.dart';
-import '../widget/ImageUploader.dart';
-import '../widget/DailyGraph.dart';
-import '../widget/WeeklyGraph.dart';
+import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
+
 import '../widget/CustomCalendar.dart';
+import '../widget/DailyGraph.dart';
+import '../widget/ImageUploader.dart';
+import '../widget/WeeklyGraph.dart';
+import 'HomeScreen.dart';
+import 'MenuScreen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -34,7 +33,8 @@ class _MainScreenState extends State<MainScreen> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           centerTitle: true,
-          elevation: 0.0, // 그림자 농도 0
+          elevation: 0.0,
+          // 그림자 농도 0
           title: const Text(
             "A.식단",
             style: TextStyle(color: Colors.black, fontSize: 18),
@@ -65,8 +65,7 @@ class _MainScreenState extends State<MainScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
-              ),
-              // width: 200,
+              ), // width: 200,
               height: 300,
               child: ContainedTabBarView(
                 tabs: [

@@ -91,7 +91,10 @@ class ResultScreen extends StatelessWidget {
                         child: Image(
                           image: AssetImage('assets/salad.jpg'),
                           fit: BoxFit.fill,
-                        )))),
+                        )
+                    )
+                )
+            ),
           ],
         ),
       );
@@ -199,7 +202,8 @@ class ResultScreen extends StatelessWidget {
                               )
                             : Text("김치전"),
                       ],
-                    ))
+                    )
+                )
               ],
             ),
             Graph(),

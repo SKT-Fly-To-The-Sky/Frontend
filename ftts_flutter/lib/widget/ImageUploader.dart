@@ -45,8 +45,7 @@ class _ImageUploaderState extends State<ImageUploader> {
         //음식 이름 받아오기
         result = await connectServer.uploading(_image!);
 
-        nut= await connectServer.GetNutInfo(result!);
-
+        nut = await connectServer.foodNutinfo(result!);
 
         //영양소 받아오기
         setState(() {
@@ -55,8 +54,7 @@ class _ImageUploaderState extends State<ImageUploader> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ResultScreen(_image!, result!, nut!))
-          );
+                  builder: (context) => ResultScreen(_image!, result!, nut!)));
         });
       } else {
         print("_image is null");
@@ -228,22 +226,22 @@ class StaticUploader extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     return Container(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[
-        FloatingActionButton(
-          heroTag: 'camera',
-          backgroundColor: Color(0xFF3617CE),
-          child: Icon(Icons.add_a_photo),
-          tooltip: 'pick Image',
-          onPressed: () {
-            // getImage(ImageSource.camera);
-          },
-        ),
-        FloatingActionButton(
-          heroTag: 'gallery',
-          backgroundColor: Color(0xFF3617CE),
-          child: Icon(Icons.wallpaper),
-          tooltip: 'pick Image',
-          onPressed: () {
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[
+            FloatingActionButton(
+              heroTag: 'camera',
+              backgroundColor: Color(0xFF3617CE),
+              child: Icon(Icons.add_a_photo),
+              tooltip: 'pick Image',
+              onPressed: () {
+                // getImage(ImageSource.camera);
+              },
+            ),
+            FloatingActionButton(
+              heroTag: 'gallery',
+              backgroundColor: Color(0xFF3617CE),
+              child: Icon(Icons.wallpaper),
+              tooltip: 'pick Image',
+              onPressed: () {
             // getImage(ImageSource.gallery);
           },
         ),
