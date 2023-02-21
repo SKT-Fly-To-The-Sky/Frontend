@@ -18,30 +18,41 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //그래프 색상 설정 함수. 100프로 이상이면 red, 100이하 80이상이면 green, 80이하면 yellow
+    List<Color> setColor(double a){
+      if (a>100){
+        return [Colors.deepOrange, Colors.red];
+      }else if(a>60){
+        return [Colors.green, Colors.teal];
+      }
+      else {return [Colors.limeAccent, Colors.yellow];}
+    }
+
     List<VBarChartModel> bardata = [
       VBarChartModel(
           index: 0,
-          colors: [Colors.green, Colors.teal],
-          jumlah: (_nutinfo!['kcal'] / 2600) * 100,
-          tooltip: ((_nutinfo!['kcal'] / 2600) * 100).toInt().toString() + "%",
+          //(_nutinfo!['kcal'] / 2600)/3 * 100 => 음식영양소/일일권장섭취영량소/3(3끼이므로)*100(퍼센트화)
+          colors: setColor((_nutinfo!['kcal'] / 2600)/3 * 100),
+          jumlah: (_nutinfo!['kcal'] / 2600)/3 * 100,
+          tooltip: ((_nutinfo!['kcal'] / 2600)/3 * 100).toInt().toString() + "%",
           label: '칼로리'),
       VBarChartModel(
           index: 1,
-          colors: [Colors.deepOrange, Colors.red],
-          jumlah: (_nutinfo!['carbo'] / 130) * 100,
-          tooltip: ((_nutinfo!['carbo'] / 130) * 100).toInt().toString() + "%",
+          colors: setColor((_nutinfo!['carbo'] / 130)/3 * 100),
+          jumlah: (_nutinfo!['carbo'] / 130)/3 * 100,
+          tooltip: ((_nutinfo!['carbo'] / 130)/3 * 100).toInt().toString() + "%",
           label: '탄수화물'),
       VBarChartModel(
           index: 2,
-          colors: [Colors.deepOrange, Colors.red],
-          jumlah: (_nutinfo!['protein'] / 65) * 100,
-          tooltip: ((_nutinfo!['protein'] / 65) * 100).toInt().toString() + "%",
+          colors: setColor((_nutinfo!['protein'] / 65)/3 * 100),
+          jumlah: (_nutinfo!['protein'] / 65)/3 * 100,
+          tooltip: ((_nutinfo!['protein'] / 65)/3 * 100).toInt().toString() + "%",
           label: '단백질'),
       VBarChartModel(
           index: 3,
-          colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: (_nutinfo!['fat'] / 65) * 100,
-          tooltip: ((_nutinfo!['fat'] / 65) * 100).toInt().toString() + "%",
+          colors: setColor((_nutinfo!['fat'] / 65)/3 * 100),
+          jumlah: (_nutinfo!['fat'] / 65)/3 * 100,
+          tooltip: ((_nutinfo!['fat'] / 65) * 100)/3.toInt().toString() + "%",
           label: '지방'),
     ];
     List<DoughnutChartData> doughnutChartData = [
