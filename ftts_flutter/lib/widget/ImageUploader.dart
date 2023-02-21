@@ -51,10 +51,11 @@ class _ImageUploaderState extends State<ImageUploader> {
         //영양소 받아오기
         setState(() {
           //ResultScreen에 이미지, classfication 결과, 영양소 정보 전달
+
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ResultScreen(_image, result, nut))
+                  builder: (context) => ResultScreen(_image!, result!, nut!))
           );
         });
       } else {

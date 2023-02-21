@@ -244,16 +244,14 @@ packages:
     dependency: "direct main"
     description:
       name: roundcheckbox
-      sha256: "5d6f607ed9d26fde0072af2545f56d84a6b6d2a45972b0c41f90c2d73224f339"
-      url: "https://pub.dev"
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
   rounded_background_text:
     dependency: "direct main"
     description:
       name: rounded_background_text
-      sha256: ac03cfa524fefe99db084be7ed264e444dd709ea525e3b35d151b87cac1291ef
-      url: "https://pub.dev"
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
   simple_gesture_detector:
