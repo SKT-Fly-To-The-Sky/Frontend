@@ -172,69 +172,7 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
               ],
             ),
           ),
-          SupplementsGraph(),
-          Container(
-            margin:
-                const EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 5),
-            child: Column(
-              children: [
-                Container(
-                    child: Row(
-                  children: [
-                    Icon(
-                      Icons.wb_twighlight,
-                      color: Colors.yellow,
-                    ),
-                    Container(
-                      width: 5,
-                    ),
-                    Text(
-                      "아침",
-                      style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )),
-                CustomCheckBox(),
-                Container(
-                    child: Row(
-                  children: [
-                    Icon(
-                      Icons.wb_sunny,
-                      color: Colors.orange,
-                    ),
-                    Container(
-                      width: 5,
-                    ),
-                    Text(
-                      "점심",
-                      style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )),
-                CustomCheckBox(),
-                Container(
-                    child: Row(
-                  children: [
-                    Icon(
-                      Icons.mode_night,
-                      color: Color.fromARGB(255, 255, 196, 0),
-                    ),
-                    Container(
-                      width: 5,
-                    ),
-                    Text(
-                      "저녁",
-                      style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )),
-                CustomCheckBox(),
-              ],
-            ),
-          ),
+          CheckBoxListView(),
           Container(
             child: Center(
               child: IconButton(
