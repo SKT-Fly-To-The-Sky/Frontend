@@ -180,7 +180,7 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: "385f12ee9c7288575572c7873a332016ec45ebd092e1c2f6bd421b4a9ad21f1d"
+      sha256: "385f12ee9c7288575572c7873a332016ec45ebd092e1c2f6bd421b4a9ad21f1d"0_1
       url: "https://pub.dev"
     source: hosted
     version: "0.8.5+6"
@@ -434,6 +434,7 @@ packages:
     description:
       name: syncfusion_flutter_charts
       sha256: "34d4c1cd35de6ebe5a3cdfe72a1154fdb04117625517609308d992789121bf78"
+
       url: "https://pub.dev"
     source: hosted
     version: "20.4.50"
@@ -441,7 +442,9 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
+
       sha256: "33141f9073c607bd113898d241aa6a03ccc1856a314bd061015180c35d47012f"
+
       url: "https://pub.dev"
     source: hosted
     version: "20.4.50"
