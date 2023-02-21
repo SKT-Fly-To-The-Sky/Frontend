@@ -15,21 +15,18 @@ class CustomCheckBox extends StatefulWidget {
 }
 
 class _CustomCheckBoxState extends State<CustomCheckBox> {
-  bool _isChecked = false;
+  // bool _isChecked = false;
   Color _textColor = Colors.black;
 
   final List<String> pillNames = ["닥터 써니디 연질캡슐", "리스트뷰 테스트"];
   final List<String> pillCnts = ["1정", "2정"];
+  List<bool> _isChecked = [false, false];
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       margin: const EdgeInsets.only(bottom: 10, top: 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
-      ),
       child: ListView.builder(
           shrinkWrap: true,
           itemCount: pillNames.length,
@@ -53,7 +50,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _isChecked
+                              _isChecked[i]
                                   ? Text(
                                       pillNames[i],
                                       style: TextStyle(
@@ -77,10 +74,10 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
                         child: RoundCheckBox(
                           onTap: (selected) {
                             setState(() {
-                              _isChecked = !_isChecked;
+                              _isChecked[i] = !_isChecked[i];
                             });
                           },
-                          isChecked: _isChecked ? true : false,
+                          isChecked: _isChecked[i] ? true : false,
                           borderColor: Color.fromARGB(255, 54, 23, 206),
                           checkedColor: Color.fromARGB(255, 54, 23, 206),
                           uncheckedColor: Colors.white,
