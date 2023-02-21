@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import '../screen/ResultScreen.dart';
 import '../model/ConnectServer.dart';
 import 'dart:developer';
+import 'package:rounded_background_text/rounded_background_text.dart';
 import 'dart:math' as math;
 
 class ImageUploader extends StatefulWidget {
@@ -44,16 +45,18 @@ class _ImageUploaderState extends State<ImageUploader> {
         //음식 이름 받아오기
         result = await connectServer.uploading(_image!);
 
+
         nut= await connectServer.GetNutInfo(result!);
 
 
         //영양소 받아오기
         setState(() {
           //ResultScreen에 이미지, classfication 결과, 영양소 정보 전달
+
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ResultScreen(_image, result, nut))
+                  builder: (context) => ResultScreen(_image!, result!, nut!))
           );
         });
       } else {
@@ -61,93 +64,158 @@ class _ImageUploaderState extends State<ImageUploader> {
       }
     }
 
+    return _image == null
+        ? Container(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  FloatingActionButton(
+                    heroTag: 'camera',
+                    backgroundColor: Color(0xFF3617CE),
+                    child: Icon(Icons.add_a_photo),
+                    tooltip: 'pick Image',
+                    onPressed: () {
+                      getImage(ImageSource.camera);
+                    },
+                  ),
+                  FloatingActionButton(
+                    heroTag: 'gallery',
+                    backgroundColor: Color(0xFF3617CE),
+                    child: Icon(Icons.wallpaper),
+                    tooltip: 'pick Image',
+                    onPressed: () {
+                      getImage(ImageSource.gallery);
+                    },
+                  ),
+                ])
+          ]))
+        : ShowImage();
+  }
+
+  Widget ShowImage() {
     return Container(
         child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: _image == null
-                ? <Widget>[
-                    FloatingActionButton(
-                      heroTag: 'camera',
-                      backgroundColor: Color(0xFF3617CE),
-                      child: Icon(Icons.add_a_photo),
-                      tooltip: 'pick Image',
-                      onPressed: () {
-                        getImage(ImageSource.camera);
-                      },
-                    ),
-                    FloatingActionButton(
-                      heroTag: 'gallery',
-                      backgroundColor: Color(0xFF3617CE),
-                      child: Icon(Icons.wallpaper),
-                      tooltip: 'pick Image',
-                      onPressed: () {
-                        getImage(ImageSource.gallery);
-                      },
-                    ),
-                  ]
-                : <Widget>[
-                    SingleChildScrollView(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Transform.rotate(
-                              angle: radians,
-                              child: Image.file(
-                                File(_image!.path),
-                                width: screenWidth * 0.8,
-                                height: screenWidth * 0.8 * 0.75,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  child: Text("음식 메뉴"),
-                                ),
-                                Container(
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            child: Text("총 칼로리"),
-                                          ),
-                                          Container(
-                                            child: Text("566kcal"),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            child: Text("탄수화물"),
-                                          ),
-                                          Container(
-                                            child: Text("17mg"),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            child: Text("단백질"),
-                                          ),
-                                          Container(
-                                            child: Text("12mg"),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            )
-                          ]),
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              height: 200,
+              child: Transform.rotate(
+                angle: radians,
+                child: Image.file(
+                  File(_image!.path),
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.fromLTRB(15, 0, 10, 10),
+                        child: RoundedBackgroundText(
+                          '탄',
+                          style: const TextStyle(
+                              fontFamily: 'NotoSansKR',
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                          backgroundColor: Color(0xffffb3ba),
+                        )),
+                    Text(
+                      '365 kcal',
+                      style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
-                  ])
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.fromLTRB(15, 0, 10, 10),
+                        child: RoundedBackgroundText(
+                          '단',
+                          style: const TextStyle(
+                              fontFamily: 'NotoSansKR',
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                          backgroundColor: Color(0xffffffba),
+                        )),
+                    Text(
+                      '365 kcal',
+                      style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.fromLTRB(15, 0, 10, 10),
+                        child: RoundedBackgroundText(
+                          '지',
+                          style: const TextStyle(
+                              fontFamily: 'NotoSansKR',
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                          backgroundColor: Color(0xffbae1ff),
+                        )),
+                    Text(
+                      '365 kcal',
+                      style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
+                    )
+                  ],
+                ),
+              ],
+            )
+          ],
+        ),
+        Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 7.0, bottom: 7.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.restaurant_menu_outlined),
+                  Text(
+                    " 음식 메뉴",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 5.0, bottom: 7.0),
+              child: Row(
+                children: [
+                  Container(
+                      margin: EdgeInsets.fromLTRB(15.0, 5.0, 5.0, 5.0),
+                      child: RoundedBackgroundText(
+                        '닭강정훈',
+                        style: const TextStyle(
+                            fontFamily: 'NotoSansKR', fontSize: 16),
+                        backgroundColor: Colors.grey[100],
+                      )),
+                  Container(
+                      margin: EdgeInsets.fromLTRB(15.0, 5.0, 5.0, 5.0),
+                      child: RoundedBackgroundText(
+                        '참이슬아',
+                        style: const TextStyle(
+                            fontFamily: 'NotoSansKR', fontSize: 16),
+                        backgroundColor: Colors.grey[100],
+                      )),
+                ],
+              ),
+            )
+          ],
+        ),
       ],
     ));
   }

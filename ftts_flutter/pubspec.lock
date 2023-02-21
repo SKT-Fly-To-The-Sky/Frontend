@@ -212,6 +212,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.3"
+  roundcheckbox:
+    dependency: "direct main"
+    description:
+      name: roundcheckbox
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.5"
+  rounded_background_text:
+    dependency: "direct main"
+    description:
+      name: rounded_background_text
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   simple_gesture_detector:
     dependency: transitive
     description:
