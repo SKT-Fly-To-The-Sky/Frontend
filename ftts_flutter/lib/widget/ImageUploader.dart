@@ -55,9 +55,7 @@ class _ImageUploaderState extends State<ImageUploader> {
         setState(() {
           _result = result;
           _nut = nut;
-
           //ResultScreen에 이미지, classfication 결과, 영양소 정보 전달
-
           Navigator.push(
               context,
               MaterialPageRoute(

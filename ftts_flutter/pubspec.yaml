@@ -45,9 +45,10 @@ dependencies:
   vertical_barchart: ^2.0.0+2
   rounded_background_text: ^0.3.0
   roundcheckbox: ^2.0.5
-
   url_launcher: ^6.1.9
   flutter_cache_manager: ^3.3.0
+  get: ^4.6.5
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

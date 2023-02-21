@@ -48,13 +48,12 @@ class ConnectServer {
               'time_div': 'launch',
               'date': onlydate
             });
+
         if (classficationResult.statusCode == 200) {
           //값
-          for (int i = 0;
-              i < int.parse(classficationResult.data['object_num'].toString());
-              i++) {
-            foodName
-                ?.add(classficationResult.data['object'][i]['name'].toString());
+          for (int i = 0; i < int.parse(classficationResult.data['object_num'].toString()); i++)
+          {
+            foodName?.add(classficationResult.data['object'][i]['name'].toString());
             //영양소 값 합산
           }
         }
