@@ -114,10 +114,7 @@ class ResultScreen extends StatelessWidget {
                         child: Image(
                           image: AssetImage('assets/salad.jpg'),
                           fit: BoxFit.fill,
-                        )
-                    )
-                )
-            ),
+                        )))),
           ],
         ),
       );
@@ -190,7 +187,7 @@ class ResultScreen extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     //child: (_image!='fail')?Expanded(child:Image.network(_result![0])):
-                    child: (_result != 'fail')
+                    child: (_image != null) && (_result != 'fail')
                         //음식 추정 실패시 김치전 사진이 나오도록
                         ? Expanded(
                             child: ClipRRect(
@@ -198,7 +195,7 @@ class ResultScreen extends StatelessWidget {
                             child: Container(
                                 width: 200,
                                 height: 100,
-                                child: Image.file(File(_image!.path),
+                                child: Image.file(File(_image!.path!),
                                     fit: BoxFit.fill)),
                           ))
                         : Expanded(
@@ -225,8 +222,7 @@ class ResultScreen extends StatelessWidget {
                               )
                             : Text("김치전"),
                       ],
-                    )
-                )
+                    ))
               ],
             ),
             Graph(),
@@ -286,53 +282,106 @@ class ResultScreen extends StatelessWidget {
           ));
     }
 
-    return Scaffold(
-      backgroundColor: Color(0xFFF4F6F9),
-      appBar: AppBar(
-        //AppBar 설정(UI 적용 완료)
-        iconTheme: IconThemeData(color: Colors.black),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        //appbar 투명색
-        centerTitle: true,
-        elevation: 1.0,
-        // 그림자 농도 0
-        title: Text(
-          "A.식단",
-          style: TextStyle(
-              fontFamily: 'NotoSansKR', color: Colors.black, fontSize: 18),
-        ),
-        actions: [
-          IconButton(
-            //닫기 버튼 (뒤로가기와 기능적으로 같다)
-            icon: Icon(Icons.close),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+    return this._image != null
+        ? Scaffold(
+            backgroundColor: Color(0xFFF4F6F9),
+            appBar: AppBar(
+              //AppBar 설정(UI 적용 완료)
+              iconTheme: IconThemeData(color: Colors.black),
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
+              //appbar 투명색
+              centerTitle: true,
+              elevation: 1.0,
+              // 그림자 농도 0
+              title: Text(
+                "A.식단",
+                style: TextStyle(
+                    fontFamily: 'NotoSansKR',
+                    color: Colors.black,
+                    fontSize: 18),
+              ),
+              actions: [
+                IconButton(
+                  //닫기 버튼 (뒤로가기와 기능적으로 같다)
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            ),
+            body: Column(
+              children: [
+                Row(
+                  children: <Widget>[
+                    Container(
+                        margin: EdgeInsets.only(left: 15, top: 10),
+                        child: Row(
+                          children: [
+                            Icon(Icons.restaurant),
+                            Container(
+                              width: 5,
+                            ),
+                            Text("추가한 식단"),
+                          ],
+                        ))
+                  ],
+                ),
+                Container1(),
+                Container2()
+              ],
+            ),
           )
-        ],
-      ),
-      body: Column(
-        children: [
-          Row(
-            children: <Widget>[
-              Container(
-                  margin: EdgeInsets.only(left: 15, top: 10),
-                  child: Row(
-                    children: [
-                      Icon(Icons.restaurant),
-                      Container(
-                        width: 5,
-                      ),
-                      Text("추가한 식단"),
-                    ],
-                  ))
-            ],
-          ),
-          Container1(),
-          Container2()
-        ],
-      ),
-    );
+        : Scaffold(
+            backgroundColor: Color(0xFFF4F6F9),
+            appBar: AppBar(
+              //AppBar 설정(UI 적용 완료)
+              iconTheme: IconThemeData(color: Colors.black),
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
+              //appbar 투명색
+              centerTitle: true,
+              elevation: 1.0,
+              // 그림자 농도 0
+              title: Text(
+                "A.식단",
+                style: TextStyle(
+                    fontFamily: 'NotoSansKR',
+                    color: Colors.black,
+                    fontSize: 18),
+              ),
+              actions: [
+                IconButton(
+                  //닫기 버튼 (뒤로가기와 기능적으로 같다)
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            ),
+            body: Column(
+              children: [
+                Row(
+                  children: <Widget>[
+                    Container(
+                        margin: EdgeInsets.only(left: 15, top: 10),
+                        child: Row(
+                          children: [
+                            Icon(Icons.restaurant),
+                            Container(
+                              width: 5,
+                            ),
+                            Text("추가한 식단"),
+                          ],
+                        ))
+                  ],
+                ),
+                Container1(),
+                Container2()
+              ],
+            ),
+          );
   }
 }

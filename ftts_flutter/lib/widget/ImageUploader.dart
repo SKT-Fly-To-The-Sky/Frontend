@@ -7,7 +7,7 @@ import '../model/ConnectServer.dart';
 import 'dart:developer';
 import 'package:rounded_background_text/rounded_background_text.dart';
 import 'dart:math' as math;
-import '../utils/NutInfo.dart';
+import '../utils/nutInfo.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class ImageUploader extends StatefulWidget {
@@ -17,9 +17,10 @@ class ImageUploader extends StatefulWidget {
   State<ImageUploader> createState() => _ImageUploaderState();
 }
 
+// XFile? _image;
+
 class _ImageUploaderState extends State<ImageUploader> {
   XFile? _image;
-  // XFile? _image;
   final picker = ImagePicker();
   final connectServer = ConnectServer();
   List<String>? _result = ["음식메뉴"];
@@ -58,8 +59,12 @@ class _ImageUploaderState extends State<ImageUploader> {
           Navigator.push(
               context,
               MaterialPageRoute(
+<<<<<<< HEAD
                   builder: (context) => ResultScreen(_image!, result!, nut!))
           );
+=======
+                  builder: (context) => ResultScreen(_image!, result!, nut!)));
+>>>>>>> 8508e396d110ab24b374ce6365011cd69829d7c6
         });
       } else {
         print("_image is null");
@@ -209,7 +214,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ResultScreen(_image, _result, _nut)));
+                                      ResultScreen(_image!, _result!, _nut!)));
                         },
                         child: Text(
                           "상세 보기",
@@ -231,7 +236,8 @@ class StaticUploader extends StatelessWidget {
   Widget build(BuildContext context) {
     String url = 'assets/diet_morning.jpg';
 
-    final Image _image = Image(image: AssetImage('assets/diet_morning.jpg'));
+    final Image _morningImage =
+        Image(image: AssetImage('assets/diet_morning.jpg'));
     // final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
     // final XFile _fileImg = _image.file;
     final List<String> _result = ["음식메뉴"];
@@ -247,7 +253,7 @@ class StaticUploader extends StatelessWidget {
               height: 200,
               child: Transform.rotate(
                 angle: radians,
-                child: _image,
+                child: _morningImage,
               ),
             ),
             Column(
@@ -348,8 +354,8 @@ class StaticUploader extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ResultScreen(
-                                      XFile("."), _result, nut_info)));
+                                  builder: (context) =>
+                                      ResultScreen(null, _result, nut_info)));
                         },
                         child: Text(
                           "상세 보기",
@@ -395,22 +401,22 @@ class UploaderBtn extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     return Container(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[
-            FloatingActionButton(
-              heroTag: 'camera',
-              backgroundColor: Color(0xFF3617CE),
-              child: Icon(Icons.add_a_photo),
-              tooltip: 'pick Image',
-              onPressed: () {
-                // getImage(ImageSource.camera);
-              },
-            ),
-            FloatingActionButton(
-              heroTag: 'gallery',
-              backgroundColor: Color(0xFF3617CE),
-              child: Icon(Icons.wallpaper),
-              tooltip: 'pick Image',
-              onPressed: () {
+      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[
+        FloatingActionButton(
+          heroTag: 'camera',
+          backgroundColor: Color(0xFF3617CE),
+          child: Icon(Icons.add_a_photo),
+          tooltip: 'pick Image',
+          onPressed: () {
+            // getImage(ImageSource.camera);
+          },
+        ),
+        FloatingActionButton(
+          heroTag: 'gallery',
+          backgroundColor: Color(0xFF3617CE),
+          child: Icon(Icons.wallpaper),
+          tooltip: 'pick Image',
+          onPressed: () {
             // getImage(ImageSource.gallery);
           },
         ),
