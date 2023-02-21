@@ -1,34 +1,17 @@
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 import 'package:flutter/material.dart';
 import '../model/ConnectServer.dart';
-import 'dart:io';
 
-class DoughnutChartData {
-  DoughnutChartData(this.x, this.y, this.color);
-  final String x;
-  final double y;
-  final Color color;
-}
-
-class StackedBarChartData {
-  final String x;
-  final num y1;
-  final num y2;
-  final Color color;
-  StackedBarChartData(this.x, this.y1, this.y2, this.color);
-}
-
-class WeeklyGraph extends StatefulWidget {
-  const WeeklyGraph({Key? key}) : super(key: key);
+class DetailGraph extends StatefulWidget {
+  const DetailGraph({Key? key}) : super(key: key);
 
   @override
-  State<WeeklyGraph> createState() => _WeeklyGraphState();
+  State<DetailGraph> createState() => _DetailGraphState();
 }
 
-class _WeeklyGraphState extends State<WeeklyGraph> {
+class _DetailGraphState extends State<DetailGraph> {
   final connectServer = ConnectServer();
 
   @override
@@ -49,21 +32,6 @@ class _WeeklyGraphState extends State<WeeklyGraph> {
           tooltip: "152%",
           label: '탄수화물'),
       const VBarChartModel(
-          index: 3,
-          colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: 89,
-          tooltip: "89%",
-          label: '지방'),
-    ];
-
-    List<VBarChartModel> barChartData2 = [
-      const VBarChartModel(
-          index: 1,
-          colors: [Colors.deepOrange, Colors.red],
-          jumlah: 100,
-          tooltip: "152%",
-          label: '탄수화물'),
-      const VBarChartModel(
           index: 2,
           colors: [Colors.deepOrange, Colors.red],
           jumlah: 100,
@@ -76,23 +44,32 @@ class _WeeklyGraphState extends State<WeeklyGraph> {
           tooltip: "89%",
           label: '지방'),
       const VBarChartModel(
-          index: 3,
-          colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: 89,
-          tooltip: "89%",
-          label: '비타민'),
+          index: 1,
+          colors: [Colors.deepOrange, Colors.red],
+          jumlah: 100,
+          tooltip: "152%",
+          label: '당류'),
+    ];
+
+    List<VBarChartModel> barChartData2 = [
+      const VBarChartModel(
+          index: 2,
+          colors: [Colors.deepOrange, Colors.red],
+          jumlah: 100,
+          tooltip: "114%",
+          label: '콜레스테롤'),
       const VBarChartModel(
           index: 3,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: 89,
           tooltip: "89%",
-          label: '무기질'),
-    ];
-
-    List<StackedBarChartData> stackedBarChartData = [
-      StackedBarChartData('지방', 65, 35, Color(0xFF6ec0ff)),
-      StackedBarChartData('단백질', 45, 55, Color(0xFF6eff8d)),
-      StackedBarChartData('탄수화물', 70, 30, Color(0xFFff6775)),
+          label: '식이섬유'),
+      const VBarChartModel(
+          index: 3,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: 89,
+          tooltip: "89%",
+          label: '나트륨'),
     ];
 
     return Container(
@@ -104,26 +81,26 @@ class _WeeklyGraphState extends State<WeeklyGraph> {
         child: Row(
           children: [
             Container(
-                width: screenWidth * 0.45,
+                width: screenWidth * 0.50,
                 child: VerticalBarchart(
                     background: Colors.transparent,
                     labelColor: Colors.black,
                     labelSizeFactor: 0.48,
                     tooltipColor: Colors.black,
-                    data: barChartData2,
+                    data: barChartData,
                     showBackdrop: true,
                     barStyle: BarStyle.DEFAULT,
                     barSize: 12,
                     maxX: 100,
                     showLegend: false)),
             Container(
-                width: screenWidth * 0.45,
+                width: screenWidth * 0.50,
                 child: VerticalBarchart(
                   background: Colors.transparent,
                   labelColor: Colors.black,
                   labelSizeFactor: 0.48,
                   tooltipColor: Colors.black,
-                  data: barChartData,
+                  data: barChartData2,
                   showBackdrop: true,
                   barStyle: BarStyle.DEFAULT,
                   barSize: 12,
