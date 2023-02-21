@@ -130,7 +130,6 @@ class _JsonListViewState extends State<JsonListView> {
 }
 
 
-
 class SupplementsMainScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _SupplementsMainScreen();
@@ -144,22 +143,34 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    List<String> supplements = ['닥터 써니디 연질캡슐'];
+    double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     Future getImage(ImageSource imageSource) async {
       // Timeline.startSync('interesting function');
       var _image = await picker.pickImage(
           source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
-          //이미지 resize 부분, height, width 설정, Quality 설정
-          );
+        //이미지 resize 부분, height, width 설정, Quality 설정
+      );
 
       if (_image != null) {
         String? result;
+        Map<String, dynamic>? sup_nut;
         //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 'fail'를 반환한다.
         result = await connectServer.Supplementsuploading(_image!);
 
+        print("result: " + result);
+        sup_nut = await connectServer.SupplementsNutinfo(result!);
+        print(sup_nut);
+
         setState(() {
+          supplements.add(result!);
           //ListView에 result 값 추가하기
+
+          Navigator.pop(context, 'Cancel');
         });
       } else {
         print("_image is null");
@@ -254,330 +265,339 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
       ),
       body: SingleChildScrollView(
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: EdgeInsets.only(left: 20, top: 15, bottom: 10),
-            child: Row(
-              children: [
-                Text(
-                  "영양제 섭취율",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 20, top: 15, bottom: 10),
+                child: Row(
+                  children: [
+                    Text(
+                      "영양제 섭취율",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(left: 150),
+                        child: TextButton(
+                            style: TextButton.styleFrom(
+                              primary: Color(0xFF3617CE),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          SupplementsGrapeScreen('fail')));
+                            },
+                            child: Text("상세 보기"))),
+                  ],
                 ),
-                Container(
-                    margin: EdgeInsets.only(left: 150),
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                          primary: Color(0xFF3617CE),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      SupplementsGrapeScreen('fail')));
-                        },
-                        child: Text("상세 보기"))),
-              ],
-            ),
-          ),
-          SupplementsGraph(),
-          Container(
-            // width: screenWidth * 0.9,
-            margin:
+              ),
+              SupplementsGraph(),
+              Container(
+                // width: screenWidth * 0.9,
+                margin:
                 const EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 5),
-            child: Column(
-              children: [
-                Container(
-                    child: Row(
+                child: Column(
                   children: [
-                    Icon(
-                      Icons.wb_twighlight,
-                      color: Colors.yellow,
+                    Container(
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.wb_twighlight,
+                              color: Colors.yellow,
+                            ),
+                            Container(
+                              width: 5,
+                            ),
+                            Text(
+                              "아침",
+                              style: TextStyle(
+                                  fontSize: 12.0, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        )),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 10, top: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      height: 70,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                  width: screenWidth * 0.7,
+                                  margin: const EdgeInsets.only(left: 15),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      _btnChecked
+                                          ? const Text(
+                                        "닥터 써니디 연질캡슐",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.grey,
+                                            decoration:
+                                            TextDecoration.lineThrough),
+                                      )
+                                          : const Text(
+                                        "닥터 써니디 연질캡슐",
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      Text(
+                                        "1정",
+                                        style: TextStyle(
+                                            fontSize: 14, color: Colors.grey),
+                                      ),
+                                    ],
+                                  )),
+                              Container(
+                                child: RoundCheckBox(
+                                  onTap: (selected) {
+                                    setState(() {
+                                      _btnChecked = !_btnChecked;
+                                    });
+                                  },
+                                  checkedColor: Color(0xFF3617CE),
+                                  checkedWidget:
+                                  Icon(Icons.done,
+                                      color: Colors.grey),
+                                  uncheckedColor: Colors.white,
+                                  uncheckedWidget: Icon(
+                                    Icons.done,
+                                    color: Colors.grey,
+                                  ),
+                                  animationDuration: Duration(
+                                    seconds: 1,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                     Container(
-                      width: 5,
-                    ),
-                    Text(
-                      "아침",
-                      style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 10, top: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                  ),
-                  height: 70,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                              width: screenWidth * 0.7,
-                              margin: const EdgeInsets.only(left: 15),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _btnChecked
-                                      ? const Text(
-                                          "닥터 써니디 연질캡슐",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.grey,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                        )
-                                      : const Text(
-                                          "닥터 써니디 연질캡슐",
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                  Text(
-                                    "1정",
-                                    style: TextStyle(
-                                        fontSize: 14, color: Colors.grey),
-                                  ),
-                                ],
-                              )),
-                          Container(
-                            child: RoundCheckBox(
-                              onTap: (selected) {
-                                setState(() {
-                                  _btnChecked = !_btnChecked;
-                                });
-                              },
-                              checkedColor: Color(0xFF3617CE),
-                              checkedWidget:
-                                  Icon(Icons.done, color: Colors.grey),
-                              uncheckedColor: Colors.white,
-                              uncheckedWidget: Icon(
-                                Icons.done,
-                                color: Colors.grey,
-                              ),
-                              animationDuration: Duration(
-                                seconds: 1,
-                              ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.wb_sunny,
+                              color: Colors.orange,
                             ),
-                          ),
+                            Container(
+                              width: 5,
+                            ),
+                            Text(
+                              "점심",
+                              style: TextStyle(
+                                  fontSize: 12.0, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        )),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 10, top: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      height: 70,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                  width: screenWidth * 0.7,
+                                  margin: const EdgeInsets.only(left: 15),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      _btnChecked
+                                          ? const Text(
+                                        "닥터 써니디 연질캡슐",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.grey,
+                                            decoration:
+                                            TextDecoration.lineThrough),
+                                      )
+                                          : const Text(
+                                        "닥터 써니디 연질캡슐",
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      Text(
+                                        "1정",
+                                        style: TextStyle(
+                                            fontSize: 14, color: Colors.grey),
+                                      ),
+                                    ],
+                                  )),
+                              Container(
+                                child: RoundCheckBox(
+                                  onTap: (selected) {
+                                    setState(() {
+                                      _btnChecked = !_btnChecked;
+                                    });
+                                  },
+                                  checkedColor: Color(0xFF3617CE),
+                                  checkedWidget:
+                                  Icon(Icons.done,
+                                      color: Colors.grey),
+                                  uncheckedColor: Colors.white,
+                                  uncheckedWidget: Icon(
+                                    Icons.done,
+                                    color: Colors.grey,
+                                  ),
+                                  animationDuration: Duration(
+                                    seconds: 1,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
                         ],
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                    child: Row(
-                  children: [
-                    Icon(
-                      Icons.wb_sunny,
-                      color: Colors.orange,
+                      ),
                     ),
                     Container(
-                      width: 5,
-                    ),
-                    Text(
-                      "점심",
-                      style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 10, top: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                  ),
-                  height: 70,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                              width: screenWidth * 0.7,
-                              margin: const EdgeInsets.only(left: 15),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _btnChecked
-                                      ? const Text(
-                                          "닥터 써니디 연질캡슐",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.grey,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                        )
-                                      : const Text(
-                                          "닥터 써니디 연질캡슐",
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                  Text(
-                                    "1정",
-                                    style: TextStyle(
-                                        fontSize: 14, color: Colors.grey),
-                                  ),
-                                ],
-                              )),
-                          Container(
-                            child: RoundCheckBox(
-                              onTap: (selected) {
-                                setState(() {
-                                  _btnChecked = !_btnChecked;
-                                });
-                              },
-                              checkedColor: Color(0xFF3617CE),
-                              checkedWidget:
-                                  Icon(Icons.done, color: Colors.grey),
-                              uncheckedColor: Colors.white,
-                              uncheckedWidget: Icon(
-                                Icons.done,
-                                color: Colors.grey,
-                              ),
-                              animationDuration: Duration(
-                                seconds: 1,
-                              ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.mode_night,
+                              color: Color.fromARGB(255, 255, 196, 0),
                             ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                    child: Row(
-                  children: [
-                    Icon(
-                      Icons.mode_night,
-                      color: Color.fromARGB(255, 255, 196, 0),
-                    ),
+                            Container(
+                              width: 5,
+                            ),
+                            Text(
+                              "저녁",
+                              style: TextStyle(
+                                  fontSize: 12.0, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        )),
                     Container(
-                      width: 5,
-                    ),
-                    Text(
-                      "저녁",
-                      style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold),
+                      margin: const EdgeInsets.only(bottom: 5, top: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      height: 70,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                  width: screenWidth * 0.7,
+                                  margin: const EdgeInsets.only(left: 15),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      _btnChecked
+                                          ? const Text(
+                                        "닥터 써니디 연질캡슐",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.grey,
+                                            decoration:
+                                            TextDecoration.lineThrough),
+                                      )
+                                          : const Text(
+                                        "닥터 써니디 연질캡슐",
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      Text(
+                                        "1정",
+                                        style: TextStyle(
+                                            fontSize: 14, color: Colors.grey),
+                                      ),
+                                    ],
+                                  )),
+                              Container(
+                                child: RoundCheckBox(
+                                  onTap: (selected) {
+                                    setState(() {
+                                      _btnChecked = !_btnChecked;
+                                    });
+                                  },
+                                  checkedColor: Color(0xFF3617CE),
+                                  checkedWidget:
+                                  Icon(Icons.done,
+                                      color: Colors.grey),
+                                  uncheckedColor: Colors.white,
+                                  uncheckedWidget: Icon(
+                                    Icons.done,
+                                    color: Colors.grey,
+                                  ),
+                                  animationDuration: Duration(
+                                    seconds: 1,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ],
-                )),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 5, top: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                  ),
-                  height: 70,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                              width: screenWidth * 0.7,
-                              margin: const EdgeInsets.only(left: 15),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _btnChecked
-                                      ? const Text(
-                                          "닥터 써니디 연질캡슐",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.grey,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                        )
-                                      : const Text(
-                                          "닥터 써니디 연질캡슐",
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                  Text(
-                                    "1정",
-                                    style: TextStyle(
-                                        fontSize: 14, color: Colors.grey),
-                                  ),
-                                ],
-                              )),
-                          Container(
-                            child: RoundCheckBox(
-                              onTap: (selected) {
-                                setState(() {
-                                  _btnChecked = !_btnChecked;
-                                });
-                              },
-                              checkedColor: Color(0xFF3617CE),
-                              checkedWidget:
-                                  Icon(Icons.done, color: Colors.grey),
-                              uncheckedColor: Colors.white,
-                              uncheckedWidget: Icon(
-                                Icons.done,
-                                color: Colors.grey,
-                              ),
-                              animationDuration: Duration(
-                                seconds: 1,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
                 ),
-              ],
-            ),
-          ),
-          Container(
-            child: Center(
-              child: IconButton(
-                icon: Icon(Icons.add),
-                iconSize: 30,
-                color: Color(0xFF3617CE),
-                onPressed: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: const Text('영양제 추가하기'),
-                    content: const Text('추가 방법을 고르시오'),
-                    actions: <Widget>[
-                      selectbutton(),
-                    ],
+              ),
+              Container(
+                child: Center(
+                  child: IconButton(
+                    icon: Icon(Icons.add),
+                    iconSize: 30,
+                    color: Color(0xFF3617CE),
+                    onPressed: () =>
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              AlertDialog(
+                                title: const Text('영양제 추가하기'),
+                                content: const Text('추가 방법을 고르시오'),
+                                actions: <Widget>[
+                                  selectbutton(),
+                                ],
+                              ),
+                        ),
                   ),
                 ),
               ),
-            ),
-          ),
-          Container(
-              margin: EdgeInsets.only(left: 20, top: 15, bottom: 5, right: 20),
-              child: Row(
-                children: [
-                  Icon(Icons.medication_liquid_sharp),
-                  Container(
-                    width: 5,
-                  ),
-                  Text(
-                    "영양제 추천",
-                    style: TextStyle(
-                        // fontWeight: FontWeight.bold,
-                        fontSize: 17),
-                  ),
-                ],
-              )),
-          Center(child: JsonListView())
-        ],
-      )),
+              Container(
+                  margin: EdgeInsets.only(
+                      left: 20, top: 15, bottom: 5, right: 20),
+                  child: Row(
+                    children: [
+                      Icon(Icons.medication_liquid_sharp),
+                      Container(
+                        width: 5,
+                      ),
+                      Text(
+                        "영양제 추천",
+                        style: TextStyle(
+                          // fontWeight: FontWeight.bold,
+                            fontSize: 17),
+                      ),
+                    ],
+                  )),
+              Center(child: JsonListView())
+            ],
+          )),
     );
   }
 
   Widget RecommendItem() {
-
     final List<String> text = [
       "Doctor's Best 비타민 D3 5000IU",
       "Solgar 비타민 D3 콜레칼시페롤 25mcg 1000IU",
@@ -642,7 +662,8 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
                           child: images[i],
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                          margin: EdgeInsets.only(
+                              left: 10, top: 10, right: 10),
                           child: Text(
                             text[i],
                             style: const TextStyle(
@@ -652,7 +673,8 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 10, top: 5, right: 10),
+                          margin: EdgeInsets.only(
+                              left: 10, top: 5, right: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [

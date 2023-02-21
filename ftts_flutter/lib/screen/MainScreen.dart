@@ -1,13 +1,12 @@
-import 'package:table_calendar/table_calendar.dart';
-import 'MenuScreen.dart';
-import 'package:flutter/material.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'HomeScreen.dart';
-import '../utils.dart';
-import '../widget/ImageUploader.dart';
+import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
+import '../widget/CustomCalendar.dart';
 import '../widget/DailyGraph.dart';
-import '../widget/WeeklyGraph.dart';
+import '../widget/ImageUploader.dart';
+import 'HomeScreen.dart';
+import 'MenuScreen.dart';
+import '../widget/DetailGraph.dart';
 import '../widget/CustomCalendar.dart';
 
 class MainScreen extends StatefulWidget {
@@ -34,7 +33,8 @@ class _MainScreenState extends State<MainScreen> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           centerTitle: true,
-          elevation: 0.0, // 그림자 농도 0
+          elevation: 0.0,
+          // 그림자 농도 0
           title: const Text(
             "A.식단",
             style: TextStyle(color: Colors.black, fontSize: 18),
@@ -65,8 +65,7 @@ class _MainScreenState extends State<MainScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
-              ),
-              // width: 200,
+              ), // width: 200,
               height: 300,
               child: ContainedTabBarView(
                 tabs: [
@@ -76,14 +75,14 @@ class _MainScreenState extends State<MainScreen> {
                         color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Weekly',
+                    'Detail',
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                 ],
                 views: [
                   DailyGraph(),
-                  WeeklyGraph(),
+                  DetailGraph(),
                 ],
               )),
           Container(
@@ -123,7 +122,7 @@ class _MainScreenState extends State<MainScreen> {
                           color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "300kcal",
+                      "752kcal",
                       style: TextStyle(
                         color: Colors.black,
                       ),
@@ -188,8 +187,8 @@ class _MainScreenState extends State<MainScreen> {
               views: [
                 StaticUploader(),
                 ImageUploader(),
-                StaticUploader(),
-                StaticUploader(),
+                UploaderBtn(),
+                UploaderBtn(),
               ],
             ),
           ),

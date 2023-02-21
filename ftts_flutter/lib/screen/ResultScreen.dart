@@ -14,7 +14,7 @@ class ResultScreen extends StatelessWidget {
   final List<String>? _result;
   final Map<String, dynamic>? _nutinfo;
 
-  const ResultScreen(this._image, this._result, this._nutinfo, {super.key});
+  ResultScreen(this._image, this._result, this._nutinfo, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +45,26 @@ class ResultScreen extends StatelessWidget {
           label: '지방'),
     ];
     List<DoughnutChartData> doughnutChartData = [
-      DoughnutChartData('탄수화물',_nutinfo!['carbo']/(_nutinfo!['carbo']+_nutinfo!['protein']+_nutinfo!['fat']), Color(0xFF5757)),
-      DoughnutChartData('단백질', _nutinfo!['protein']/(_nutinfo!['carbo']+_nutinfo!['protein']+_nutinfo!['fat']), Color(0xD81665)),
-      DoughnutChartData('지방',_nutinfo!['fat']/(_nutinfo!['carbo']+_nutinfo!['protein']+_nutinfo!['fat']), Color(0xA2006E)),
+      DoughnutChartData(
+          '탄수화물',
+          _nutinfo!['carbo'] /
+              (_nutinfo!['carbo'] + _nutinfo!['protein'] + _nutinfo!['fat']),
+          Color(0xFF5757)),
+      DoughnutChartData(
+          '단백질',
+          _nutinfo!['protein'] /
+              (_nutinfo!['carbo'] + _nutinfo!['protein'] + _nutinfo!['fat']),
+          Color(0xD81665)),
+      DoughnutChartData(
+          '지방',
+          _nutinfo!['fat'] /
+              (_nutinfo!['carbo'] + _nutinfo!['protein'] + _nutinfo!['fat']),
+          Color(0xA2006E)),
     ];
     List<DoughnutChartData> doughnutChartData2 = [
-      DoughnutChartData('탄수화물', 130/(130+65+65), Color(0x008037)),
-      DoughnutChartData('단백질', 65/(130+65+65), Color(0x00A068)),
-      DoughnutChartData('지방', 65/(130+65+65), Color(0x1DC09A)),
+      DoughnutChartData('탄수화물', 130 / (130 + 65 + 65), Color(0x008037)),
+      DoughnutChartData('단백질', 65 / (130 + 65 + 65), Color(0x00A068)),
+      DoughnutChartData('지방', 65 / (130 + 65 + 65), Color(0x1DC09A)),
     ];
     //추천 메뉴
     Widget Specialities() {
@@ -91,7 +103,10 @@ class ResultScreen extends StatelessWidget {
                         child: Image(
                           image: AssetImage('assets/salad.jpg'),
                           fit: BoxFit.fill,
-                        )))),
+                        )
+                    )
+                )
+            ),
           ],
         ),
       );
@@ -164,7 +179,7 @@ class ResultScreen extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     //child: (_image!='fail')?Expanded(child:Image.network(_result![0])):
-                    child: (_result!= 'fail')
+                    child: (_result != 'fail')
                         //음식 추정 실패시 김치전 사진이 나오도록
                         ? Expanded(
                             child: ClipRRect(
@@ -199,7 +214,8 @@ class ResultScreen extends StatelessWidget {
                               )
                             : Text("김치전"),
                       ],
-                    ))
+                    )
+                )
               ],
             ),
             Graph(),
@@ -209,9 +225,7 @@ class ResultScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              GraphScreen(_image!, _result!, _nutinfo!)
-                      )
-                  );
+                              GraphScreen(_image!, _result!, _nutinfo!)));
                 },
                 child: Text("영양성분 더보기", style: TextStyle(fontSize: 14)))
           ],
