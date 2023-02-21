@@ -180,7 +180,7 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: "385f12ee9c7288575572c7873a332016ec45ebd092e1c2f6bd421b4a9ad21f1d"0_1
+      sha256: "385f12ee9c7288575572c7873a332016ec45ebd092e1c2f6bd421b4a9ad21f1d"
       url: "https://pub.dev"
     source: hosted
     version: "0.8.5+6"
@@ -348,14 +348,16 @@ packages:
     dependency: "direct main"
     description:
       name: roundcheckbox
-      url: "https://pub.dartlang.org"
+      sha256: "5d6f607ed9d26fde0072af2545f56d84a6b6d2a45972b0c41f90c2d73224f339"
+      url: "https://pub.dev"
     source: hosted
     version: "2.0.5"
   rounded_background_text:
     dependency: "direct main"
     description:
       name: rounded_background_text
-      url: "https://pub.dartlang.org"
+      sha256: ac03cfa524fefe99db084be7ed264e444dd709ea525e3b35d151b87cac1291ef
+      url: "https://pub.dev"
     source: hosted
     version: "0.3.0"
   rxdart:
@@ -432,7 +434,6 @@ packages:
     description:
       name: syncfusion_flutter_charts
       sha256: "34d4c1cd35de6ebe5a3cdfe72a1154fdb04117625517609308d992789121bf78"
-
       url: "https://pub.dev"
     source: hosted
     version: "20.4.50"
@@ -440,9 +441,7 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-
       sha256: "33141f9073c607bd113898d241aa6a03ccc1856a314bd061015180c35d47012f"
-
       url: "https://pub.dev"
     source: hosted
     version: "20.4.50"
