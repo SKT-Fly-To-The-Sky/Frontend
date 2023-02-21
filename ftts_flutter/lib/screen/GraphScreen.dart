@@ -25,58 +25,58 @@ class GraphScreen extends StatelessWidget {
       VBarChartModel(
           index: 1,
           colors: [Colors.deepOrange, Colors.red],
+          jumlah: (_nutinfo!['carbo'] / 130) * 100,
+          tooltip: ((_nutinfo!['carbo'] / 130) * 100).toInt().toString() + "%",
+          label: '탄수화물'),
+      VBarChartModel(
+          index: 2,
+          colors: [Colors.deepOrange, Colors.red],
           jumlah: (_nutinfo!['protein'] / 65) * 100,
           tooltip: ((_nutinfo!['protein'] / 65) * 100).toInt().toString() + "%",
           label: '단백질'),
       VBarChartModel(
-          index: 2,
-          colors: [Colors.deepOrange, Colors.red],
+          index: 3,
+          colors: [Colors.limeAccent, Colors.yellow],
           jumlah: (_nutinfo!['fat'] / 65) * 100,
           tooltip: ((_nutinfo!['fat'] / 65) * 100).toInt().toString() + "%",
           label: '지방'),
       VBarChartModel(
-          index: 3,
+          index: 4,
           colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: (_nutinfo!['carbon'] / 130) * 100,
-          tooltip: ((_nutinfo!['carbon'] / 130) * 100).toInt().toString() + "%",
-          label: '탄수화물'),
-      // VBarChartModel(
-      //     index: 4,
-      //     colors: [Colors.green, Colors.teal],
-      //     jumlah: (_nutinfo!['sugar'] / 100) * 100,
-      //     tooltip: ((_nutinfo!['sugar'] / 100) * 100).toInt().toString() + "%",
-      //     label: '설탕'),
-      // VBarChartModel(
-      //     index: 5,
-      //     colors: [Colors.limeAccent, Colors.yellow],
-      //     jumlah: (_nutinfo!['chole'] / 300) * 100,
-      //     tooltip: ((_nutinfo!['chole'] / 300) * 100).toInt().toString() + "%",
-      //     label: '콜레스테롤'),
-      // VBarChartModel(
-      //     index: 6,
-      //     colors: [Colors.green, Colors.teal],
-      //     jumlah: (_nutinfo!['fiber'] / 30) * 100,
-      //     tooltip: ((_nutinfo!['fiber'] / 30) * 100).toInt().toString() + "%",
-      //     label: '식이섬유'),
-      // VBarChartModel(
-      //     index: 7,
-      //     colors: [Colors.deepOrange, Colors.red],
-      //     jumlah: (_nutinfo!['calcium'] / 2500) * 100,
-      //     tooltip: ((_nutinfo!['calcium'] / 2500) * 100).toInt().toString() + "%",
-      //     label: '칼슘'),
-      // VBarChartModel(
-      //     index: 8,
-      //     colors: [Colors.deepOrange, Colors.red],
-      //     jumlah: (_nutinfo!['iron'] / 45) * 100,
-      //     tooltip: ((_nutinfo!['iron'] / 45) * 100).toInt().toString() + "%",
-      //     label: '철'),
-      // VBarChartModel(
-      //     index: 9,
-      //     colors: [Colors.limeAccent, Colors.yellow],
-      //     jumlah: (_nutinfo!['magne'] / 360) * 100,
-      //     tooltip: ((_nutinfo!['magne'] / 360) * 100).toInt().toString() + "%",
-      //     label: '마그네슘'),
-/*      VBarChartModel(
+          jumlah: (_nutinfo!['sugar'] / 100) * 100,
+          tooltip: ((_nutinfo!['sugar'] /100) * 100).toInt().toString() + "%",
+          label: '설탕'),
+      VBarChartModel(
+          index: 5,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['chole'] / 300) * 100,
+          tooltip: ((_nutinfo!['chole'] / 300) * 100).toInt().toString() + "%",
+          label: '콜레스테롤'),
+      VBarChartModel(
+          index: 6,
+          colors: [Colors.green, Colors.teal],
+          jumlah: (_nutinfo!['fiber'] / 30) * 100,
+          tooltip: ((_nutinfo!['fiber'] / 30) * 100).toInt().toString() + "%",
+          label: '식이섬유'),
+      VBarChartModel(
+          index: 7,
+          colors: [Colors.deepOrange, Colors.red],
+          jumlah: (_nutinfo!['calcium'] / 2500) * 100,
+          tooltip: ((_nutinfo!['calcium'] / 2500) * 100).toInt().toString() + "%",
+          label: '칼슘'),
+      VBarChartModel(
+          index: 8,
+          colors: [Colors.deepOrange, Colors.red],
+          jumlah: (_nutinfo!['iron'] / 45) * 100,
+          tooltip: ((_nutinfo!['iron'] / 45) * 100).toInt().toString() + "%",
+          label: '철'),
+      VBarChartModel(
+          index: 9,
+          colors: [Colors.limeAccent, Colors.yellow],
+          jumlah: (_nutinfo!['magne'] / 360) * 100,
+          tooltip: ((_nutinfo!['magne'] / 360) * 100).toInt().toString() + "%",
+          label: '마그네슘'),
+      VBarChartModel(
           index: 10,
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: (_nutinfo!['potass'] / 3500) * 100,
@@ -183,8 +183,9 @@ class GraphScreen extends StatelessWidget {
           colors: [Colors.limeAccent, Colors.yellow],
           jumlah: (_nutinfo!['omega'] / 210) * 100,
           tooltip: ((_nutinfo!['omega'] / 210) * 100).toInt().toString() + "%",
-          label: '오메가'),*/
+          label: '오메가'),
     ];
+
     Widget Graph() {
       return VerticalBarchart(
         background: Colors.transparent,
@@ -216,31 +217,31 @@ class GraphScreen extends StatelessWidget {
               children: <Widget>[
                 Flexible(
                     flex: 1,
-                    child: (_result!= 'fail')
-                    //음식 추정 실패시 김치전 사진이 나오도록
-                        ?  ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Container(
+                    child: (_result != 'fail')
+                        //음식 추정 실패시 김치전 사진이 나오도록
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Container(
+                                width: 200,
+                                height: 100,
+                                child: Image.file(File(_image!.path),
+                                    fit: BoxFit.fill)),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Container(
                               width: 200,
                               height: 100,
-                              child: Image.file(File(_image!.path),
-                                  fit: BoxFit.fill)),
-                        )
-                        : ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Container(
-                            width: 200,
-                            height: 100,
-                            child: Image(
-                                image: AssetImage('assets/kimchi.jpg'),
-                                fit: BoxFit.fill),
-                          ),
-                        )),
+                              child: Image(
+                                  image: AssetImage('assets/kimchi.jpg'),
+                                  fit: BoxFit.fill),
+                            ),
+                          )),
                 Flexible(
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        (_result!= 'fail')
+                        (_result != 'fail')
                             ? Column(
                                 children: [
                                   for (var res in _result!) Text(res as String)
@@ -258,7 +259,7 @@ class GraphScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              ResultScreen(_image, _result!, _nutinfo!)));
+                              ResultScreen(_image!, _result!, _nutinfo!)));
                 },
                 child: Text("닫기", style: TextStyle(fontSize: 10)))
           ],
@@ -267,56 +268,50 @@ class GraphScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F6F9),
-      appBar: AppBar(
-        //AppBar 설정(UI 적용 완료)
-        iconTheme: const IconThemeData(color: Colors.black),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        //appbar 투명색
-        centerTitle: true,
-        elevation: 1.0,
-        // 그림자 농도 0
-        title: const Text(
-          "A.식단",
-          style: TextStyle(
-              fontFamily: 'NotoSansKR', color: Colors.black, fontSize: 18),
+        backgroundColor: const Color(0xFFF4F6F9),
+        appBar: AppBar(
+          //AppBar 설정(UI 적용 완료)
+          iconTheme: const IconThemeData(color: Colors.black),
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          //appbar 투명색
+          centerTitle: true,
+          elevation: 1.0,
+          // 그림자 농도 0
+          title: const Text(
+            "A.식단",
+            style: TextStyle(
+                fontFamily: 'NotoSansKR', color: Colors.black, fontSize: 18),
+          ),
+          actions: [
+            IconButton(
+              //닫기 버튼 (뒤로가기와 기능적으로 같다)
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
         ),
-        actions: [
-          IconButton(
-            //닫기 버튼 (뒤로가기와 기능적으로 같다)
-            icon: const Icon(Icons.close),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          )
-        ],
-      ),
-      body:
-
-
-            Column(
-              children: [
-                Row(
-                  children: <Widget>[
-                    Container(
-                        margin: EdgeInsets.only(left: 15, top: 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.restaurant),
-                            Container(
-                              width: 5,
-                            ),
-                            Text("추가한 식단"),
-                          ],
-                        ))
-                  ],
-                ),
-                Container1(),
+        body: Column(
+          children: [
+            Row(
+              children: <Widget>[
+                Container(
+                    margin: EdgeInsets.only(left: 15, top: 10),
+                    child: Row(
+                      children: [
+                        Icon(Icons.restaurant),
+                        Container(
+                          width: 5,
+                        ),
+                        Text("추가한 식단"),
+                      ],
+                    ))
               ],
-            ));
-
-
-
+            ),
+            Container1(),
+          ],
+        ));
   }
 }
