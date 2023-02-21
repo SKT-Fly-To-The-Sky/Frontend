@@ -13,18 +13,20 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SupplementsMainScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _SupplementsMainScreen();
+  _SupplementsMainScreen createState() => _SupplementsMainScreen();
 }
 
 class _SupplementsMainScreen extends State<SupplementsMainScreen> {
   final picker = ImagePicker();
   final connectServer = ConnectServer();
-
   bool _btnChecked = false;
+  List<String> supplements=['닥터 써니디 연질캡슐'];
+
+
 
   @override
   Widget build(BuildContext context) {
-    List<String> supplements=['닥터 써니디 연질캡슐'];
+
     double screenWidth = MediaQuery.of(context).size.width;
 
     Future getImage(ImageSource imageSource) async {
@@ -47,7 +49,6 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
         setState(() {
           supplements.add(result!);
           //ListView에 result 값 추가하기
-
           Navigator.pop(context, 'Cancel');
         });
       } else {

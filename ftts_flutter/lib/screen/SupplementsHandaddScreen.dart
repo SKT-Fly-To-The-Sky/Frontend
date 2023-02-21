@@ -3,10 +3,10 @@ import 'package:ftts_flutter/screen/SupplementsMainScreen.dart';
 
 class SupplementsHandaddScreen extends StatelessWidget {
 
-  const SupplementsHandaddScreen({super.key});
-
+  var inputData='';
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F9),
       appBar: AppBar(
@@ -103,32 +103,6 @@ class SerchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context)=>Container();
 
-
-  @override
-  void showResults(BuildContext context){
-    //여기에 값 전달 함수 넣기 query 전달해 주면 됨
-    showDialog(context: context, builder: (BuildContext context)=>AlertDialog(
-      title: const Text('영양제 추가하기'),
-      content:
-      Row(
-        children: <Widget>[
-          Text(query),
-          Text('를 목록에 추가할까요?')
-        ],
-      ),
-      actions: <Widget>[
-        Row(children: [
-          TextButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>SupplementsMainScreen()));
-                }, child: Text('네')),
-          TextButton(onPressed: ()=>Navigator.pop(context,'Cancel'), child: Text('아니오'))
-        ],)
-      ],
-    ));
-    super.showResults(context);
-  }
-
   @override
   Widget buildSuggestions(BuildContext context) {
     List<String> suggestions=searchResults.where((searchResult){
@@ -146,7 +120,8 @@ class SerchDelegate extends SearchDelegate {
         return ListTile(
           title: Text(suggestion),
           onTap: (){
-          query=suggestion;
+            query=suggestion;
+            Navigator.pop(context,query.toString());
           },
         );
         }
