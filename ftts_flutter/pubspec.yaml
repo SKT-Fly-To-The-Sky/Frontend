@@ -42,6 +42,10 @@ dependencies:
   syncfusion_flutter_charts: ^20.4.44
   intl: ^0.18.0
   vertical_barchart: ^2.0.0+2
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8b09cd644618db8972395fd59ba8815f4d7d518b
   rounded_background_text: ^0.3.0
   roundcheckbox: ^2.0.5
 

@@ -45,7 +45,6 @@ class _ImageUploaderState extends State<ImageUploader> {
         //음식 이름 받아오기
         result = await connectServer.uploading(_image!);
 
-
         nut= await connectServer.GetNutInfo(result!);
 
 
