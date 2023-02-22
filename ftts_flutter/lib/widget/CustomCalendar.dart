@@ -31,6 +31,9 @@ class _CustomCalendarState extends State<CustomCalendar> {
           setState(() {
             _selectedDay = selectedDay;
             _focusedDay = focusedDay;
+            // 선택한 날짜에 해당하는 그래프 위젯 렌더링
+
+            print(_selectedDay);
           });
         }
       },

@@ -17,7 +17,6 @@ import 'package:http/http.dart' as http;
 
 import 'package:provider/provider.dart';
 
-
 class JsonListView extends StatefulWidget {
   @override
   _JsonListViewState createState() => _JsonListViewState();
@@ -147,8 +146,7 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _supplementProduct=Provider.of<supplementProvider>(context);
-
+    _supplementProduct = Provider.of<supplementProvider>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -175,7 +173,6 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
 
         //추가 후 창 닫기
         Navigator.pop(context, 'Cancel');
-
       } else {
         print("_image is null");
       }
