@@ -263,15 +263,6 @@ class GraphScreen extends StatelessWidget {
               ],
             ),
             SingleChildScrollView(scrollDirection: Axis.vertical,child:Graph()),
-            TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ResultScreen(_image!, _result!, _nutinfo!)));
-                },
-                child: Text("닫기", style: TextStyle(fontSize: 10)))
           ],
         ),
       );

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:ftts_flutter/provider/supplementProvider.dart';
 import 'package:ftts_flutter/screen/SupplementsHandaddScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import '../model/ConnectServer.dart';
@@ -12,10 +13,9 @@ import 'MenuScreen.dart';
 import 'SupplementsGraphScreen.dart';
 import '../widget/SupplementsGraph.dart';
 import '../widget/CustomCheckBox.dart';
-import 'package:roundcheckbox/roundcheckbox.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:provider/provider.dart';
 
 class JsonListView extends StatefulWidget {
   @override
@@ -142,14 +142,11 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
   final picker = ImagePicker();
   final connectServer = ConnectServer();
   bool _btnChecked = false;
-  List<String> supplements=['닥터 써니디 연질캡슐'];
-
-
+  late supplementProvider _supplementProduct;
 
   @override
   Widget build(BuildContext context) {
-
-    List<String> supplements = ['닥터 써니디 연질캡슐'];
+    _supplementProduct=Provider.of<supplementProvider>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -163,18 +160,20 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
       if (_image != null) {
         String? result;
         Map<String, dynamic>? sup_nut;
+
         //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 'fail'를 반환한다.
+
         result = await connectServer.Supplementsuploading(_image!);
-
         print("result: " + result);
+        _supplementProduct.addName(result.toString());
+        print(Provider.of<supplementProvider>(context).supplementList);
         sup_nut = await connectServer.SupplementsNutinfo(result!);
-        print(sup_nut);
+        _supplementProduct.updatenutInfo(sup_nut);
+        print(Provider.of<supplementProvider>(context).supplementnutInfo);
 
-        setState(() {
-          supplements.add(result!);
-          //ListView에 result 값 추가하기
-          Navigator.pop(context, 'Cancel');
-        });
+        //추가 후 창 닫기
+        Navigator.pop(context, 'Cancel');
+
       } else {
         print("_image is null");
       }

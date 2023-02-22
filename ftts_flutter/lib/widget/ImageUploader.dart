@@ -59,12 +59,9 @@ class _ImageUploaderState extends State<ImageUploader> {
           Navigator.push(
               context,
               MaterialPageRoute(
-<<<<<<< HEAD
                   builder: (context) => ResultScreen(_image!, result!, nut!))
           );
-=======
-                  builder: (context) => ResultScreen(_image!, result!, nut!)));
->>>>>>> 8508e396d110ab24b374ce6365011cd69829d7c6
+
         });
       } else {
         print("_image is null");

@@ -58,8 +58,8 @@ class _MainScreenState extends State<MainScreen> {
         ),
         body: SingleChildScrollView(
             child: Column(children: [
-          CustomCalendar(),
-          Container(
+              CustomCalendar(),
+              Container(
               margin: const EdgeInsets.only(
                   left: 20, right: 20, bottom: 15, top: 10),
               decoration: BoxDecoration(

@@ -39,7 +39,7 @@ class ConnectServer {
       final DateFormat formatter = DateFormat('yyyy-MM-dd');
       String onlydate = formatter.format(date);
       var sendImage = await dio.post('${Url}dodo/intakes/images',
-          queryParameters: {'time_div': 'launch', 'date': onlydate},
+          queryParameters: {'time_div': 'morning', 'date': onlydate},
           data: formData);
       if (sendImage.data['message'] == 'image data saved successfully') {
         var classficationResult = await dio.get('${Url}classification',
@@ -120,6 +120,7 @@ class ConnectServer {
 
   //약 이미지 전달
   Future<String> Supplementsuploading(XFile file) async {
+    print('supplementsuploading');
     FormData formData = FormData.fromMap({
       'file': await MultipartFile.fromFile(
         file.path,
@@ -148,6 +149,7 @@ class ConnectServer {
   }
 
   Future<Map<String, dynamic>> SupplementsNutinfo(String name) async{
+    print('SupplementsNutinfo');
     double kcal=0;
     double protein=0;
     double fat=0;
@@ -177,10 +179,8 @@ class ConnectServer {
     double vitK=0;
     double omega=0;
 
-
     for (int i = 0; i < name.length; i++) {
-      var foodsInfo = await dio.get(
-          '${Url}supplements/info', queryParameters: {"sup_name": name});
+      var foodsInfo = await dio.get('${Url}supplements/info', queryParameters: {"sup_name": name});
 
       kcal = kcal + double.parse(foodsInfo.data["kcal"].toString());
       protein = protein + double.parse(foodsInfo.data['protein'].toString());
