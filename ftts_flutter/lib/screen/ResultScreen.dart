@@ -34,25 +34,25 @@ class ResultScreen extends StatelessWidget {
           //(_nutinfo!['kcal'] / 2600)/3 * 100 => 음식영양소/일일권장섭취영량소/3(3끼이므로)*100(퍼센트화)
           colors: setColor((_nutinfo!['kcal'] / 2600)/3 * 100),
           jumlah: (_nutinfo!['kcal'] / 2600)/3 * 100,
-          tooltip: ((_nutinfo!['kcal'] / 2600)/3 * 100).toInt().toString() + "%",
+          tooltip: ((_nutinfo!['kcal'] / 2600)/3 * 100).ceil().toString() + "%",
           label: '칼로리'),
       VBarChartModel(
           index: 1,
           colors: setColor((_nutinfo!['carbo'] / 130)/3 * 100),
           jumlah: (_nutinfo!['carbo'] / 130)/3 * 100,
-          tooltip: ((_nutinfo!['carbo'] / 130)/3 * 100).toInt().toString() + "%",
+          tooltip: ((_nutinfo!['carbo'] / 130)/3 * 100).ceil().toString() + "%",
           label: '탄수화물'),
       VBarChartModel(
           index: 2,
           colors: setColor((_nutinfo!['protein'] / 65)/3 * 100),
           jumlah: (_nutinfo!['protein'] / 65)/3 * 100,
-          tooltip: ((_nutinfo!['protein'] / 65)/3 * 100).toInt().toString() + "%",
+          tooltip: ((_nutinfo!['protein'] / 65)/3 * 100).ceil().toString() + "%",
           label: '단백질'),
       VBarChartModel(
           index: 3,
-          colors: setColor((_nutinfo!['fat'] / 65)/3 * 100),
+          colors: setColor((_nutinfo!['fat']/65)/3 * 100),
           jumlah: (_nutinfo!['fat'] / 65)/3 * 100,
-          tooltip: ((_nutinfo!['fat'] / 65) * 100)/3.toInt().toString() + "%",
+          tooltip: ((_nutinfo!['fat'] / 65)/3 * 100).ceil().toString() + "%",
           label: '지방'),
     ];
     List<DoughnutChartData> doughnutChartData = [
