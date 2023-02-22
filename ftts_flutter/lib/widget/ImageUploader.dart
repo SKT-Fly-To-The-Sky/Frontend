@@ -38,7 +38,7 @@ class _ImageUploaderState extends State<ImageUploader> {
     Future getImage(ImageSource imageSource) async {
       // Timeline.startSync('interesting function');
       _image = await picker.pickImage(
-          source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 50
+          source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
           //이미지 resize 부분, height, width 설정, Quality 설정
           );
 
@@ -48,13 +48,14 @@ class _ImageUploaderState extends State<ImageUploader> {
         //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 'fail'를 반환한다.
         //음식 이름 받아오기
         result = await connectServer.uploading(_image!);
-
         nut = await connectServer.foodNutinfo(result!);
+
 
         //영양소 받아오기
         setState(() {
           _result = result;
           _nut = nut;
+
           //ResultScreen에 이미지, classfication 결과, 영양소 정보 전달
           Navigator.push(
               context,

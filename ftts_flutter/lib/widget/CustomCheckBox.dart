@@ -9,9 +9,9 @@ class CheckBoxListView extends StatefulWidget {
 }
 
 // 아침
-final List<String> morningPillNames = ["아이즈업 컴포트", "아이즈업 컴포트2"];
-final List<String> morningPillCnts = ["1정", "1정"];
-List<bool> _morningChecked = [false, false];
+final List<String> morningPillNames = ["아이즈업 컴포트"];
+final List<String> morningPillCnts = ["1정"];
+List<bool> _morningChecked = [false];
 
 // 점심
 final List<String> lunchPillNames = ["Thorne 비타민 B-Complex"];
@@ -38,9 +38,8 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
       VBarChartModel(
         index: 0,
         colors: [Color(0xFF3617CE), Colors.teal],
-        jumlah: percent,
-        tooltip: "$percent%",
-        // label: '칼로리'
+        jumlah: percent.ceil().toDouble(),
+        tooltip: "${percent.ceil()}%",
       ),
     ];
     return Container(
@@ -122,10 +121,7 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                   onTap: (selected) {
                                     setState(() {
                                       _morningChecked[i] = !_morningChecked[i];
-                                      percent = sum / total;
-                                      print(sum);
-                                      print(_morningChecked);
-                                      print(percent);
+                                      // percent = sum / total;
                                     });
                                   },
                                   isChecked: _morningChecked[i] ? true : false,

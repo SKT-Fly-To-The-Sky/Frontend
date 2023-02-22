@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:ftts_flutter/model/ConnectServer.dart';
 import 'package:ftts_flutter/screen/SupplementsMainScreen.dart';
+import 'package:provider/provider.dart';
+import '../model/ConnectServer.dart';
+import '../provider/supplementProvider.dart';
 
 class SupplementsHandaddScreen extends StatelessWidget {
-
   var inputData='';
+  final connectServer = ConnectServer();
+
   @override
   Widget build(BuildContext context) {
 
@@ -80,6 +85,7 @@ class SerchDelegate extends SearchDelegate {
     '비타민A',
     '루테인',
   ];
+  final connectServer=ConnectServer();
   @override
   Widget? buildLeading(BuildContext context) =>
       IconButton(
@@ -121,7 +127,41 @@ class SerchDelegate extends SearchDelegate {
           title: Text(suggestion),
           onTap: (){
             query=suggestion;
-            Navigator.pop(context,query.toString());
+            showDialog(context: context,
+                builder:
+                    (BuildContext context)=>
+                        AlertDialog(
+                          title: const Text("영양제 추가하기"),
+                          content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(query+'를 추가하겠습니까?')
+                            ],
+                          ),
+                          actions: <Widget>[
+                            Row(
+                              children: [
+                                TextButton(onPressed: () async {
+                                 Provider.of<supplementProvider>(context,listen: false).addName(query.toString());
+                                 print(Provider.of<supplementProvider>(context,listen: false).supplementList);
+                                 var result=await connectServer.SupplementsNutinfo(query.toString());
+
+                                 Provider.of<supplementProvider>(context,listen:false).updatenutInfo(result);
+                                 print(Provider.of<supplementProvider>(context,listen: false).supplementnutInfo);
+
+                                 Navigator.pushAndRemoveUntil(context,
+                                      MaterialPageRoute(builder:
+                                          (BuildContext context)=>
+                                              SupplementsMainScreen()),(route)=>false);
+                                  }, child: Text('네')),
+                                TextButton(onPressed: (){
+                                  Navigator.pop(context);
+                                  }, child: Text('아니오'))
+                              ],
+                            )
+                          ],
+                        )
+            );
           },
         );
         }
