@@ -50,6 +50,10 @@ class _ImageUploaderState extends State<ImageUploader> {
         result = await connectServer.uploading(_image!);
         nut = await connectServer.foodNutinfo(result!);
 
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ResultScreen(_image!, result!, nut!)));
 
         //영양소 받아오기
         setState(() {
@@ -57,10 +61,7 @@ class _ImageUploaderState extends State<ImageUploader> {
           _nut = nut;
 
           //ResultScreen에 이미지, classfication 결과, 영양소 정보 전달
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ResultScreen(_image!, result!, nut!)));
+
         });
       } else {
         print("_image is null");
