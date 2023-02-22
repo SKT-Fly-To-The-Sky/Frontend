@@ -68,8 +68,7 @@ class ConnectServer {
     DateTime date = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     String onlyDate = formatter.format(date);
-
-    for (int i = 0; i < name.length; i++) {
+    try{for (int i = 0; i < name.length; i++) {
       var foodsInfo = await dio
           .get('${Url}foods/info', queryParameters: {"food_name": name[i]});
 
@@ -107,11 +106,11 @@ class ConnectServer {
       vitK = vitK + double.parse(foodsInfo.data['vitK'].toString());
       omega = omega + double.parse(foodsInfo.data['omega'].toString());
     }
-    dio.post('${Url}dodo/intakes/nutrients',
-        options: Options(
-            headers: {HttpHeaders.contentTypeHeader: "application/json"}),
-        data: jsonEncode(nut_info));
+    dio.post('${Url}dodo/intakes/nutrients', options: Options(headers: {HttpHeaders.contentTypeHeader: "application/json"}), data: jsonEncode(nut_info));
+    return nut_info;
+    }catch(e){
       return nut_info;
+    }
   }
 
   //약 이미지 전달
