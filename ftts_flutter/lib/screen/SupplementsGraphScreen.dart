@@ -177,7 +177,9 @@ class SupplementsGrapeScreen extends StatelessWidget {
                                     alignment: Alignment.centerRight,
                                     child: TextButton(
                                         onPressed: () async {
-                                          launchUrlString("https://search.11st.co.kr/MW/search?searchKeyword="+"비타민D");
+                                          launchUrlString(
+                                              "https://search.11st.co.kr/MW/search?searchKeyword=" +
+                                                  "비타민D");
                                         },
                                         child: Text("11번가에서 구입하기")))
                               ]),
@@ -262,7 +264,7 @@ class SupplementsGrapeScreen extends StatelessWidget {
             ],
           ),
           Expanded(child: Container1()),
-          Expanded(child: Container2())
+          // Expanded(child: Container2())
         ],
       ),
     );

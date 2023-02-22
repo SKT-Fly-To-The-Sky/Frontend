@@ -255,7 +255,6 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => HomeScreen()));
-              // Navigator.pop(context);
             },
           )
         ],

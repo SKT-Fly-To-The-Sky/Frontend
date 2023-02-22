@@ -8,43 +8,46 @@ class CheckBoxListView extends StatefulWidget {
   _CheckBoxListViewState createState() => _CheckBoxListViewState();
 }
 
+// 아침
+final List<String> morningPillNames = ["아이즈업 컴포트", "아이즈업 컴포트2"];
+final List<String> morningPillCnts = ["1정", "1정"];
+List<bool> _morningChecked = [false, false];
+
+// 점심
+final List<String> lunchPillNames = ["Thorne 비타민 B-Complex"];
+final List<String> lunchPillCnts = ["1정"];
+List<bool> _lunchChecked = [false];
+
+// 저녁
+final List<String> dinnerPillNames = ["Thorne 칼슘-마그네슘"];
+final List<String> dinnerPillCnts = ["1정"];
+List<bool> _dinnerChecked = [false];
+
 class _CheckBoxListViewState extends State<CheckBoxListView> {
-  List<VBarChartModel> barChartData = [
-    const VBarChartModel(
-      index: 0,
-      colors: [Color(0xFF3617CE), Colors.teal],
-      jumlah: 83,
-      tooltip: "83%",
-      // label: '칼로리'
-    ),
-  ];
-
-  // 아침
-  final List<String> morningPillNames = ["아침1", "아침2"];
-  final List<String> morningPillCnts = ["1정", "2정"];
-  List<bool> _morningChecked = [false, false];
-
-  // 점심
-  final List<String> lunchPillNames = ["점심1", "점심2"];
-  final List<String> lunchPillCnts = ["1정", "2정"];
-  List<bool> _lunchChecked = [false, false];
-
-  // 저녁
-  final List<String> dinnerPillNames = ["저녁1", "저녁2"];
-  final List<String> dinnerPillCnts = ["1정", "2정"];
-  List<bool> _dinnerChecked = [false, false];
-
-  int total = 0;
-  int sum = 0;
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    int sum = _morningChecked.where((e) => e == true).length +
+        _lunchChecked.where((e) => e == true).length +
+        _dinnerChecked.where((e) => e == true).length;
+    int total = morningPillNames.length +
+        lunchPillNames.length +
+        dinnerPillNames.length;
+    double percent = sum / total * 100;
+    List<VBarChartModel> barChartData = [
+      VBarChartModel(
+        index: 0,
+        colors: [Color(0xFF3617CE), Colors.teal],
+        jumlah: percent,
+        tooltip: "$percent%",
+        // label: '칼로리'
+      ),
+    ];
     return Container(
       child: Column(
         children: [
           Container(
-            width: screenWidth * 0.9,
+            width: screenWidth,
             margin: EdgeInsets.all(0),
             child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -59,6 +62,8 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                         barStyle: BarStyle.DEFAULT,
                         barSize: 20,
                         maxX: 100,
+                        tooltipSize: 50,
+                        labelSizeFactor: 0.3,
                         backdropColor: Color(0xffd6d0f5)))),
           ),
           Container(
@@ -117,6 +122,10 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                   onTap: (selected) {
                                     setState(() {
                                       _morningChecked[i] = !_morningChecked[i];
+                                      percent = sum / total;
+                                      print(sum);
+                                      print(_morningChecked);
+                                      print(percent);
                                     });
                                   },
                                   isChecked: _morningChecked[i] ? true : false,
