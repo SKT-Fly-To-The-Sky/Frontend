@@ -4,21 +4,30 @@ import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 import 'package:flutter/material.dart';
 import '../model/ConnectServer.dart';
-import 'dart:io';
+
+final List<String> nutName = ['kcal', 'carbo', 'protein', 'fat'];
+final Map<String, String> nutKor = {
+  'kcal': '칼로리',
+  'carbo': '탄수화물',
+  'protein': '단백질',
+  'fat': '지방'
+};
+
+List<Color> setColor(double a) {
+  if (a >= 100) {
+    return [Colors.deepOrange, Colors.red];
+  } else if (a > 60) {
+    return [Colors.green, Colors.teal];
+  } else {
+    return [Colors.limeAccent, Colors.yellow];
+  }
+}
 
 class DoughnutChartData {
   DoughnutChartData(this.x, this.y, this.color);
   final String x;
   final double y;
   final Color color;
-}
-
-class StackedBarChartData {
-  final String x;
-  final num y1;
-  final num y2;
-  final Color color;
-  StackedBarChartData(this.x, this.y1, this.y2, this.color);
 }
 
 class DailyGraph extends StatefulWidget {
@@ -31,78 +40,37 @@ class DailyGraph extends StatefulWidget {
 class _DailyGraphState extends State<DailyGraph> {
   final connectServer = ConnectServer();
 
-  final List<DoughnutChartData> doughnutChartData = [
-    DoughnutChartData('섭취한 칼로리', 1848, Color(0xFF3617CE)),
-    DoughnutChartData('남은 칼로리', 752, Color(0xFFe8e8e8)),
+  static double kcal = 752;
+  List<DoughnutChartData> doughnutChartData = [
+    DoughnutChartData('섭취한 칼로리', (2600 - kcal), Color(0xFF3617CE)),
+    DoughnutChartData('남은 칼로리', kcal, Color(0xFFe8e8e8)),
   ];
-
-  final double kcal = 28;
-  final double carbo = 52;
-  final double prot = 28;
-  final double fat = 25;
-
-  final Map<String, dynamic> graphColor = {
-    'shortage': [Colors.limeAccent, Colors.yellow],
-    'appropriate': [Colors.green, Colors.teal],
-    'excess': [Colors.deepOrange, Colors.red]
-  };
-
-  final List<double> nutPer = [28, 52, 28, 25];
-  final List<String> nutName = ['kcal', 'carbo', 'prot', 'fat'];
-  final Map<String, String> nutKor = {
-    'kcal': '칼로리',
-    'carbo': '탄수화물',
-    'prot': '단백질',
-    'fat': '지방'
-  };
-  final List<double> nutPercent = [];
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
-    List<Color> setColor(double a) {
-      if (a > 100) {
-        return [Colors.deepOrange, Colors.red];
-      } else if (a > 60) {
-        return [Colors.green, Colors.teal];
-      } else {
-        return [Colors.limeAccent, Colors.yellow];
-      }
+    Map<String, double> nutPercent = {
+      'kcal': 52,
+      'carbo': 52,
+      'protein': 28,
+      'fat': 25
+    };
+    List<VBarChartModel> barChartData = [];
+    for (int i = 0; i < nutName.length; i++) {
+      barChartData.add(VBarChartModel(
+          index: i,
+          colors: setColor(nutPercent[nutName[i]]!),
+          jumlah: (nutPercent[nutName[i]]! >= 100)
+              ? (100)
+              : (nutPercent[nutName[i]]!),
+          tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
+          label: nutKor[nutName[i]]));
     }
-
-    final List<VBarChartModel> barChartData = [
-      VBarChartModel(
-          index: 0,
-          colors: graphColor['shortage'],
-          jumlah: kcal,
-          tooltip: "$kcal%",
-          label: '칼로리'),
-      VBarChartModel(
-          index: 1,
-          colors: graphColor['appropriate'],
-          jumlah: carbo,
-          tooltip: "$carbo%",
-          label: '탄수화물'),
-      VBarChartModel(
-          index: 2,
-          colors: graphColor['shortage'],
-          jumlah: prot,
-          tooltip: "$prot%",
-          label: '단백질'),
-      VBarChartModel(
-          index: 3,
-          colors: graphColor['shortage'],
-          jumlah: fat,
-          tooltip: "$fat%",
-          label: '지방'),
-    ];
 
     return Container(
       width: screenWidth * 0.9,
       margin: EdgeInsets.all(0),
       color: Colors.white,
-      // color: Color(0xFFF4F6F9),
       child: Row(
         children: [
           Container(
@@ -128,9 +96,7 @@ class _DailyGraphState extends State<DailyGraph> {
                           widget: Container(
                         child: const Text(
                           "1848kcal",
-                          style: TextStyle(
-                              // fontWeight: FontWeight.bold,
-                              fontSize: 18),
+                          style: TextStyle(fontSize: 18),
                         ),
                       ))
                     ],
