@@ -106,7 +106,7 @@ class _MainScreenState extends State<MainScreen> {
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
             ),
-            height: 360,
+            height: 380,
             child: ContainedTabBarView(
               onChange: (index) => print(index),
               tabs: [

@@ -183,7 +183,7 @@ class _ImageUploaderState extends State<ImageUploader> {
             Row(
               children: [
                 Container(
-                  margin: EdgeInsets.only(left: 7.0, right: 7.0),
+                  margin: EdgeInsets.only(left: 10.0, right: 7.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -198,7 +198,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                 ),
                 Container(
                     margin: EdgeInsets.only(
-                      left: 150,
+                      left: 170,
                     ),
                     child: TextButton(
                         style: TextButton.styleFrom(
@@ -324,7 +324,7 @@ class StaticUploader extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  margin: EdgeInsets.only(left: 7.0, right: 7.0),
+                  margin: EdgeInsets.only(left: 15.0, right: 7.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -359,25 +359,17 @@ class StaticUploader extends StatelessWidget {
               ],
             ),
             Container(
-              margin: EdgeInsets.only(left: 5.0, bottom: 7.0),
-              child: Row(
+              margin: EdgeInsets.only(left: 0.0, right: 3.0, bottom: 5.0),
+              child: Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.start,
                 children: [
-                  Container(
-                      margin: EdgeInsets.fromLTRB(15.0, 0.0, 5.0, 5.0),
-                      child: RoundedBackgroundText(
-                        '닭강정훈',
-                        style: const TextStyle(
-                            fontFamily: 'NotoSansKR', fontSize: 16),
-                        backgroundColor: Colors.grey[100],
-                      )),
-                  Container(
-                      margin: EdgeInsets.fromLTRB(15.0, 0.0, 5.0, 5.0),
-                      child: RoundedBackgroundText(
-                        '참이슬아',
-                        style: const TextStyle(
-                            fontFamily: 'NotoSansKR', fontSize: 16),
-                        backgroundColor: Colors.grey[100],
-                      )),
+                  FoodMenu('누룽지'),
+                  FoodMenu('샐러드'),
+                  FoodMenu('깍두기'),
+                  FoodMenu('쌀밥'),
+                  FoodMenu('오이무침'),
+                  FoodMenu('계란찜')
                 ],
               ),
             )
@@ -386,6 +378,16 @@ class StaticUploader extends StatelessWidget {
       ],
     ));
   }
+}
+
+Widget FoodMenu(String text) {
+  return Container(
+      margin: EdgeInsets.fromLTRB(15.0, 0.0, 5.0, 10.0),
+      child: RoundedBackgroundText(
+        text,
+        style: const TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
+        backgroundColor: Colors.grey[100],
+      ));
 }
 
 class UploaderBtn extends StatelessWidget {
