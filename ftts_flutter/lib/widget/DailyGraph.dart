@@ -5,6 +5,24 @@ import 'package:vertical_barchart/vertical-legend.dart';
 import 'package:flutter/material.dart';
 import '../model/ConnectServer.dart';
 
+final List<String> nutName = ['kcal', 'carbo', 'protein', 'fat'];
+final Map<String, String> nutKor = {
+  'kcal': '칼로리',
+  'carbo': '탄수화물',
+  'protein': '단백질',
+  'fat': '지방'
+};
+
+List<Color> setColor(double a) {
+  if (a >= 100) {
+    return [Colors.deepOrange, Colors.red];
+  } else if (a > 60) {
+    return [Colors.green, Colors.teal];
+  } else {
+    return [Colors.limeAccent, Colors.yellow];
+  }
+}
+
 class DoughnutChartData {
   DoughnutChartData(this.x, this.y, this.color);
   final String x;
@@ -22,27 +40,11 @@ class DailyGraph extends StatefulWidget {
 class _DailyGraphState extends State<DailyGraph> {
   final connectServer = ConnectServer();
 
-  final List<DoughnutChartData> doughnutChartData = [
-    DoughnutChartData('섭취한 칼로리', 1848, Color(0xFF3617CE)),
-    DoughnutChartData('남은 칼로리', 752, Color(0xFFe8e8e8)),
+  static double kcal = 752;
+  List<DoughnutChartData> doughnutChartData = [
+    DoughnutChartData('섭취한 칼로리', (2600 - kcal), Color(0xFF3617CE)),
+    DoughnutChartData('남은 칼로리', kcal, Color(0xFFe8e8e8)),
   ];
-
-  final List<String> nutName = ['kcal', 'carbo', 'prot', 'fat'];
-  final Map<String, String> nutKor = {
-    'kcal': '칼로리',
-    'carbo': '탄수화물',
-    'prot': '단백질',
-    'fat': '지방'
-  };
-  List<Color> setColor(double a) {
-    if (a >= 100) {
-      return [Colors.deepOrange, Colors.red];
-    } else if (a > 60) {
-      return [Colors.green, Colors.teal];
-    } else {
-      return [Colors.limeAccent, Colors.yellow];
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +52,10 @@ class _DailyGraphState extends State<DailyGraph> {
     Map<String, double> nutPercent = {
       'kcal': 52,
       'carbo': 52,
-      'prot': 28,
+      'protein': 28,
       'fat': 25
     };
-    final List<VBarChartModel> barChartData = [];
+    List<VBarChartModel> barChartData = [];
     for (int i = 0; i < nutName.length; i++) {
       barChartData.add(VBarChartModel(
           index: i,
