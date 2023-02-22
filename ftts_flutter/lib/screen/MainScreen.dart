@@ -7,7 +7,6 @@ import '../widget/ImageUploader.dart';
 import 'HomeScreen.dart';
 import 'MenuScreen.dart';
 import '../widget/DetailGraph.dart';
-import '../widget/CustomCalendar.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -88,6 +87,7 @@ class _MainScreenState extends State<MainScreen> {
               Container(
                 margin: EdgeInsets.only(left: 20),
                 child: Row(
+
                   children: [
                     Icon(Icons.rice_bowl_sharp),
                     Container(

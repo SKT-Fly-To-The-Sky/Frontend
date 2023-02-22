@@ -4,21 +4,30 @@ import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 import 'package:flutter/material.dart';
 import '../model/ConnectServer.dart';
-import 'dart:io';
+
+final List<String> nutName = ['kcal', 'carbo', 'protein', 'fat'];
+final Map<String, String> nutKor = {
+  'kcal': '칼로리',
+  'carbo': '탄수화물',
+  'protein': '단백질',
+  'fat': '지방'
+};
+
+List<Color> setColor(double a) {
+  if (a >= 100) {
+    return [Colors.deepOrange, Colors.red];
+  } else if (a > 60) {
+    return [Colors.green, Colors.teal];
+  } else {
+    return [Colors.limeAccent, Colors.yellow];
+  }
+}
 
 class DoughnutChartData {
   DoughnutChartData(this.x, this.y, this.color);
   final String x;
   final double y;
   final Color color;
-}
-
-class StackedBarChartData {
-  final String x;
-  final num y1;
-  final num y2;
-  final Color color;
-  StackedBarChartData(this.x, this.y1, this.y2, this.color);
 }
 
 class DailyGraph extends StatefulWidget {
@@ -31,53 +40,37 @@ class DailyGraph extends StatefulWidget {
 class _DailyGraphState extends State<DailyGraph> {
   final connectServer = ConnectServer();
 
+  static double kcal = 752;
+  List<DoughnutChartData> doughnutChartData = [
+    DoughnutChartData('섭취한 칼로리', (2600 - kcal), Color(0xFF3617CE)),
+    DoughnutChartData('남은 칼로리', kcal, Color(0xFFe8e8e8)),
+  ];
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
-    final List<DoughnutChartData> doughnutChartData = [
-      DoughnutChartData('섭취한 칼로리', 1700, Color(0xFF3617CE)),
-      DoughnutChartData('남은 칼로리', 400, Color(0xFFe8e8e8)),
-    ];
-
-    List<VBarChartModel> barChartData = [
-      const VBarChartModel(
-          index: 0,
-          colors: [Colors.green, Colors.teal],
-          jumlah: 83,
-          tooltip: "83%",
-          label: '칼로리'),
-      const VBarChartModel(
-          index: 1,
-          colors: [Colors.deepOrange, Colors.red],
-          jumlah: 100,
-          tooltip: "152%",
-          label: '탄수화물'),
-      const VBarChartModel(
-          index: 2,
-          colors: [Colors.deepOrange, Colors.red],
-          jumlah: 100,
-          tooltip: "114%",
-          label: '단백질'),
-      const VBarChartModel(
-          index: 3,
-          colors: [Colors.limeAccent, Colors.yellow],
-          jumlah: 89,
-          tooltip: "89%",
-          label: '지방'),
-    ];
-
-    List<StackedBarChartData> stackedBarChartData = [
-      StackedBarChartData('지방', 65, 35, Color(0xFF6ec0ff)),
-      StackedBarChartData('단백질', 45, 55, Color(0xFF6eff8d)),
-      StackedBarChartData('탄수화물', 70, 30, Color(0xFFff6775)),
-    ];
+    Map<String, double> nutPercent = {
+      'kcal': 52,
+      'carbo': 52,
+      'protein': 28,
+      'fat': 25
+    };
+    List<VBarChartModel> barChartData = [];
+    for (int i = 0; i < nutName.length; i++) {
+      barChartData.add(VBarChartModel(
+          index: i,
+          colors: setColor(nutPercent[nutName[i]]!),
+          jumlah: (nutPercent[nutName[i]]! >= 100)
+              ? (100)
+              : (nutPercent[nutName[i]]!),
+          tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
+          label: nutKor[nutName[i]]));
+    }
 
     return Container(
       width: screenWidth * 0.9,
       margin: EdgeInsets.all(0),
       color: Colors.white,
-      // color: Color(0xFFF4F6F9),
       child: Row(
         children: [
           Container(
@@ -102,10 +95,8 @@ class _DailyGraphState extends State<DailyGraph> {
                       CircularChartAnnotation(
                           widget: Container(
                         child: const Text(
-                          "1700kcal",
-                          style: TextStyle(
-                              // fontWeight: FontWeight.bold,
-                              fontSize: 18),
+                          "1848kcal",
+                          style: TextStyle(fontSize: 18),
                         ),
                       ))
                     ],

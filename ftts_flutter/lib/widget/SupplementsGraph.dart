@@ -1,25 +1,7 @@
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
-import 'package:vertical_barchart/vertical-legend.dart';
 import 'package:flutter/material.dart';
 import '../model/ConnectServer.dart';
-import 'dart:io';
-
-class DoughnutChartData {
-  DoughnutChartData(this.x, this.y, this.color);
-  final String x;
-  final double y;
-  final Color color;
-}
-
-class StackedBarChartData {
-  final String x;
-  final num y1;
-  final num y2;
-  final Color color;
-  StackedBarChartData(this.x, this.y1, this.y2, this.color);
-}
 
 class SupplementsGraph extends StatefulWidget {
   const SupplementsGraph({Key? key}) : super(key: key);
@@ -29,8 +11,6 @@ class SupplementsGraph extends StatefulWidget {
 }
 
 class _SupplementsGraphState extends State<SupplementsGraph> {
-  final connectServer = ConnectServer();
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -55,7 +35,6 @@ class _SupplementsGraphState extends State<SupplementsGraph> {
               child: VerticalBarchart(
                   background: Colors.transparent,
                   labelColor: Colors.black,
-                  // labelSizeFactor: 1.0,
                   tooltipColor: Colors.black,
                   data: barChartData,
                   showBackdrop: true,

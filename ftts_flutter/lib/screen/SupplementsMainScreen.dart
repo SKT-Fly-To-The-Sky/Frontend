@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -15,7 +14,9 @@ import '../widget/SupplementsGraph.dart';
 import '../widget/CustomCheckBox.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:provider/provider.dart';
+
 
 class JsonListView extends StatefulWidget {
   @override
@@ -32,7 +33,8 @@ class _JsonListViewState extends State<JsonListView> {
   }
 
   Future<void> _fetchJsonData() async {
-    final response = await http.get(Uri.parse('http://jeongsuri.iptime.org:10019/dodo/supplements/recommand'));
+    final response = await http.get(Uri.parse(
+        'http://jeongsuri.iptime.org:10019/dodo/supplements/recommand'));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -87,9 +89,8 @@ class _JsonListViewState extends State<JsonListView> {
                           height: 10,
                         ),
                         Center(
-                          // child: Image.memory(Uint8List.fromList(base64.decode(data['image']))),
-                          child: Image.network(data['image'])
-                        ),
+                            // child: Image.memory(Uint8List.fromList(base64.decode(data['image']))),
+                            child: Image.network(data['image'])),
                         Container(
                           margin: EdgeInsets.only(left: 10, top: 10, right: 10),
                           child: Text(
@@ -132,7 +133,6 @@ class _JsonListViewState extends State<JsonListView> {
   }
 }
 
-
 class SupplementsMainScreen extends StatefulWidget {
   @override
   _SupplementsMainScreen createState() => _SupplementsMainScreen();
@@ -142,11 +142,13 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
   final picker = ImagePicker();
   final connectServer = ConnectServer();
   bool _btnChecked = false;
+
   late supplementProvider _supplementProduct;
 
   @override
   Widget build(BuildContext context) {
     _supplementProduct=Provider.of<supplementProvider>(context);
+
 
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -154,8 +156,8 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
       // Timeline.startSync('interesting function');
       var _image = await picker.pickImage(
           source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
-        //이미지 resize 부분, height, width 설정, Quality 설정
-      );
+          //이미지 resize 부분, height, width 설정, Quality 설정
+          );
 
       if (_image != null) {
         String? result;
@@ -260,7 +262,6 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => HomeScreen()));
-              // Navigator.pop(context);
             },
           )
         ],
@@ -295,70 +296,7 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
               ],
             ),
           ),
-          SupplementsGraph(),
-          Container(
-            margin:
-                const EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 5),
-            child: Column(
-              children: [
-                Container(
-                    child: Row(
-                  children: [
-
-                    Icon(
-                      Icons.wb_twighlight,
-                      color: Colors.yellow,
-                    ),
-                    Container(
-                      width: 5,
-                    ),
-                    Text(
-                      "아침",
-                      style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )),
-                CustomCheckBox(),
-                Container(
-                    child: Row(
-                  children: [
-                    Icon(
-                      Icons.wb_sunny,
-                      color: Colors.orange,
-                    ),
-                    Container(
-                      width: 5,
-                    ),
-                    Text(
-                      "점심",
-                      style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )),
-                CustomCheckBox(),
-                Container(
-                    child: Row(
-                  children: [
-                    Icon(
-                      Icons.mode_night,
-                      color: Color.fromARGB(255, 255, 196, 0),
-                    ),
-                    Container(
-                      width: 5,
-                    ),
-                    Text(
-                      "저녁",
-                      style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )),
-                CustomCheckBox(),
-              ],
-            ),
-          ),
+          CheckBoxListView(),
           Container(
             child: Center(
               child: IconButton(
@@ -378,27 +316,25 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
               ),
             ),
           ),
-              Container(
-                  margin: EdgeInsets.only(
-                      left: 20, top: 15, bottom: 5, right: 20),
-                  child: Row(
-                    children: [
-                      Icon(Icons.medication_liquid_sharp),
-                      Container(
-                        width: 5,
-                      ),
-                      Text(
-                        "영양제 추천",
-                        style: TextStyle(
-                          // fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    ],
-                  )),
-              Center(child: JsonListView())
-            ],
-          )),
-
+          Container(
+              margin: EdgeInsets.only(left: 20, top: 15, bottom: 5, right: 20),
+              child: Row(
+                children: [
+                  Icon(Icons.medication_liquid_sharp),
+                  Container(
+                    width: 5,
+                  ),
+                  Text(
+                    "영양제 추천",
+                    style: TextStyle(
+                        // fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  ),
+                ],
+              )),
+          Center(child: JsonListView())
+        ],
+      )),
     );
   }
 

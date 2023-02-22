@@ -19,13 +19,14 @@ class ResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //그래프 색상 설정 함수. 100프로 이상이면 red, 100이하 80이상이면 green, 80이하면 yellow
-    List<Color> setColor(double a){
-      if (a>100){
+    List<Color> setColor(double a) {
+      if (a > 100) {
         return [Colors.deepOrange, Colors.red];
-      }else if(a>60){
+      } else if (a > 60) {
         return [Colors.green, Colors.teal];
+      } else {
+        return [Colors.limeAccent, Colors.yellow];
       }
-      else {return [Colors.limeAccent, Colors.yellow];}
     }
 
     List<VBarChartModel> bardata = [
@@ -53,6 +54,7 @@ class ResultScreen extends StatelessWidget {
           colors: setColor((_nutinfo!['fat']/65)/3 * 100),
           jumlah: (_nutinfo!['fat'] / 65)/3 * 100,
           tooltip: ((_nutinfo!['fat'] / 65)/3 * 100).ceil().toString() + "%",
+
           label: '지방'),
     ];
     List<DoughnutChartData> doughnutChartData = [
