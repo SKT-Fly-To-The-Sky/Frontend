@@ -57,8 +57,8 @@ class _MainScreenState extends State<MainScreen> {
         ),
         body: SingleChildScrollView(
             child: Column(children: [
-          CustomCalendar(),
-          Container(
+              CustomCalendar(),
+              Container(
               margin: const EdgeInsets.only(
                   left: 20, right: 20, bottom: 15, top: 10),
               decoration: BoxDecoration(
@@ -84,110 +84,111 @@ class _MainScreenState extends State<MainScreen> {
                   DetailGraph(),
                 ],
               )),
-          Container(
-            margin: EdgeInsets.only(left: 20),
-            child: Row(
-              children: [
-                Icon(Icons.rice_bowl_sharp),
-                Container(
-                  width: 5,
+              Container(
+                margin: EdgeInsets.only(left: 20),
+                child: Row(
+
+                  children: [
+                    Icon(Icons.rice_bowl_sharp),
+                    Container(
+                      width: 5,
+                    ),
+                    Text(
+                      "하루 섭취량",
+                      style: TextStyle(fontSize: 17.0),
+                    )
+                  ],
                 ),
-                Text(
-                  "하루 섭취량",
-                  style: TextStyle(fontSize: 17.0),
-                )
-              ],
-            ),
-          ),
-          Container(
-            margin:
+              ),
+              Container(
+                margin:
                 const EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-            ),
-            height: 380,
-            child: ContainedTabBarView(
-              onChange: (index) => print(index),
-              tabs: [
-                Column(
-                  children: [
-                    Container(
-                      height: 3,
-                    ),
-                    Text(
-                      '아침',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "752kcal",
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
                 ),
-                Column(
-                  children: [
-                    Container(
-                      height: 3,
+                height: 360,
+                child: ContainedTabBarView(
+                  onChange: (index) => print(index),
+                  tabs: [
+                    Column(
+                      children: [
+                        Container(
+                          height: 3,
+                        ),
+                        Text(
+                          '아침',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "752kcal",
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '점심',
-                      style: TextStyle(
+                    Column(
+                      children: [
+                        Container(
+                          height: 3,
+                        ),
+                        Text(
+                          '점심',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "-",
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          height: 3,
+                        ),
+                        Text(
+                          '저녁',
+                          style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "-",
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      "-",
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      height: 3,
-                    ),
-                    Text(
-                      '저녁',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "-",
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      height: 3,
-                    ),
-                    Text(
+                    Column(
+                      children: [
+                        Container(
+                          height: 3,
+                        ),
+                        Text(
                       '간식',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "-",
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "-",
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
-                ),
-              ],
-              views: [
-                StaticUploader(),
-                ImageUploader(),
-                UploaderBtn(),
-                UploaderBtn(),
+                  views: [
+                    StaticUploader(),
+                    ImageUploader(),
+                    UploaderBtn(),
+                    UploaderBtn(),
               ],
             ),
           ),
