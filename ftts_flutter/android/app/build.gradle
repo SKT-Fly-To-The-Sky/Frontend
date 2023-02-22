@@ -66,6 +66,13 @@ flutter {
     source '../..'
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
+    implementation files('libs/com.skt.Tmap_1.75.jar')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
