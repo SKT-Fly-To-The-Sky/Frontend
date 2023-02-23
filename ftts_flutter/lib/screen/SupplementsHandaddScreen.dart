@@ -84,6 +84,7 @@ class SerchDelegate extends SearchDelegate {
     '비타민D',
     '비타민A',
     '루테인',
+    'Macrolife Naturals, Miracle Reds, Superfood, Goji, Pomegranate,  Acai,  Mangosteen, 0.3 oz (9.5 g)',
   ];
   final connectServer=ConnectServer();
   @override
@@ -142,17 +143,29 @@ class SerchDelegate extends SearchDelegate {
                             Row(
                               children: [
                                 TextButton(onPressed: () async {
-                                 Provider.of<supplementProvider>(context,listen: false).addName(query.toString());
-                                 print(Provider.of<supplementProvider>(context,listen: false).supplementList);
-                                 var result=await connectServer.SupplementsNutinfo(query.toString());
+                                  print("textbutton");
+                                  var provide=Provider.of<supplementProvider>(context,listen: false);
+                                  print(provide.supplementList);
+                                  if (provide.supplementList.indexOf(query!)==-1){
 
-                                 Provider.of<supplementProvider>(context,listen:false).updatenutInfo(result);
-                                 print(Provider.of<supplementProvider>(context,listen: false).supplementnutInfo);
+                                    provide.addName(query!.toString());
 
-                                 Navigator.pushAndRemoveUntil(context,
-                                      MaterialPageRoute(builder:
-                                          (BuildContext context)=>
-                                              SupplementsMainScreen()),(route)=>false);
+                                    print(provide.supplementList);
+                                    Map<String,dynamic>? result;
+                                    try{
+                                      result=await connectServer.SupplementsNutinfo(query!.toString());
+                                      provide.updatenutInfo(result);
+                                      print("supplementnutInfo------------------");
+                                      print(provide.supplementnutInfo);
+                                    }catch(e){
+                                      print('영양성분 찾기 실패');
+                                    }
+
+                                  }
+
+
+
+                                  Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (BuildContext context)=> SupplementsMainScreen()),(route)=>false);
                                   }, child: Text('네')),
                                 TextButton(onPressed: (){
                                   Navigator.pop(context);
