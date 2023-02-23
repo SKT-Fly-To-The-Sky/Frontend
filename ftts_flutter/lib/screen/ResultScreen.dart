@@ -5,9 +5,130 @@ import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 import 'dart:io';
+import '../utils/TMapPlugin.dart';
 import 'GraphScreen.dart';
-import 'MainScreen.dart';
 import '../widget/DailyGraph.dart';
+import 'dart:convert';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+
+
+class JsonListView extends StatefulWidget {
+  @override
+  _JsonListViewState createState() => _JsonListViewState();
+}
+
+class _JsonListViewState extends State<JsonListView> {
+  List<dynamic> _jsonData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchJsonData();
+  }
+
+  Future<void> _fetchJsonData() async {
+    final response = await http.get(Uri.parse(
+      //주소 바꿔야함! 메뉴 티맵도 지워도 될?듯?
+        'http://jeongsuri.iptime.org:10019/dodo/food/recommand'));
+
+    if (response.statusCode == 200) {
+      setState(() {
+        // _jsonData = json.decode(utf8.decode(response.body.runes.toList()));
+        _jsonData = json.decode(response.body);
+      });
+    }
+    // print("fdsafsd");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Future<void> _launchUrl(url) async {
+      if (!await launchUrl(url)) {
+        throw Exception('Could not launch $url');
+      }
+    }
+
+    return Container(
+      margin: EdgeInsets.only(right: 20),
+      height: 350,
+      // width: 300,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: _jsonData.length,
+          itemBuilder: (context, i) {
+            final data = _jsonData[i];
+            return Container(
+              width: 300,
+              padding: const EdgeInsets.only(
+                  left: 15, right: 10, top: 10, bottom: 15),
+              child: Column(
+                children: [
+                  Container(
+                    width: 300,
+                    height: 300,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 0.0,
+                        color: Color.fromARGB(255, 216, 216, 216),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Center(
+                          // child: Image.memory(Uint8List.fromList(base64.decode(data['image']))),
+                            child: Image.network(data['image'])),
+                        Container(
+                          margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                          child: Text(
+                            "다음 식사는 "+utf8.decode(data['name'].codeUnits)+" 어때요?",
+                            style: const TextStyle(
+                              fontSize: 15,
+                              // fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 10, top: 5, right: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Image(
+                                image: AssetImage('assets/Tmap_logo.png'),
+                                width: 30,
+                              ),
+
+                              TextButton(
+                                  style: TextButton.styleFrom(
+                                    primary: Color(0xFF3617CE),
+                                  ),
+                                  onPressed: () {
+                                    // _launchUrl(utf8.decode(data['link'].codeUnits));
+                                    TMapPlugin.exeTMap(utf8.decode(data['name'].codeUnits));
+                                  },
+                                  child: Text("근처 식당 경로찾기")
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
+    );
+  }
+}
+
 
 class ResultScreen extends StatelessWidget {
   final XFile? _image;
@@ -74,55 +195,18 @@ class ResultScreen extends StatelessWidget {
       DoughnutChartData('지방', 65 / (130 + 65 + 65), Color(0x1DC09A)),
     ];
     //추천 메뉴
-    Widget Specialities() {
-      return Container(
-        margin: EdgeInsets.only(left: 0, top: 10, right: 10, bottom: 10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
-          color: Color(0xFFE6E9FD),
-        ),
-        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "탄수화물 위주의 식사를 했어요",
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
-                    Container(
-                      height: 5,
-                    ),
-                    Text("다음식사는 샐러드 어때요?"),
-                  ]),
-            ),
-            Expanded(
-                flex: 1,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Container(
-                        width: 200,
-                        height: 100,
-                        child: Image(
-                          image: AssetImage('assets/salad.jpg'),
-                          fit: BoxFit.fill,
-                        )))),
-          ],
-        ),
-      );
-    }
+
 
     Widget Graph() {
       return Container(
-          padding: EdgeInsets.only(right: 10),
+          padding: EdgeInsets.only(right: 15),
           child: VerticalBarchart(
             background: Colors.transparent,
             data: bardata,
+            barSize: 12,
+            labelSizeFactor: 0.24,
             maxX: 100,
+            tooltipSize: 35,
             showBackdrop: true,
             showLegend: true,
             barStyle: BarStyle.DEFAULT,
@@ -176,7 +260,7 @@ class ResultScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.0),
           color: Colors.white,
         ),
-        padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+        padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -222,7 +306,7 @@ class ResultScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              GraphScreen(_image!, _result!, _nutinfo!)));
+                              GraphScreen(_image, _result, _nutinfo)));
                 },
                 child: Text("영양성분 더보기", style: TextStyle(fontSize: 14)))
           ],
@@ -245,35 +329,34 @@ class ResultScreen extends StatelessWidget {
                 children: <Widget>[
                   SizedBox(
                       child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Row(
-                      children: <Widget>[
-                        Column(children: <Widget>[
-                          Text("오늘 섭취 영양소",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                          CircleGraph(),
-                        ]),
-                        Column(children: <Widget>[
-                          Text("권장 섭취 영양소",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                          CircleGraph2()
+                        fit: BoxFit.fitWidth,
+                        child: Row(
+                          children: <Widget>[
+                            Column(children: <Widget>[
+                              Text("오늘 섭취 영양소",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                              CircleGraph(),
+                            ]),
+                            Column(children: <Widget>[
+                              Text("권장 섭취 영양소",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                              CircleGraph2()
                         ])
                       ],
                     ),
                   ))
                 ],
               ),
-              Specialities(),
             ],
           ));
     }
 
-    return this._image != null
-        ? Scaffold(
+    return //this._image != null ?
+    Scaffold(
             backgroundColor: Color(0xFFF4F6F9),
             appBar: AppBar(
               //AppBar 설정(UI 적용 완료)
@@ -301,77 +384,46 @@ class ResultScreen extends StatelessWidget {
                 )
               ],
             ),
-            body: Column(
-              children: [
-                Row(
-                  children: <Widget>[
-                    Container(
-                        margin: EdgeInsets.only(left: 15, top: 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.restaurant),
-                            Container(
-                              width: 5,
-                            ),
-                            Text("추가한 식단"),
-                          ],
-                        ))
-                  ],
-                ),
-                Container1(),
-                Container2()
-              ],
-            ),
-          )
-        : Scaffold(
-            backgroundColor: Color(0xFFF4F6F9),
-            appBar: AppBar(
-              //AppBar 설정(UI 적용 완료)
-              iconTheme: IconThemeData(color: Colors.black),
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.white,
-              //appbar 투명색
-              centerTitle: true,
-              elevation: 1.0,
-              // 그림자 농도 0
-              title: Text(
-                "A.식단",
-                style: TextStyle(
-                    fontFamily: 'NotoSansKR',
-                    color: Colors.black,
-                    fontSize: 18),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.only(left: 15, top: 10),
+                          child: Row(
+                            children: [
+                              Icon(Icons.restaurant),
+                              Container(
+                                width: 5,
+                              ),
+                              Text("추가한 식단"),
+                            ],
+                          ))
+                    ],
+                  ),
+                  Container1(),
+                  Container2(),
+                  Container(
+                      margin: EdgeInsets.only(left: 20, top: 15, bottom: 5, right: 20),
+                      child: Row(
+                        children: [
+                          Icon(Icons.room_service_outlined),
+                          Container(
+                            width: 5,
+                          ),
+                          Text(
+                            "음식 메뉴 추천",
+                            style: TextStyle(
+                              // fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                          ),
+                        ],
+                      )),
+                  Center(child:JsonListView())
+                ],
               ),
-              actions: [
-                IconButton(
-                  //닫기 버튼 (뒤로가기와 기능적으로 같다)
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                )
-              ],
-            ),
-            body: Column(
-              children: [
-                Row(
-                  children: <Widget>[
-                    Container(
-                        margin: EdgeInsets.only(left: 15, top: 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.restaurant),
-                            Container(
-                              width: 5,
-                            ),
-                            Text("추가한 식단"),
-                          ],
-                        ))
-                  ],
-                ),
-                Container1(),
-                Container2()
-              ],
-            ),
+            )
           );
   }
 }

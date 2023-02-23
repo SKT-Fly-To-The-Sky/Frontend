@@ -33,7 +33,8 @@ class ConnectServer {
         requestBody: false));
 
     //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
-
+    dio.options.connectTimeout=5000;
+    dio.options.receiveTimeout=5000;
     try {
       DateTime date = DateTime.now();
       final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -58,10 +59,11 @@ class ConnectServer {
           }
         }
       }
+      return foodName;
     } catch (e) {
       return ['불고기'];
     }
-    return foodName;
+
   }
 
   Future<Map<String, dynamic>> foodNutinfo(List<String> name) async{

@@ -63,7 +63,10 @@ class GraphScreen extends StatelessWidget {
         child: VerticalBarchart(
           background: Colors.transparent,
           data: bardata,
+          barSize: 12,
+          labelSizeFactor: 0.27,
           maxX: 100,
+          tooltipSize: 35,
           showBackdrop: true,
           showLegend: true,
           barStyle: BarStyle.DEFAULT,
@@ -91,43 +94,38 @@ class GraphScreen extends StatelessWidget {
               children: <Widget>[
                 Flexible(
                     flex: 1,
-                    child: (_result != 'fail')
+                    child: (_image != null) && (_result != '불고기')
                         //음식 추정 실패시 김치전 사진이 나오도록
-                        ? ClipRRect(
+                        ? Expanded(
+                            child: ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
                             child: Container(
                                 width: 200,
                                 height: 100,
                                 child: Image.file(File(_image!.path),
                                     fit: BoxFit.fill)),
-                          )
-                        : ClipRRect(
+                          ))
+                        : Expanded(
+                            child: ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
-                            child: Container(
-                              width: 200,
-                              height: 100,
-                              child: Image(
+                              child: Container(
+                                width: 200,
+                                height: 100,
+                                child: Image(
                                   image: AssetImage('assets/kimchi.jpg'),
                                   fit: BoxFit.fill),
-                            ),
-                          )),
-                Flexible(
+                              ),
+                            ))),
+                Expanded(
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        (_result != 'fail')
-                            ? Column(
-                                children: [
-                                  for (var res in _result!) Text(res as String)
-                                ],
-                              )
-                            : Text("김치전"),
+                            for (var res in _result!) Text(res as String)
                       ],
                     ))
               ],
             ),
-            SingleChildScrollView(
-                scrollDirection: Axis.vertical, child: Graph()),
+            Graph(),
           ],
         ),
       );

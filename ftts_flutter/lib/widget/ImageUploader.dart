@@ -59,7 +59,6 @@ class _ImageUploaderState extends State<ImageUploader> {
         setState(() {
           _result = result;
           _nut = nut;
-
           //ResultScreen에 이미지, classfication 결과, 영양소 정보 전달
 
         });
@@ -207,6 +206,8 @@ class _ImageUploaderState extends State<ImageUploader> {
                           primary: Color(0xFF3617CE),
                         ),
                         onPressed: () {
+                          print("nut info");
+                          print(_nut);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -348,11 +349,13 @@ class StaticUploader extends StatelessWidget {
                           primary: Color(0xFF3617CE),
                         ),
                         onPressed: () {
+                          print("nut info");
+                          print(nut_info);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ResultScreen(null, _result, nut_info)));
+                                      ResultScreen(null, _result, nut_info!)));
                         },
                         child: Text(
                           "상세 보기",
