@@ -97,7 +97,8 @@ class MenuScreen extends StatelessWidget {
                       style:
                       TextButton.styleFrom(foregroundColor: Colors.black),
                       icon: Icon(Icons.map),
-                      label: Text("지도")),
+                      label: Text("지도")
+                  ),
                 ],
               ),
             ),

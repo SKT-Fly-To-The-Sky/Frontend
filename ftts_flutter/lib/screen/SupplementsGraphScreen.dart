@@ -44,11 +44,15 @@ class SupplementsGrapeScreen extends StatelessWidget {
 
     Widget Grape() {
       return Container(
+        height: 510,
         padding: EdgeInsets.only(right: 15),
         child: VerticalBarchart(
           background: Colors.transparent,
           data: bardata,
+          barSize: 13,
           maxX: 100,
+          labelSizeFactor: 0.28,
+          tooltipSize: 35,
           showBackdrop: true,
           showLegend: true,
           barStyle: BarStyle.DEFAULT,
