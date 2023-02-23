@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 
 class supplementProvider with ChangeNotifier {
+  List<String> supplementList = ["프로바이더 테스트"];
+  List<bool> supplementChecked = [false];
+  List<String> supplementPillCnts = ["1정"];
 
-  List<String> supplementList=[];
-  Map<String,dynamic> supplementnutInfo={
-    'kcal':0.0,
-    'protein':0.0,
+  // for (int i = 0; i < supplementList.length; i++) {
+  //     supplementChecked.add(false);
+  //   }
+  Map<String, dynamic> supplementnutInfo = {
+    'kcal': 0.0,
+    'protein': 0.0,
     "fat": 0.0,
     "carbo": 0.0,
     "sugar": 0.0,
@@ -34,30 +39,31 @@ class supplementProvider with ChangeNotifier {
     "omega": 0.0,
   };
 
-  List<String> get _supplementsList =>supplementList;
-  Map<String,dynamic> get _supplementsnutInfo=>supplementnutInfo;
+  List<String> get _supplementsList => supplementList;
+  Map<String, dynamic> get _supplementsnutInfo => supplementnutInfo;
 
-  addName(String input){
+  addName(String input) {
     supplementList.add(input);
-    notifyListeners();
-  }
-  updatenutInfo(Map<String,dynamic> result){
-    supplementnutInfo['vitA']+=result['vitA'];
-    supplementnutInfo['vitB1']+=result['vitB1'];
-    supplementnutInfo['vitB2']+=result['vitB2'];
-    supplementnutInfo['vitB3']+=result['vitB3'];
-    supplementnutInfo['vitB5']+=result['vitB5'];
-    supplementnutInfo['vitB6']+=result['vitB6'];
-    supplementnutInfo['vitB7']+=result['vitB7'];
-    supplementnutInfo['vitB9']+=result['vitB9'];
-    supplementnutInfo['vitB12']+=result['vitB12'];
-    supplementnutInfo['vitC']+=result['vitC'];
-    supplementnutInfo['vitD']+=result['vitD'];
-    supplementnutInfo['vitE']+=result['vitE'];
-    supplementnutInfo['vitF']+=result['vitF'];
-    supplementnutInfo['omega']+=result['omega'];
+    supplementChecked.add(false);
+    supplementPillCnts.add("1정");
     notifyListeners();
   }
 
+  updatenutInfo(Map<String, dynamic> result) {
+    supplementnutInfo['vitA'] += result['vitA'];
+    supplementnutInfo['vitB1'] += result['vitB1'];
+    supplementnutInfo['vitB2'] += result['vitB2'];
+    supplementnutInfo['vitB3'] += result['vitB3'];
+    supplementnutInfo['vitB5'] += result['vitB5'];
+    supplementnutInfo['vitB6'] += result['vitB6'];
+    supplementnutInfo['vitB7'] += result['vitB7'];
+    supplementnutInfo['vitB9'] += result['vitB9'];
+    supplementnutInfo['vitB12'] += result['vitB12'];
+    supplementnutInfo['vitC'] += result['vitC'];
+    supplementnutInfo['vitD'] += result['vitD'];
+    supplementnutInfo['vitE'] += result['vitE'];
+    supplementnutInfo['vitF'] += result['vitF'];
+    supplementnutInfo['omega'] += result['omega'];
+    notifyListeners();
+  }
 }
-

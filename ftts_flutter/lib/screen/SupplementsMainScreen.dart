@@ -161,6 +161,7 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
 
         //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 임의의 약이름을 반환한다.
         result = await connectServer.Supplementsuploading(_image!);
+
         //supplementList에 result값이 있는지 확인한다.
 
         if (Provider.of<supplementProvider>(context, listen: false)
@@ -218,7 +219,9 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
                   icon: Icon(Icons.camera_alt),
                   label: Text('카메라로 추가하기')),
             ),
-            SizedBox(height: 8,),
+            SizedBox(
+              height: 8,
+            ),
             Container(
                 width: 190,
                 height: 35,
@@ -232,8 +235,9 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
                     },
                     icon: Icon(Icons.image),
                     label: Text('갤러리로 추가히기'))),
-            SizedBox(height: 8
-              ,),
+            SizedBox(
+              height: 8,
+            ),
             Container(
                 width: 190,
                 height: 35,

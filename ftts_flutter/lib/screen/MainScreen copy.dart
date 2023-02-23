@@ -24,20 +24,6 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    List<String> foodTimeDiv = ['아침', '점심', '저녁', '간식'];
-    Map<String, String> foodEng = {
-      '아침': 'morning',
-      '점심': 'lunch',
-      '저녁': 'dinner',
-      '간식': 'snack'
-    };
-    Map<String, double> foodKcal = {
-      'morning': 752,
-      'lunch': 0,
-      'dinner': 0,
-      'snack': 0
-    };
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xFFF4F6F9),
@@ -47,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
           backgroundColor: Colors.white,
           centerTitle: true,
           elevation: 0.0,
+          // 그림자 농도 0
           title: const Text(
             "A.식단",
             style: TextStyle(color: Colors.black, fontSize: 18),
@@ -123,27 +110,78 @@ class _MainScreenState extends State<MainScreen> {
             child: ContainedTabBarView(
               onChange: (index) => print(index),
               tabs: [
-                for (int i = 0; i < foodTimeDiv.length; i++)
-                  Column(
-                    children: [
-                      Container(
-                        height: 3,
+                Column(
+                  children: [
+                    Container(
+                      height: 3,
+                    ),
+                    Text(
+                      '아침',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "752kcal",
+                      style: TextStyle(
+                        color: Colors.black,
                       ),
-                      Text(
-                        foodTimeDiv[i],
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container(
+                      height: 3,
+                    ),
+                    Text(
+                      '점심',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "-",
+                      style: TextStyle(
+                        color: Colors.black,
                       ),
-                      Text(
-                        (foodKcal[foodEng[foodTimeDiv[i]]] == 0)
-                            ? "-"
-                            : "${foodKcal[foodEng[foodTimeDiv[i]]]!.toInt()}kcal",
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container(
+                      height: 3,
+                    ),
+                    Text(
+                      '저녁',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "-",
+                      style: TextStyle(
+                        color: Colors.black,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container(
+                      height: 3,
+                    ),
+                    Text(
+                      '간식',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "-",
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
               ],
               views: [
                 StaticUploader(),
