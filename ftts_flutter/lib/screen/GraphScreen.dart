@@ -15,200 +15,64 @@ class GraphScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    List<Color> setColor(double a){
-      if (a>100){
+    List<Color> setColor(double a) {
+      if (a > 100) {
         return [Colors.deepOrange, Colors.red];
-      }else if(a>60){
+      } else if (a > 60) {
         return [Colors.green, Colors.teal];
+      } else {
+        return [Colors.limeAccent, Colors.yellow];
       }
-      else {return [Colors.limeAccent, Colors.yellow];}
     }
 
-    List<VBarChartModel> bardata = [
-      VBarChartModel(
-          index: 0,
-          colors: setColor((_nutinfo!['kcal'] / 2600)/3 * 100),
-          jumlah: (_nutinfo!['kcal'] / 2600)/3 * 100,
-          tooltip: ((_nutinfo!['kcal'] / 2600)/3 * 100).ceil().toString() + "%",
-          label: '칼로리'),
-      VBarChartModel(
-          index: 1,
-          colors: setColor((_nutinfo!['carbo'] / 130)/3 * 100),
-          jumlah: (_nutinfo!['carbo'] / 130)/3 * 100,
-          tooltip: ((_nutinfo!['carbo'] / 130)/3 * 100).ceil().toString() + "%",
-          label: '탄수화물'),
-      VBarChartModel(
-          index: 2,
-          colors: setColor((_nutinfo!['protein'] / 65)/3 * 100),
-          jumlah: (_nutinfo!['protein'] / 65)/3 * 100,
-          tooltip: ((_nutinfo!['protein'] / 65)/3 * 100).ceil().toString() + "%",
-          label: '단백질'),
-      VBarChartModel(
-          index: 3,
-          colors: setColor((_nutinfo!['fat'] / 65)/3 * 100),
-          jumlah: (_nutinfo!['fat'] / 65)/3 * 100,
-          tooltip: ((_nutinfo!['fat'] / 65)/3 * 100).ceil().toString() + "%",
-          label: '지방'),
-      VBarChartModel(
-          index: 4,
-          colors: setColor((_nutinfo!['sugar'] / 100)/3 * 100),
-          jumlah: (_nutinfo!['sugar'] / 100)/3 * 100,
-          tooltip: ((_nutinfo!['sugar'] /100)/3 * 100).ceil().toString() + "%",
-          label: '설탕'),
-      VBarChartModel(
-          index: 5,
-          colors: setColor((_nutinfo!['chole'] / 300)/3 * 100),
-          jumlah: (_nutinfo!['chole'] / 300)/3 * 100,
-          tooltip: ((_nutinfo!['chole'] / 300)/3 * 100).ceil().toString() + "%",
-          label: '콜레스테롤'),
-      VBarChartModel(
-          index: 6,
-          colors: setColor((_nutinfo!['fiber'] / 30)/3 * 100),
-          jumlah: (_nutinfo!['fiber'] / 30)/3 * 100,
-          tooltip: ((_nutinfo!['fiber'] / 30)/3 * 100).ceil().toString() + "%",
-          label: '식이섬유'),
-      VBarChartModel(
-          index: 7,
-          colors: setColor((_nutinfo!['calcium'] / 2500)/3 * 100),
-          jumlah: (_nutinfo!['calcium'] / 2500)/3 * 100,
-          tooltip: ((_nutinfo!['calcium'] / 2500)/3 * 100).ceil().toString() + "%",
-          label: '칼슘'),
-      VBarChartModel(
-          index: 8,
-          colors: setColor((_nutinfo!['iron'] / 45)/3 * 100),
-          jumlah: (_nutinfo!['iron'] / 45)/3 * 100,
-          tooltip: ((_nutinfo!['iron'] / 45)/3 * 100).ceil().toString() + "%",
-          label: '철'),
-      VBarChartModel(
-          index: 9,
-          colors: setColor((_nutinfo!['magne'] / 360)/3 * 100),
-          jumlah: (_nutinfo!['magne'] / 360)/3 * 100,
-          tooltip: ((_nutinfo!['magne'] / 360)/3 * 100).ceil().toString() + "%",
-          label: '마그네슘'),
-      VBarChartModel(
-          index: 10,
-          colors: setColor((_nutinfo!['potass'] / 3500)/3 * 100),
-          jumlah: (_nutinfo!['potass'] / 3500)/3 * 100,
-          tooltip: ((_nutinfo!['potass'] / 3500)/3 * 100).ceil().toString() + "%",
-          label: '칼륨'),
-      VBarChartModel(
-          index: 11,
-          colors: setColor((_nutinfo!['sodium'] / 2300)/3 * 100),
-          jumlah: (_nutinfo!['sodium'] / 2300)/3 * 100,
-          tooltip: ((_nutinfo!['sodium'] / 2300)/3 * 100).ceil().toString() + "%",
-          label: '나트륨'),
-      VBarChartModel(
-          index: 12,
-          colors: setColor((_nutinfo!['zinc'] / 35)/3 * 100),
-          jumlah: (_nutinfo!['zinc'] / 35)/3 * 100,
-          tooltip: ((_nutinfo!['zinc'] / 35)/3 * 100).ceil().toString() + "%",
-          label: '아연'),
-      VBarChartModel(
-          index: 13,
-          colors: setColor((_nutinfo!['copper'] / 10000)/3 * 100),
-          jumlah: (_nutinfo!['copper'] / 10000)/3 * 100,
-          tooltip: ((_nutinfo!['copper'] / 10000)/3 * 100).ceil().toString() + "%",
-          label: '구리'),
-      VBarChartModel(
-          index: 14,
-          colors: setColor((_nutinfo!['vitA'] / 3000)/3 * 100),
-          jumlah: (_nutinfo!['vitA'] / 3000)/3 * 100,
-          tooltip: ((_nutinfo!['vitA'] / 3000)/3 * 100).ceil().toString() + "%",
-          label: '비타민 A'),
-      VBarChartModel(
-          index: 15,
-          colors: setColor((_nutinfo!['vitB1'] / 1.2)/3 * 100),
-          jumlah: (_nutinfo!['vitB1'] / 1.2)/3 * 100,
-          tooltip: ((_nutinfo!['vitB1'] / 1.2)/3 * 100).ceil().toString() + "%",
-          label: '비타민 B1'),
-      VBarChartModel(
-          index: 16,
-          colors: setColor((_nutinfo!['vitB2'] / 1.5)/3 * 100),
-          jumlah: (_nutinfo!['vitB2'] / 1.5)/3 * 100,
-          tooltip: ((_nutinfo!['vitB2'] / 1.5)/3 * 100).ceil().toString() + "%",
-          label: '비타민 B2'),
-      VBarChartModel(
-          index: 17,
-          colors: setColor((_nutinfo!['vitB3'] / 16)/3 * 100),
-          jumlah: (_nutinfo!['vitB3'] / 16)/3 * 100,
-          tooltip: ((_nutinfo!['vitB3'] / 16)/3 * 100).ceil().toString() + "%",
-          label: '비타민 B3'),
-      VBarChartModel(
-          index: 18,
-          colors: setColor((_nutinfo!['vitB5'] / 5)/3 * 100),
-          jumlah: (_nutinfo!['vitB5'] / 5)/3 * 100,
-          tooltip: ((_nutinfo!['vitB5'] / 16)/3 * 100).ceil().toString() + "%",
-          label: '비타민 B5'),
-      VBarChartModel(
-          index: 19,
-          colors: setColor((_nutinfo!['vitB6'] / 100)/3 * 100),
-          jumlah: (_nutinfo!['vitB6'] / 100)/3 * 100,
-          tooltip: ((_nutinfo!['vitB6'] / 100)/3 * 100).ceil().toString() + "%",
-          label: '비타민 B6'),
-      VBarChartModel(
-          index: 20,
-          colors: setColor((_nutinfo!['vitB7'] / 30)/3 * 100),
-          jumlah: (_nutinfo!['vitB7'] / 30)/3 * 100,
-          tooltip: ((_nutinfo!['vitB7'] / 30)/3 * 100).ceil().toString() + "%",
-          label: '비타민 B7'),
-      VBarChartModel(
-          index: 21,
-          colors: setColor((_nutinfo!['vitB9'] / 1000)/3 * 100),
-          jumlah: (_nutinfo!['vitB9'] / 1000)/3 * 100,
-          tooltip: ((_nutinfo!['vitB9'] / 1000)/3 * 100).ceil().toString() + "%",
-          label: '비타민 B9'),
-      VBarChartModel(
-          index: 22,
-          colors: setColor((_nutinfo!['vitB12'] / 2.4)/3 * 100),
-          jumlah: (_nutinfo!['vitB12'] / 2.4)/3 * 100,
-          tooltip: ((_nutinfo!['vitB12'] / 2.4)/3 * 100).ceil().toString() + "%",
-          label: '비타민 B12'),
-      VBarChartModel(
-          index: 23,
-          colors: setColor((_nutinfo!['vitC'] / 2000)/3 * 100),
-          jumlah: (_nutinfo!['vitC'] / 2000)/3 * 100,
-          tooltip: ((_nutinfo!['vitC'] / 2000)/3 * 100).ceil().toString() + "%",
-          label: '비타민 C'),
-      VBarChartModel(
-          index: 24,
-          colors: setColor((_nutinfo!['vitD'] / 100)/3 * 100),
-          jumlah: (_nutinfo!['vitD'] / 100)/3 * 100,
-          tooltip: ((_nutinfo!['vitD'] / 100)/3 * 100).ceil().toString() + "%",
-          label: '비타민 D'),
-      VBarChartModel(
-          index: 25,
-          colors: setColor((_nutinfo!['vitE'] / 540)/3 * 100),
-          jumlah: (_nutinfo!['vitE'] / 540)/3 * 100,
-          tooltip: ((_nutinfo!['vitE'] / 540)/3 * 100).ceil().toString() + "%",
-          label: '비타민 E'),
-      VBarChartModel(
-          index: 26,
-          colors: setColor((_nutinfo!['vitK'] / 75)/3 * 100),
-          jumlah: (_nutinfo!['vitK'] / 75)/3 * 100,
-          tooltip: ((_nutinfo!['vitK'] / 75)/3 * 100).ceil().toString() + "%",
-          label: '비타민 K'),
-      VBarChartModel(
-          index: 27,
-          colors: setColor((_nutinfo!['omega'] / 210)/3 * 100),
-          jumlah: (_nutinfo!['omega'] / 210)/3 * 100,
-          tooltip: ((_nutinfo!['omega'] / 210)/3 * 100).ceil().toString() + "%",
-          label: '오메가'),
+    List<dynamic> recommedInfo = [
+      ['칼로리', 'kcal', 2600, 'kcal'],
+      ['탄수화물', 'carbo', 130, 'mg'],
+      ['단백질', 'protein', 65, 'mg'],
+      ['지방', 'fat', 65, 'mg'],
+      ['설탕', 'sugar', 100, 'mg'],
+      ['콜레스테롤', 'chole', 300, 'mg'],
+      ['식이섬유', 'fiber', 30, '㎍'],
+      ['칼슘', 'calcium', 2500, '㎍'],
+      ['철', 'iron', 45, '㎍'],
+      ['마그네슘', 'magne', 360, 'mg'],
+      ['칼륨', 'potass', 3500, '㎍'],
+      ['나트륨', 'sodium', 2300, 'mg'],
+      ['아연', 'zinc', 75, '㎍'],
+      ['구리', 'copper', 10000, 'mg']
     ];
 
+    List<VBarChartModel> bardata = [];
+    for (int i = 0; i < recommedInfo.length; i++) {
+      bardata.add(VBarChartModel(
+          index: i,
+          colors: setColor(
+              (_nutinfo![recommedInfo[i][1]] / recommedInfo[i][2]) * 100),
+          jumlah: (_nutinfo![recommedInfo[i][1]] / recommedInfo[i][2]) * 100,
+          tooltip: ((_nutinfo![recommedInfo[i][1]] / recommedInfo[i][2]) * 100)
+                  .ceil()
+                  .toString() +
+              recommedInfo[i][3],
+          //+단위
+          label: recommedInfo[i][0]));
+    }
+
     Widget Graph() {
-      return VerticalBarchart(
-        background: Colors.transparent,
-        data: bardata,
-        maxX: 100,
-        showBackdrop: true,
-        showLegend: true,
-        barStyle: BarStyle.DEFAULT,
-        legend: [
-          Vlegend(isSquare: false, color: Colors.green, text: "적정"),
-          Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
-          Vlegend(isSquare: false, color: Colors.yellow, text: "부족"),
-        ],
+      return Container(
+        padding: EdgeInsets.only(right: 15),
+        child: VerticalBarchart(
+          background: Colors.transparent,
+          data: bardata,
+          maxX: 100,
+          showBackdrop: true,
+          showLegend: true,
+          barStyle: BarStyle.DEFAULT,
+          legend: [
+            Vlegend(isSquare: false, color: Colors.green, text: "적정"),
+            Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
+            Vlegend(isSquare: false, color: Colors.yellow, text: "부족"),
+          ],
+        ),
       );
     }
 
@@ -262,7 +126,8 @@ class GraphScreen extends StatelessWidget {
                     ))
               ],
             ),
-            SingleChildScrollView(scrollDirection: Axis.vertical,child:Graph()),
+            SingleChildScrollView(
+                scrollDirection: Axis.vertical, child: Graph()),
           ],
         ),
       );

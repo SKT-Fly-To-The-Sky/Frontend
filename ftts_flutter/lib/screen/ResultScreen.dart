@@ -29,34 +29,28 @@ class ResultScreen extends StatelessWidget {
       }
     }
 
-    List<VBarChartModel> bardata = [
-      VBarChartModel(
-          index: 0,
-          //(_nutinfo!['kcal'] / 2600)/3 * 100 => 음식영양소/일일권장섭취영량소/3(3끼이므로)*100(퍼센트화)
-          colors: setColor((_nutinfo!['kcal'] / 2600)/3 * 100),
-          jumlah: (_nutinfo!['kcal'] / 2600)/3 * 100,
-          tooltip: ((_nutinfo!['kcal'] / 2600)/3 * 100).ceil().toString() + "%",
-          label: '칼로리'),
-      VBarChartModel(
-          index: 1,
-          colors: setColor((_nutinfo!['carbo'] / 130)/3 * 100),
-          jumlah: (_nutinfo!['carbo'] / 130)/3 * 100,
-          tooltip: ((_nutinfo!['carbo'] / 130)/3 * 100).ceil().toString() + "%",
-          label: '탄수화물'),
-      VBarChartModel(
-          index: 2,
-          colors: setColor((_nutinfo!['protein'] / 65)/3 * 100),
-          jumlah: (_nutinfo!['protein'] / 65)/3 * 100,
-          tooltip: ((_nutinfo!['protein'] / 65)/3 * 100).ceil().toString() + "%",
-          label: '단백질'),
-      VBarChartModel(
-          index: 3,
-          colors: setColor((_nutinfo!['fat']/65)/3 * 100),
-          jumlah: (_nutinfo!['fat'] / 65)/3 * 100,
-          tooltip: ((_nutinfo!['fat'] / 65)/3 * 100).ceil().toString() + "%",
-
-          label: '지방'),
+    List<dynamic> recommedInfo = [
+      ['칼로리', 'kcal', 2600, 'kcal'],
+      ['탄수화물', 'carbo', 130, 'mg'],
+      ['단백질', 'protein', 65, 'mg'],
+      ['지방', 'fat', 65, 'mg']
     ];
+
+    List<VBarChartModel> bardata = [];
+    for (int i = 0; i < recommedInfo.length; i++) {
+      bardata.add(VBarChartModel(
+          index: i,
+          colors: setColor(
+              (_nutinfo![recommedInfo[i][1]] / recommedInfo[i][2]) * 100),
+          jumlah: (_nutinfo![recommedInfo[i][1]] / recommedInfo[i][2]) * 100,
+          tooltip: ((_nutinfo![recommedInfo[i][1]] / recommedInfo[i][2]) * 100)
+                  .ceil()
+                  .toString() +
+              recommedInfo[i][3],
+          //+단위
+          label: recommedInfo[i][0]));
+    }
+
     List<DoughnutChartData> doughnutChartData = [
       DoughnutChartData(
           '탄수화물',
@@ -123,19 +117,21 @@ class ResultScreen extends StatelessWidget {
     }
 
     Widget Graph() {
-      return VerticalBarchart(
-        background: Colors.transparent,
-        data: bardata,
-        maxX: 100,
-        showBackdrop: true,
-        showLegend: true,
-        barStyle: BarStyle.DEFAULT,
-        legend: [
-          Vlegend(isSquare: false, color: Colors.green, text: "적정"),
-          Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
-          Vlegend(isSquare: false, color: Colors.yellow, text: "부족"),
-        ],
-      );
+      return Container(
+          padding: EdgeInsets.only(right: 10),
+          child: VerticalBarchart(
+            background: Colors.transparent,
+            data: bardata,
+            maxX: 100,
+            showBackdrop: true,
+            showLegend: true,
+            barStyle: BarStyle.DEFAULT,
+            legend: [
+              Vlegend(isSquare: false, color: Colors.green, text: "적정"),
+              Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
+              Vlegend(isSquare: false, color: Colors.yellow, text: "부족"),
+            ],
+          ));
     }
 
     Widget CircleGraph() {
@@ -189,8 +185,7 @@ class ResultScreen extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     //child: (_image!='fail')?Expanded(child:Image.network(_result![0])):
-                    child: (_image != null) && (_result != 'fail')
-                        //음식 추정 실패시 김치전 사진이 나오도록
+                    child: (_image != null) && (_result != '불고기')
                         ? Expanded(
                             child: ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
@@ -215,14 +210,7 @@ class ResultScreen extends StatelessWidget {
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        //classfication food_Name 결과
-                        (_result != 'fail')
-                            ? Column(
-                                children: [
-                                  for (var res in _result!) Text(res as String)
-                                ],
-                              )
-                            : Text("김치전"),
+                        for (var res in _result!) Text(res as String)
                       ],
                     ))
               ],

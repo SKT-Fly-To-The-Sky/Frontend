@@ -59,7 +59,7 @@ class ConnectServer {
         }
       }
     } catch (e) {
-      return ['김치전'];
+      return ['불고기'];
     }
     return foodName;
   }
@@ -69,44 +69,35 @@ class ConnectServer {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     String onlyDate = formatter.format(date);
     try{for (int i = 0; i < name.length; i++) {
-      var foodsInfo = await dio
-          .get('${Url}foods/info', queryParameters: {"food_name": name[i]});
+      var foodsInfo = await dio.get('${Url}foods/info', queryParameters: {"food_name": name[i]});
 
-      print('value');
-      print(foodsInfo.data['kcal'].toString());
-      var toint = foodsInfo.data['kcal'].toString();
-      print(double.parse(toint));
-
-      kcal = kcal + double.parse(foodsInfo.data["kcal"].toString());
-      protein = protein + double.parse(foodsInfo.data['protein'].toString());
-      fat = fat + double.parse(foodsInfo.data['fat'].toString());
-      carbo = carbo + double.parse(foodsInfo.data['carbo'].toString());
-      sugar = sugar + double.parse(foodsInfo.data['sugar'].toString());
-      chole = chole + double.parse(foodsInfo.data['chole'].toString());
-      fiber = fiber + double.parse(foodsInfo.data['fiber'].toString());
-      calcium = calcium + double.parse(foodsInfo.data['calcium'].toString());
-      iron = iron + double.parse(foodsInfo.data['iron'].toString());
-      magne = magne + double.parse(foodsInfo.data['magne'].toString());
-      potass = potass + double.parse(foodsInfo.data['potass'].toString());
-      sodium = sodium + double.parse(foodsInfo.data['sodium'].toString());
-      zinc = zinc + double.parse(foodsInfo.data['zinc'].toString());
-      copper = copper + double.parse(foodsInfo.data['copper'].toString());
-      vitA = vitA + double.parse(foodsInfo.data['vitA'].toString());
-      vitB1 = vitB1 + double.parse(foodsInfo.data['vitB1'].toString());
-      vitB2 = vitB2 + double.parse(foodsInfo.data['vitB2'].toString());
-      vitB3 = vitB3 + double.parse(foodsInfo.data['vitB3'].toString());
-      vitB5 = vitB5 + double.parse(foodsInfo.data['vitB5'].toString());
-      vitB6 = vitB6 + double.parse(foodsInfo.data['vitB6'].toString());
-      vitB7 = vitB7 + double.parse(foodsInfo.data['vitB7'].toString());
-      vitB9 = vitB9 + double.parse(foodsInfo.data['vitB9'].toString());
-      vitB12 = vitB12 + double.parse(foodsInfo.data['vitB12'].toString());
-      vitC = vitC + double.parse(foodsInfo.data['vitC'].toString());
-      vitD = vitD + double.parse(foodsInfo.data['vitD'].toString());
-      vitE = vitE + double.parse(foodsInfo.data['vitE'].toString());
-      vitK = vitK + double.parse(foodsInfo.data['vitK'].toString());
-      omega = omega + double.parse(foodsInfo.data['omega'].toString());
+      nut_info['kcal'] = kcal + double.parse(foodsInfo.data["kcal"].toString());
+      nut_info['protein'] = protein + double.parse(foodsInfo.data['protein'].toString());
+      nut_info['fat'] = fat + double.parse(foodsInfo.data['fat'].toString());
+      nut_info['carbo'] = carbo + double.parse(foodsInfo.data['carbo'].toString());
+      nut_info['sugar'] = sugar + double.parse(foodsInfo.data['sugar'].toString());
+      nut_info['chole'] = chole + double.parse(foodsInfo.data['chole'].toString());
+      nut_info['fiber'] = fiber + double.parse(foodsInfo.data['fiber'].toString());
+      nut_info['calcium'] = calcium + double.parse(foodsInfo.data['calcium'].toString());
+      nut_info['iron'] = iron + double.parse(foodsInfo.data['iron'].toString());
+      nut_info['magne'] = magne + double.parse(foodsInfo.data['magne'].toString());
+      nut_info['potass'] = potass + double.parse(foodsInfo.data['potass'].toString());
+      nut_info['sodium'] = sodium + double.parse(foodsInfo.data['sodium'].toString());
+      nut_info['zinc'] = zinc + double.parse(foodsInfo.data['zinc'].toString());
+      nut_info['copper'] = copper + double.parse(foodsInfo.data['copper'].toString());
     }
-    dio.post('${Url}dodo/intakes/nutrients', options: Options(headers: {HttpHeaders.contentTypeHeader: "application/json"}), data: jsonEncode(nut_info));
+
+    print("nut_info");
+    print(nut_info);
+
+    Map<String,dynamic> post_info={
+      "time_div":'morning',
+      "date":onlydate,
+      "time":" "
+    };
+    post_info.addAll(nut_info);
+
+    dio.post('${Url}dodo/intakes/nutrients', options: Options(headers: {HttpHeaders.contentTypeHeader: "application/json"}), data: jsonEncode(post_info));
     return nut_info;
     }catch(e){
       return nut_info;
@@ -121,6 +112,7 @@ class ConnectServer {
         file.path,
       )
     });
+
     //log 설정
     dio.interceptors.add(LogInterceptor(
         responseBody: true,
@@ -145,140 +137,50 @@ class ConnectServer {
 
   Future<Map<String, dynamic>> SupplementsNutinfo(String name) async{
     print('SupplementsNutinfo');
-    double kcal=0;
-    double protein=0;
-    double fat=0;
-    double carbo=0;
-    double sugar=0;
-    double chole=0;
-    double fiber=0;
-    double calcium=0;
-    double iron=0;
-    double magne=0;
-    double potass=0;
-    double sodium=0;
-    double zinc=0;
-    double copper=0;
-    double vitA=0;
-    double vitB1=0;
-    double vitB2=0;
-    double vitB3=0;
-    double vitB5=0;
-    double vitB6=0;
-    double vitB7=0;
-    double vitB9=0;
-    double vitB12=0;
-    double vitC=0;
-    double vitD=0;
-    double vitE=0;
-    double vitK=0;
-    double omega=0;
     try{
-      for (int i = 0; i < name.length; i++) {
-        var foodsInfo = await dio.get('${Url}supplements/info', queryParameters: {"sup_name": name});
-
-        kcal = kcal + double.parse(foodsInfo.data["kcal"].toString());
-        protein = protein + double.parse(foodsInfo.data['protein'].toString());
-        fat = fat + double.parse(foodsInfo.data['fat'].toString());
-        carbo = carbo + double.parse(foodsInfo.data['carbo'].toString());
-        sugar = sugar + double.parse(foodsInfo.data['sugar'].toString());
-        chole = chole + double.parse(foodsInfo.data['chole'].toString());
-        fiber = fiber + double.parse(foodsInfo.data['fiber'].toString());
-        calcium = calcium + double.parse(foodsInfo.data['calcium'].toString());
-        iron = iron + double.parse(foodsInfo.data['iron'].toString());
-        magne = magne + double.parse(foodsInfo.data['magne'].toString());
-        potass = potass + double.parse(foodsInfo.data['potass'].toString());
-        sodium = sodium + double.parse(foodsInfo.data['sodium'].toString());
-        zinc = zinc + double.parse(foodsInfo.data['zinc'].toString());
-        copper = copper + double.parse(foodsInfo.data['copper'].toString());
-        vitA = vitA + double.parse(foodsInfo.data['vitA'].toString());
-        vitB1 = vitB1 + double.parse(foodsInfo.data['vitB1'].toString());
-        vitB2 = vitB2 + double.parse(foodsInfo.data['vitB2'].toString());
-        vitB3 = vitB3 + double.parse(foodsInfo.data['vitB3'].toString());
-        vitB5 = vitB5 + double.parse(foodsInfo.data['vitB5'].toString());
-        vitB6 = vitB6 + double.parse(foodsInfo.data['vitB6'].toString());
-        vitB7 = vitB7 + double.parse(foodsInfo.data['vitB7'].toString());
-        vitB9 = vitB9 + double.parse(foodsInfo.data['vitB9'].toString());
-        vitB12 = vitB12 + double.parse(foodsInfo.data['vitB12'].toString());
-        vitC = vitC + double.parse(foodsInfo.data['vitC'].toString());
-        vitD = vitD + double.parse(foodsInfo.data['vitD'].toString());
-        vitE = vitE + double.parse(foodsInfo.data['vitE'].toString());
-        vitK = vitK + double.parse(foodsInfo.data['vitK'].toString());
-        omega = omega + double.parse(foodsInfo.data['omega'].toString());
-
-      }
-      Map<String,dynamic> nut_info;
-      nut_info={
-        'kcal':kcal,
-        'protein':protein,
-        "fat": fat,
-        "carbo": carbo,
-        "sugar": sugar,
-        "chole": chole,
-        "fiber": fiber,
-        "calcium": calcium,
-        "iron": iron,
-        "magne": magne,
-        "potass": potass,
-        "sodium": sodium,
-        "zinc": zinc,
-        "copper": copper,
-        "vitA": vitA,
-        "vitB1": vitB1,
-        "vitB2": vitB2,
-        "vitB3": vitB3,
-        "vitB5": vitB5,
-        "vitB6": vitB6,
-        "vitB7": vitB7,
-        "vitB9": vitB9,
-        "vitB12": vitB12,
-        "vitC": vitC,
-        "vitD": vitD,
-        "vitE": vitE,
-        "vitK": vitK,
-        "omega": omega,
+      var supinfo = await dio.get('${Url}supplements/info', queryParameters: {"sup_name": name});
+      Map<String,dynamic> supnut_info;
+      supnut_info={
+        "vitA": double.parse(supinfo.data['vitA'].toString()),
+        "vitB1": double.parse(supinfo.data['vitB1'].toString()),
+        "vitB2": double.parse(supinfo.data['vitB2'].toString()),
+        "vitB3": double.parse(supinfo.data['vitB3'].toString()),
+        "vitB5": double.parse(supinfo.data['vitB5'].toString()),
+        "vitB6": double.parse(supinfo.data['vitB6'].toString()),
+        "vitB7": double.parse(supinfo.data['vitB7'].toString()),
+        "vitB9": double.parse(supinfo.data['vitB9'].toString()),
+        "vitB12": double.parse(supinfo.data['vitB12'].toString()),
+        "vitC": double.parse(supinfo.data['vitC'].toString()),
+        "vitD": double.parse(supinfo.data['vitD'].toString()),
+        "vitE": double.parse(supinfo.data['vitE'].toString()),
+        "vitK": double.parse(supinfo.data['vitK'].toString()),
+        "omega": double.parse(supinfo.data['omega'].toString()),
         //영양소 추가
       };
       print("nut_info data: "+nut_info['kcal'].toString());
-      return nut_info;
-    }catch(e){
+      return supnut_info;
+    }
+    catch(e){
       Map<String,dynamic> nut_info;
       nut_info={
-        'kcal':kcal,
-        'protein':protein,
-        "fat": fat,
-        "carbo": carbo,
-        "sugar": sugar,
-        "chole": chole,
-        "fiber": fiber,
-        "calcium": calcium,
-        "iron": iron,
-        "magne": magne,
-        "potass": potass,
-        "sodium": sodium,
-        "zinc": zinc,
-        "copper": copper,
-        "vitA": vitA,
-        "vitB1": vitB1,
-        "vitB2": vitB2,
-        "vitB3": vitB3,
-        "vitB5": vitB5,
-        "vitB6": vitB6,
-        "vitB7": vitB7,
-        "vitB9": vitB9,
-        "vitB12": vitB12,
-        "vitC": vitC,
-        "vitD": vitD,
-        "vitE": vitE,
-        "vitK": vitK,
-        "omega": omega,
-        //영양소 추가
+        "vitA": 0.0,
+        "vitB1": 0.0,
+        "vitB2": 0.0,
+        "vitB3": 0.0,
+        "vitB5": 0.0,
+        "vitB6": 0.0,
+        "vitB7": 0.0,
+        "vitB9": 0.0,
+        "vitB12": 0.0,
+        "vitC": 0.0,
+        "vitD": 0.0,
+        "vitE": 0.0,
+        "vitK": 0.0,
+        "omega": 0.0,
       };
       print("nut_info data: "+nut_info['kcal'].toString());
       return nut_info;
     }
-
-
   }
 }
 
