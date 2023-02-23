@@ -81,6 +81,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  custom_radio_grouped_button:
+    dependency: "direct main"
+    description:
+      name: custom_radio_grouped_button
+      sha256: b49a4599253e8b1207460b48a36cf3e6cb0c92e015a98e3f7aad76ccbe783c16
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.2+2"
   dio:
     dependency: "direct main"
     description:

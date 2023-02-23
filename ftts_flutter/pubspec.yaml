@@ -47,6 +47,7 @@ dependencies:
   url_launcher: ^6.1.9
   flutter_cache_manager: ^3.3.0
   provider: ^6.0.5
+  custom_radio_grouped_button: any
 
 
 dev_dependencies:
