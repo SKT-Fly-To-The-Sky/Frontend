@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -10,13 +9,11 @@ import '../model/ConnectServer.dart';
 import 'HomeScreen.dart';
 import 'MenuScreen.dart';
 import 'SupplementsGraphScreen.dart';
-import '../widget/SupplementsGraph.dart';
 import '../widget/CustomCheckBox.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:provider/provider.dart';
-
 
 class JsonListView extends StatefulWidget {
   @override
@@ -147,8 +144,7 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _supplementProduct=Provider.of<supplementProvider>(context);
-
+    _supplementProduct = Provider.of<supplementProvider>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -163,19 +159,40 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
         String? result;
         Map<String, dynamic>? sup_nut;
 
-        //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 'fail'를 반환한다.
-
+        //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 임의의 약이름을 반환한다.
         result = await connectServer.Supplementsuploading(_image!);
-        print("result: " + result);
-        _supplementProduct.addName(result.toString());
-        print(Provider.of<supplementProvider>(context).supplementList);
-        sup_nut = await connectServer.SupplementsNutinfo(result!);
-        _supplementProduct.updatenutInfo(sup_nut);
-        print(Provider.of<supplementProvider>(context).supplementnutInfo);
+        //supplementList에 result값이 있는지 확인한다.
 
-        //추가 후 창 닫기
-        Navigator.pop(context, 'Cancel');
-
+        if (Provider.of<supplementProvider>(context, listen: false)
+                .supplementList
+                .indexOf(result) ==
+            -1) {
+          //supplementList에 result값이 없다면 list에 result를 추가한다.
+          _supplementProduct.addName(result.toString());
+          //약이름에 대한 영양정보를 받아온다.
+          try {
+            sup_nut = await connectServer.SupplementsNutinfo(result!);
+            //영양정보를 supplementnutInfo에 더한다.
+            _supplementProduct.updatenutInfo(sup_nut!);
+          } catch (e) {
+            print('영양성분 찾기 실패');
+          }
+          //창 닫기
+          Navigator.pop(context, 'Cancel');
+        } else {
+          //약이름이 이미 있다면 팝업창으로 중복된 약이 이미 있음을 알려주기
+          AlertDialog(
+            title: Text(''),
+            content: Text(result + '영양제가 중복되었습니다!'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('닫기'))
+            ],
+          );
+        }
       } else {
         print("_image is null");
       }
@@ -184,41 +201,56 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
     Widget selectbutton() {
       return Container(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            TextButton.icon(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Color(0xFF3617CE),
-                ),
-                onPressed: () {
-                  getImage(ImageSource.camera);
-                },
-                icon: Icon(Icons.camera_alt),
-                label: Text('카메라로 추가하기')),
-            TextButton.icon(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Color(0xFF3617CE),
-                ),
-                onPressed: () {
-                  getImage(ImageSource.gallery);
-                },
-                icon: Icon(Icons.image),
-                label: Text('갤러리로 추가히기')),
-            OutlinedButton.icon(
-                style: TextButton.styleFrom(
-                  foregroundColor: Color(0xFF3617CE),
-                  side: BorderSide(color: Color(0xFF3617CE), width: 2),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SupplementsHandaddScreen()));
-                },
-                icon: Icon(Icons.search_rounded),
-                label: Text('검색으로 추가하기')),
+            Container(
+              width: 190,
+              height: 35,
+              child: TextButton.icon(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Color(0xFF3617CE),
+                  ),
+                  onPressed: () {
+                    getImage(ImageSource.camera);
+                  },
+                  icon: Icon(Icons.camera_alt),
+                  label: Text('카메라로 추가하기')),
+            ),
+            SizedBox(height: 8,),
+            Container(
+                width: 190,
+                height: 35,
+                child: TextButton.icon(
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Color(0xFF3617CE),
+                    ),
+                    onPressed: () {
+                      getImage(ImageSource.gallery);
+                    },
+                    icon: Icon(Icons.image),
+                    label: Text('갤러리로 추가히기'))),
+            SizedBox(height: 8
+              ,),
+            Container(
+                width: 190,
+                height: 35,
+                child: OutlinedButton.icon(
+                    style: TextButton.styleFrom(
+                      foregroundColor: Color(0xFF3617CE),
+                      side: BorderSide(color: Color(0xFF3617CE), width: 2),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SupplementsHandaddScreen()));
+                    },
+                    icon: Icon(Icons.search_rounded),
+                    label: Text('검색으로 추가하기'))),
             Row(
               children: <Widget>[
                 Container(
@@ -290,7 +322,7 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      SupplementsGrapeScreen('fail')));
+                                      SupplementsGrapeScreen()));
                         },
                         child: Text("상세 보기"))),
               ],

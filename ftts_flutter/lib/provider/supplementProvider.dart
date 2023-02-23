@@ -42,20 +42,6 @@ class supplementProvider with ChangeNotifier {
     notifyListeners();
   }
   updatenutInfo(Map<String,dynamic> result){
-    supplementnutInfo['kcal']+=result['kcal'];
-    supplementnutInfo['protein']+=result['protein'];
-    supplementnutInfo['fat']+=result['fat'];
-    supplementnutInfo['carbo']+=result['carbo'];
-    supplementnutInfo['sugar']+=result['sugar'];
-    supplementnutInfo['chole']+=result['chole'];
-    supplementnutInfo['fiber']+=result['fiber'];
-    supplementnutInfo['calcium']+=result['calcium'];
-    supplementnutInfo['iron']+=result['iron'];
-    supplementnutInfo['magne']+=result['magne'];
-    supplementnutInfo['potass']+=result['potass'];
-    supplementnutInfo['sodium']+=result['sodium'];
-    supplementnutInfo['zinc']+=result['zinc'];
-    supplementnutInfo['copper']+=result['copper'];
     supplementnutInfo['vitA']+=result['vitA'];
     supplementnutInfo['vitB1']+=result['vitB1'];
     supplementnutInfo['vitB2']+=result['vitB2'];
@@ -70,7 +56,6 @@ class supplementProvider with ChangeNotifier {
     supplementnutInfo['vitE']+=result['vitE'];
     supplementnutInfo['vitF']+=result['vitF'];
     supplementnutInfo['omega']+=result['omega'];
-
     notifyListeners();
   }
 
