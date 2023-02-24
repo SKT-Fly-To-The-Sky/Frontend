@@ -305,17 +305,17 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
 Widget Morning() {
   return Container(
       child: Row(
-    children: [
-      Icon(
+        children: [
+          Icon(
         Icons.wb_twighlight,
         color: Colors.yellow,
       ),
-      Container(
-        width: 5,
+          Container(
+            width: 5,
       ),
-      Text(
-        "아침",
-        style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
+          Text(
+            "아침",
+            style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
       ),
     ],
   ));

@@ -13,9 +13,6 @@ class supplementProvider with ChangeNotifier {
   List<bool> dinnerSupChecked = [false];
   List<String> dinnerSupCnts = ["1정"];
 
-  // for (int i = 0; i < supplementList.length; i++) {
-  //     supplementChecked.add(false);
-  //   }
   Map<String, dynamic> supplementnutInfo = {
     'kcal': 0.0,
     'protein': 0.0,
