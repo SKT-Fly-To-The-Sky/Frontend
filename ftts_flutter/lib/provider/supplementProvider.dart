@@ -3,7 +3,15 @@ import 'package:flutter/cupertino.dart';
 class supplementProvider with ChangeNotifier {
   List<String> supplementList = ["프로바이더 테스트"];
   List<bool> supplementChecked = [false];
-  List<String> supplementPillCnts = ["1정"];
+  List<String> supplementCnts = ["1정"];
+
+  List<String> lunchSupList = ["점심약"];
+  List<bool> lunchSupChecked = [false];
+  List<String> lunchSupCnts = ["1정"];
+
+  List<String> dinnerSupList = ["저녁약"];
+  List<bool> dinnerSupChecked = [false];
+  List<String> dinnerSupCnts = ["1정"];
 
   // for (int i = 0; i < supplementList.length; i++) {
   //     supplementChecked.add(false);
@@ -43,9 +51,10 @@ class supplementProvider with ChangeNotifier {
   Map<String, dynamic> get _supplementsnutInfo => supplementnutInfo;
 
   addName(String input) {
+    // 여기에 인자로 timeDiv(아침,점심,저녁)을 추가로 더 받아야 함
     supplementList.add(input);
     supplementChecked.add(false);
-    supplementPillCnts.add("1정");
+    supplementCnts.add("1정");
     notifyListeners();
   }
 
