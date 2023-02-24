@@ -165,20 +165,23 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
 
         //supplementList에 result값이 있는지 확인한다.
 
-        if (Provider.of<supplementProvider>(context, listen: false)
-                .supplementList
-                .indexOf(result) ==
-            -1) {
+        if (Provider.of<supplementProvider>(context, listen: false).supplementList.indexOf(result) == -1) {
           //supplementList에 result값이 없다면 list에 result를 추가한다.
+
           _supplementProduct.addName(result.toString());
           //약이름에 대한 영양정보를 받아온다.
+
           try {
             sup_nut = await connectServer.SupplementsNutinfo(result!);
             //영양정보를 supplementnutInfo에 더한다.
-            _supplementProduct.updatenutInfo(sup_nut!);
+            _supplementProduct.updatenutInfo(result,sup_nut!);
           } catch (e) {
+            //예외처리용으로 우선 점심으로 처리.
+            _supplementProduct.addNameText(result,'점심','1정');
+            print(_supplementProduct.supplemetsLunchInfo);
             print('영양성분 찾기 실패');
           }
+
           //창 닫기
           Navigator.pop(context, 'Cancel');
         } else {
@@ -297,8 +300,8 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
           IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()));
+              Navigator.pushAndRemoveUntil(context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),(route)=>true);
             },
           )
         ],

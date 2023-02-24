@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:ftts_flutter/provider/supplementProvider.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/nutInfo.dart';
 import 'package:dio/dio.dart';
@@ -10,6 +11,7 @@ import 'package:intl/intl.dart';
 
 class ConnectServer {
   XFile? file;
+
   // final String Url = 'http://jeongsuri.iptime.org:10019/';
   final String Url = 'http://jeongsuri.iptime.org:10019/';
   final dio = Dio();
@@ -35,8 +37,8 @@ class ConnectServer {
         requestBody: false));
 
     //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
-    dio.options.connectTimeout=5000;
-    dio.options.receiveTimeout=5000;
+    dio.options.connectTimeout = 5000;
+    dio.options.receiveTimeout = 5000;
     try {
       DateTime date = DateTime.now();
       final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -54,9 +56,11 @@ class ConnectServer {
 
         if (classficationResult.statusCode == 200) {
           //값
-          for (int i = 0; i < int.parse(classficationResult.data['object_num'].toString()); i++)
-          {
-            foodName?.add(classficationResult.data['object'][i]['name'].toString());
+          for (int i = 0;
+              i < int.parse(classficationResult.data['object_num'].toString());
+              i++) {
+            foodName
+                ?.add(classficationResult.data['object'][i]['name'].toString());
             //영양소 값 합산
           }
         }
@@ -65,45 +69,62 @@ class ConnectServer {
     } catch (e) {
       return ['불고기'];
     }
-
   }
 
-  Future<Map<String, dynamic>> foodNutinfo(List<String> name) async{
+  Future<Map<String, dynamic>> foodNutinfo(List<String> name) async {
     DateTime date = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     String onlyDate = formatter.format(date);
-    try{for (int i = 0; i < name.length; i++) {
-      var foodsInfo = await dio.get('${Url}foods/info', queryParameters: {"food_name": name[i]});
+    try {
+      for (int i = 0; i < name.length; i++) {
+        var foodsInfo = await dio
+            .get('${Url}foods/info', queryParameters: {"food_name": name[i]});
 
-      nut_info['kcal'] = kcal + double.parse(foodsInfo.data["kcal"].toString());
-      nut_info['protein'] = protein + double.parse(foodsInfo.data['protein'].toString());
-      nut_info['fat'] = fat + double.parse(foodsInfo.data['fat'].toString());
-      nut_info['carbo'] = carbo + double.parse(foodsInfo.data['carbo'].toString());
-      nut_info['sugar'] = sugar + double.parse(foodsInfo.data['sugar'].toString());
-      nut_info['chole'] = chole + double.parse(foodsInfo.data['chole'].toString());
-      nut_info['fiber'] = fiber + double.parse(foodsInfo.data['fiber'].toString());
-      nut_info['calcium'] = calcium + double.parse(foodsInfo.data['calcium'].toString());
-      nut_info['iron'] = iron + double.parse(foodsInfo.data['iron'].toString());
-      nut_info['magne'] = magne + double.parse(foodsInfo.data['magne'].toString());
-      nut_info['potass'] = potass + double.parse(foodsInfo.data['potass'].toString());
-      nut_info['sodium'] = sodium + double.parse(foodsInfo.data['sodium'].toString());
-      nut_info['zinc'] = zinc + double.parse(foodsInfo.data['zinc'].toString());
-      nut_info['copper'] = copper + double.parse(foodsInfo.data['copper'].toString());
-    }
+        nut_info['kcal'] =
+            kcal + double.parse(foodsInfo.data["kcal"].toString());
+        nut_info['protein'] =
+            protein + double.parse(foodsInfo.data['protein'].toString());
+        nut_info['fat'] = fat + double.parse(foodsInfo.data['fat'].toString());
+        nut_info['carbo'] =
+            carbo + double.parse(foodsInfo.data['carbo'].toString());
+        nut_info['sugar'] =
+            sugar + double.parse(foodsInfo.data['sugar'].toString());
+        nut_info['chole'] =
+            chole + double.parse(foodsInfo.data['chole'].toString());
+        nut_info['fiber'] =
+            fiber + double.parse(foodsInfo.data['fiber'].toString());
+        nut_info['calcium'] =
+            calcium + double.parse(foodsInfo.data['calcium'].toString());
+        nut_info['iron'] =
+            iron + double.parse(foodsInfo.data['iron'].toString());
+        nut_info['magne'] =
+            magne + double.parse(foodsInfo.data['magne'].toString());
+        nut_info['potass'] =
+            potass + double.parse(foodsInfo.data['potass'].toString());
+        nut_info['sodium'] =
+            sodium + double.parse(foodsInfo.data['sodium'].toString());
+        nut_info['zinc'] =
+            zinc + double.parse(foodsInfo.data['zinc'].toString());
+        nut_info['copper'] =
+            copper + double.parse(foodsInfo.data['copper'].toString());
+      }
 
-    print("nut_info");
-    print(nut_info);
+      print("nut_info");
+      print(nut_info);
 
-    Map<String,dynamic> post_info={
-      "time_div":'morning',
-      "date":onlydate,
-      "time":" "
-    };
-    post_info.addAll(nut_info);
+      Map<String, dynamic> post_info = {
+        "time_div": 'morning',
+        "date": onlyDate,
+        "time": " "
+      };
+      post_info.addAll(nut_info);
 
-    dio.post('${Url}dodo/intakes/nutrients', options: Options(headers: {HttpHeaders.contentTypeHeader: "application/json"}), data: jsonEncode(post_info));
-    return nut_info;
-    }catch(e){
+      dio.post('${Url}dodo/intakes/nutrients',
+          options: Options(
+              headers: {HttpHeaders.contentTypeHeader: "application/json"}),
+          data: jsonEncode(post_info));
+      return nut_info;
+    } catch (e) {
       return nut_info;
     }
   }
@@ -126,27 +147,64 @@ class ConnectServer {
         request: false,
         requestBody: false));
     //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
-    dio.options.connectTimeout=5000;
-    dio.options.receiveTimeout=5000;
-    try{
+    dio.options.connectTimeout = 5000;
+    dio.options.receiveTimeout = 5000;
+    try {
       //post image
-      var response = await dio.post('${Url}supplements/classification', data: formData);
-      data=response.data['result'].toString();
-    }
-    catch(e){
-      data='Macrolife Naturals, Miracle Reds, Superfood, Goji, Pomegranate,  Acai,  Mangosteen, 0.3 oz (9.5 g)';
+      var response =
+          await dio.post('${Url}supplements/classification', data: formData);
+      data = response.data['result'].toString();
+    } catch (e) {
+      data =
+          'Macrolife Naturals, Miracle Reds, Superfood, Goji, Pomegranate,  Acai,  Mangosteen, 0.3 oz (9.5 g)';
     }
     return data;
   }
 
+  //1안
+  Future<String> SupplementTime(String name) async {
+    //log 설정
+    dio.interceptors.add(LogInterceptor(
+        responseBody: true,
+        error: true,
+        requestHeader: false,
+        responseHeader: false,
+        request: false,
+        requestBody: false));
+    //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
+    dio.options.connectTimeout = 5000;
+    dio.options.receiveTimeout = 5000;
+    String Time = '';
+    try {
+      var supinfo = await dio
+          .get('${Url}supplements/info', queryParameters: {"sup_name": name});
+      Time = supinfo.data['add_eat_time'];
+      return Time;
+    } catch (e) {
+      return '아침';
+    }
+  }
 
-  Future<Map<String, dynamic>> SupplementsNutinfo(String name) async{
+  Future<Map<String, dynamic>> SupplementsNutinfo(String name) async {
     print('SupplementsNutinfo');
-    try{
-      var supinfo = await dio.get('${Url}supplements/info', queryParameters: {"sup_name": name});
-      Map<String,dynamic> supnut_info;
-      //Provider.of<supplementProvider>(context,listen:false).supplement
-      supnut_info={
+
+    //log 설정
+    dio.interceptors.add(LogInterceptor(
+        responseBody: true,
+        error: true,
+        requestHeader: false,
+        responseHeader: false,
+        request: false,
+        requestBody: false));
+    //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
+    dio.options.connectTimeout = 5000;
+    dio.options.receiveTimeout = 5000;
+    try {
+      var supinfo = await dio
+          .get('${Url}supplements/info', queryParameters: {"sup_name": name});
+      Map<String, dynamic> supnut_info;
+
+      supnut_info = {
         "vitA": double.parse(supinfo.data['vitA'].toString()),
         "vitB1": double.parse(supinfo.data['vitB1'].toString()),
         "vitB2": double.parse(supinfo.data['vitB2'].toString()),
@@ -161,15 +219,15 @@ class ConnectServer {
         "vitE": double.parse(supinfo.data['vitE'].toString()),
         "vitK": double.parse(supinfo.data['vitK'].toString()),
         "omega": double.parse(supinfo.data['omega'].toString()),
-        //영양소 추가
+        "Time": supinfo.data['add_eat_time'].toString()
       };
-     // supplementProvider
-      print("nut_info data: "+nut_info['kcal'].toString());
+
+      // supplementProvider
+      print("nut_info data: " + nut_info['kcal'].toString());
       return supnut_info;
-    }
-    catch(e){
-      Map<String,dynamic> nut_info;
-      nut_info={
+    } catch (e) {
+      Map<String, dynamic> nut_info;
+      nut_info = {
         "vitA": 0.0,
         "vitB1": 0.0,
         "vitB2": 0.0,
@@ -184,11 +242,10 @@ class ConnectServer {
         "vitE": 0.0,
         "vitK": 0.0,
         "omega": 0.0,
+        "Time": '아침'
       };
-      print("nut_info data: "+nut_info['kcal'].toString());
+      print("nut_info data: " + nut_info['kcal'].toString());
       return nut_info;
     }
   }
 }
-
-

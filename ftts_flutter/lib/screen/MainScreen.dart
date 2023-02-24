@@ -54,16 +54,16 @@ class _MainScreenState extends State<MainScreen> {
           leading: IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MenuScreen()));
+              Navigator.pushAndRemoveUntil(context,
+                  MaterialPageRoute(builder: (context) => MenuScreen()),(route)=>true);
             },
           ),
           actions: [
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()));
+                Navigator.pushAndRemoveUntil(context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),(route)=>true);
               },
             )
           ],

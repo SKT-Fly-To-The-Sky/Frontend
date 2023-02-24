@@ -106,16 +106,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget SubMenuItem() {
-    final List<String> text = ["식단 기록하기", "영양제 챙겨먹기", "운동하러 가기"];
+    //final List<String> text = ["식단 기록하기", "영양제 챙겨먹기", "운동하러 가기"];
+    final List<String> text = ["식단 기록하기", "영양제 챙겨먹기"];
     final List<Icon> icons = [
       Icon(Icons.restaurant, color: Colors.yellow[800]),
       Icon(Icons.medication_outlined, color: Colors.blue),
-      Icon(Icons.fitness_center, color: Colors.grey[700]),
+      //Icon(Icons.fitness_center, color: Colors.grey[700]),
     ];
     final List<Widget> navigations = [
       MainScreen(),
       SupplementsMainScreen(),
-      HomeScreen(),
+      //HomeScreen(),
     ];
 
     return Container(
@@ -140,8 +141,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: ((context) => navigations[i])));
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                      builder: ((context) => navigations[i])),(route)=>true);
                 },
                 label: Text(
                   text[i],
