@@ -69,7 +69,7 @@ class _DetailGraphState extends State<DetailGraph> {
     List<VBarChartModel> barChartData = [];
     List<VBarChartModel> barChartData2 = [];
 
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 5; i++) {
       barChartData.add(VBarChartModel(
           index: i,
           colors: setColor(nutPercent[nutName[i]]!),
@@ -79,7 +79,7 @@ class _DetailGraphState extends State<DetailGraph> {
           tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
           label: nutKor[nutName[i]]));
     }
-    for (int i = 6; i < nutName.length; i++) {
+    for (int i = 5; i < nutName.length; i++) {
       barChartData2.add(VBarChartModel(
           index: i,
           colors: setColor(nutPercent[nutName[i]]!),
@@ -99,7 +99,7 @@ class _DetailGraphState extends State<DetailGraph> {
         child: Row(
           children: [
             Container(
-                width: screenWidth * 0.50,
+                width: screenWidth * 0.46,
                 child: VerticalBarchart(
                     background: Colors.transparent,
                     labelColor: Colors.black,
@@ -110,20 +110,22 @@ class _DetailGraphState extends State<DetailGraph> {
                     barStyle: BarStyle.DEFAULT,
                     barSize: 12,
                     maxX: 100,
+                    tooltipSize: 45,
                     showLegend: false)),
             Container(
-                width: screenWidth * 0.50,
+                width: screenWidth * 0.48,
                 child: VerticalBarchart(
                   background: Colors.transparent,
                   labelColor: Colors.black,
-                  labelSizeFactor: 0.48,
+                  labelSizeFactor: 0.50,
                   tooltipColor: Colors.black,
                   data: barChartData2,
                   showBackdrop: true,
                   barStyle: BarStyle.DEFAULT,
                   barSize: 12,
                   maxX: 100,
-                  showLegend: true,
+                  showLegend: false,
+                  tooltipSize: 45,
                   legend: [
                     Vlegend(isSquare: false, color: Colors.green, text: "적정"),
                     Vlegend(isSquare: false, color: Colors.red, text: "과잉"),

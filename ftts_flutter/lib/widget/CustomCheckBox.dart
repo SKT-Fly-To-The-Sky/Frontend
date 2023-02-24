@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
+import 'package:provider/provider.dart';
+import '../provider/supplementProvider.dart';
 
 class CheckBoxListView extends StatefulWidget {
   @override
@@ -9,9 +11,9 @@ class CheckBoxListView extends StatefulWidget {
 }
 
 // 아침
-final List<String> morningPillNames = ["아이즈업 컴포트", "아이즈업 컴포트2"];
-final List<String> morningPillCnts = ["1정", "1정"];
-List<bool> _morningChecked = [false, false];
+final List<String> morningPillNames = ["아이즈업 컴포트"];
+final List<String> morningPillCnts = ["1정"];
+List<bool> _morningChecked = [false];
 
 // 점심
 final List<String> lunchPillNames = ["Thorne 비타민 B-Complex"];
@@ -27,20 +29,30 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    int sum = _morningChecked.where((e) => e == true).length +
-        _lunchChecked.where((e) => e == true).length +
-        _dinnerChecked.where((e) => e == true).length;
-    int total = morningPillNames.length +
-        lunchPillNames.length +
-        dinnerPillNames.length;
+    var provide = Provider.of<supplementProvider>(context, listen: false);
+    List<String> providerPillNames = provide.supplementList;
+    List<bool> providerPillChecked = provide.supplementChecked;
+    List<String> providerPillCnts = provide.supplementPillCnts;
+
+    int sum = providerPillChecked.where((e) => e == true).length;
+    int total = providerPillNames.length;
     double percent = sum / total * 100;
+    print(sum);
+    print(total);
+    print(percent);
+    // int sum = _morningChecked.where((e) => e == true).length +
+    //     _lunchChecked.where((e) => e == true).length +
+    //     _dinnerChecked.where((e) => e == true).length;
+    // int total = morningPillNames.length +
+    //     lunchPillNames.length +
+    //     dinnerPillNames.length;
+
     List<VBarChartModel> barChartData = [
       VBarChartModel(
         index: 0,
         colors: [Color(0xFF3617CE), Colors.teal],
-        jumlah: percent,
-        tooltip: "$percent%",
-        // label: '칼로리'
+        jumlah: percent.ceil().toDouble(),
+        tooltip: "${percent.ceil()}%",
       ),
     ];
     return Container(
@@ -75,7 +87,7 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: morningPillNames.length,
+                  itemCount: providerPillNames.length,
                   itemBuilder: (context, i) {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 10, top: 5),
@@ -97,9 +109,9 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      _morningChecked[i]
+                                      providerPillChecked[i]
                                           ? Text(
-                                              morningPillNames[i],
+                                              providerPillNames[i],
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   color: Colors.grey,
@@ -107,11 +119,11 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                                       .lineThrough),
                                             )
                                           : Text(
-                                              morningPillNames[i],
+                                              providerPillNames[i],
                                               style: TextStyle(fontSize: 18),
                                             ),
                                       Text(
-                                        morningPillCnts[i],
+                                        providerPillCnts[i],
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.grey),
                                       ),
@@ -121,14 +133,13 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                 child: RoundCheckBox(
                                   onTap: (selected) {
                                     setState(() {
-                                      _morningChecked[i] = !_morningChecked[i];
-                                      percent = sum / total;
-                                      print(sum);
-                                      print(_morningChecked);
-                                      print(percent);
+                                      providerPillChecked[i] =
+                                          !providerPillChecked[i];
+                                      // _morningChecked[i] = !_morningChecked[i];
                                     });
                                   },
-                                  isChecked: _morningChecked[i] ? true : false,
+                                  isChecked:
+                                      providerPillChecked[i] ? true : false,
                                   borderColor: Color.fromARGB(255, 54, 23, 206),
                                   checkedColor:
                                       Color.fromARGB(255, 54, 23, 206),
@@ -148,149 +159,7 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                   },
                 ),
                 Lunch(),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: lunchPillNames.length,
-                  itemBuilder: (context, i) {
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 10, top: 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      height: 70,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                  width: screenWidth * 0.7,
-                                  margin: const EdgeInsets.only(left: 15),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      _lunchChecked[i]
-                                          ? Text(
-                                              lunchPillNames[i],
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.grey,
-                                                  decoration: TextDecoration
-                                                      .lineThrough),
-                                            )
-                                          : Text(
-                                              lunchPillNames[i],
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                      Text(
-                                        lunchPillCnts[i],
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.grey),
-                                      ),
-                                    ],
-                                  )),
-                              Container(
-                                child: RoundCheckBox(
-                                  onTap: (selected) {
-                                    setState(() {
-                                      _lunchChecked[i] = !_lunchChecked[i];
-                                    });
-                                  },
-                                  isChecked: _lunchChecked[i] ? true : false,
-                                  borderColor: Color.fromARGB(255, 54, 23, 206),
-                                  checkedColor:
-                                      Color.fromARGB(255, 54, 23, 206),
-                                  uncheckedColor: Colors.white,
-                                  checkedWidget:
-                                      Icon(Icons.done, color: Colors.white),
-                                  uncheckedWidget: Icon(Icons.done,
-                                      color: Color.fromARGB(255, 54, 23, 206)),
-                                  animationDuration: Duration(seconds: 0),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                ),
                 Dinner(),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: dinnerPillNames.length,
-                  itemBuilder: (context, i) {
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 10, top: 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      height: 70,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                  width: screenWidth * 0.7,
-                                  margin: const EdgeInsets.only(left: 15),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      _dinnerChecked[i]
-                                          ? Text(
-                                              dinnerPillNames[i],
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.grey,
-                                                  decoration: TextDecoration
-                                                      .lineThrough),
-                                            )
-                                          : Text(
-                                              dinnerPillNames[i],
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                      Text(
-                                        dinnerPillCnts[i],
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.grey),
-                                      ),
-                                    ],
-                                  )),
-                              Container(
-                                child: RoundCheckBox(
-                                  onTap: (selected) {
-                                    setState(() {
-                                      _dinnerChecked[i] = !_dinnerChecked[i];
-                                    });
-                                  },
-                                  isChecked: _dinnerChecked[i] ? true : false,
-                                  borderColor: Color.fromARGB(255, 54, 23, 206),
-                                  checkedColor:
-                                      Color.fromARGB(255, 54, 23, 206),
-                                  uncheckedColor: Colors.white,
-                                  checkedWidget:
-                                      Icon(Icons.done, color: Colors.white),
-                                  uncheckedWidget: Icon(Icons.done,
-                                      color: Color.fromARGB(255, 54, 23, 206)),
-                                  animationDuration: Duration(seconds: 0),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                ),
               ],
             ),
           ),
