@@ -17,8 +17,6 @@ class ImageUploader extends StatefulWidget {
   State<ImageUploader> createState() => _ImageUploaderState();
 }
 
-// XFile? _image;
-
 class _ImageUploaderState extends State<ImageUploader> {
   XFile? _image;
   final picker = ImagePicker();
