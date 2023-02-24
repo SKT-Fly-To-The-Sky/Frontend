@@ -374,4 +374,5 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
         )),
       );
     }
+
 }

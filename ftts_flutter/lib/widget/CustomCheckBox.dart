@@ -10,42 +10,33 @@ class CheckBoxListView extends StatefulWidget {
   _CheckBoxListViewState createState() => _CheckBoxListViewState();
 }
 
-// 아침
-final List<String> morningPillNames = ["아이즈업 컴포트"];
-final List<String> morningPillCnts = ["1정"];
-List<bool> _morningChecked = [false];
-
-// 점심
-final List<String> lunchPillNames = ["Thorne 비타민 B-Complex"];
-final List<String> lunchPillCnts = ["1정"];
-List<bool> _lunchChecked = [false];
-
-// 저녁
-final List<String> dinnerPillNames = ["Thorne 칼슘-마그네슘"];
-final List<String> dinnerPillCnts = ["1정"];
-List<bool> _dinnerChecked = [false];
-
 class _CheckBoxListViewState extends State<CheckBoxListView> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     var provide = Provider.of<supplementProvider>(context, listen: false);
-    List<String> providerPillNames = provide.supplementList;
-    List<bool> providerPillChecked = provide.supplementChecked;
-    List<String> providerPillCnts = provide.supplementPillCnts;
 
-    int sum = providerPillChecked.where((e) => e == true).length;
-    int total = providerPillNames.length;
+    List<String> morningSupNames = provide.supplementList;
+    List<bool> morningSupChecked = provide.supplementChecked;
+    List<String> morningSupCnts = provide.supplementCnts;
+
+    List<String> lunchSupNames = provide.lunchSupList;
+    List<bool> lunchSupChecked = provide.lunchSupChecked;
+    List<String> lunchSupCnts = provide.lunchSupCnts;
+
+    List<String> dinnerSupNames = provide.dinnerSupList;
+    List<bool> dinnerSupChecked = provide.dinnerSupChecked;
+    List<String> dinnerSupCnts = provide.dinnerSupCnts;
+
+    // int sum = morningSupChecked.where((e) => e == true).length;
+    // int total = morningSupNames.length;
+
+    int sum = morningSupChecked.where((e) => e == true).length +
+        lunchSupChecked.where((e) => e == true).length +
+        dinnerSupChecked.where((e) => e == true).length;
+    int total =
+        morningSupNames.length + lunchSupNames.length + dinnerSupNames.length;
     double percent = sum / total * 100;
-    print(sum);
-    print(total);
-    print(percent);
-    // int sum = _morningChecked.where((e) => e == true).length +
-    //     _lunchChecked.where((e) => e == true).length +
-    //     _dinnerChecked.where((e) => e == true).length;
-    // int total = morningPillNames.length +
-    //     lunchPillNames.length +
-    //     dinnerPillNames.length;
 
     List<VBarChartModel> barChartData = [
       VBarChartModel(
@@ -87,7 +78,7 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: providerPillNames.length,
+                  itemCount: morningSupNames.length,
                   itemBuilder: (context, i) {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 10, top: 5),
@@ -109,9 +100,9 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      providerPillChecked[i]
+                                      morningSupChecked[i]
                                           ? Text(
-                                              providerPillNames[i],
+                                              morningSupNames[i],
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   color: Colors.grey,
@@ -119,11 +110,11 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                                       .lineThrough),
                                             )
                                           : Text(
-                                              providerPillNames[i],
+                                              morningSupNames[i],
                                               style: TextStyle(fontSize: 18),
                                             ),
                                       Text(
-                                        providerPillCnts[i],
+                                        morningSupCnts[i],
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.grey),
                                       ),
@@ -133,13 +124,12 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                 child: RoundCheckBox(
                                   onTap: (selected) {
                                     setState(() {
-                                      providerPillChecked[i] =
-                                          !providerPillChecked[i];
-                                      // _morningChecked[i] = !_morningChecked[i];
+                                      morningSupChecked[i] =
+                                          !morningSupChecked[i];
                                     });
                                   },
                                   isChecked:
-                                      providerPillChecked[i] ? true : false,
+                                      morningSupChecked[i] ? true : false,
                                   borderColor: Color.fromARGB(255, 54, 23, 206),
                                   checkedColor:
                                       Color.fromARGB(255, 54, 23, 206),
@@ -159,7 +149,150 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                   },
                 ),
                 Lunch(),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: lunchSupNames.length,
+                  itemBuilder: (context, i) {
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 10, top: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      height: 70,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                  width: screenWidth * 0.7,
+                                  margin: const EdgeInsets.only(left: 15),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      morningSupChecked[i]
+                                          ? Text(
+                                              lunchSupNames[i],
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.grey,
+                                                  decoration: TextDecoration
+                                                      .lineThrough),
+                                            )
+                                          : Text(
+                                              lunchSupNames[i],
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                      Text(
+                                        lunchSupCnts[i],
+                                        style: TextStyle(
+                                            fontSize: 14, color: Colors.grey),
+                                      ),
+                                    ],
+                                  )),
+                              Container(
+                                child: RoundCheckBox(
+                                  onTap: (selected) {
+                                    setState(() {
+                                      lunchSupChecked[i] = !lunchSupChecked[i];
+                                    });
+                                  },
+                                  isChecked: lunchSupChecked[i] ? true : false,
+                                  borderColor: Color.fromARGB(255, 54, 23, 206),
+                                  checkedColor:
+                                      Color.fromARGB(255, 54, 23, 206),
+                                  uncheckedColor: Colors.white,
+                                  checkedWidget:
+                                      Icon(Icons.done, color: Colors.white),
+                                  uncheckedWidget: Icon(Icons.done,
+                                      color: Color.fromARGB(255, 54, 23, 206)),
+                                  animationDuration: Duration(seconds: 0),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
                 Dinner(),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: dinnerSupNames.length,
+                  itemBuilder: (context, i) {
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 10, top: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      height: 70,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                  width: screenWidth * 0.7,
+                                  margin: const EdgeInsets.only(left: 15),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      dinnerSupChecked[i]
+                                          ? Text(
+                                              dinnerSupNames[i],
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.grey,
+                                                  decoration: TextDecoration
+                                                      .lineThrough),
+                                            )
+                                          : Text(
+                                              dinnerSupNames[i],
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                      Text(
+                                        dinnerSupCnts[i],
+                                        style: TextStyle(
+                                            fontSize: 14, color: Colors.grey),
+                                      ),
+                                    ],
+                                  )),
+                              Container(
+                                child: RoundCheckBox(
+                                  onTap: (selected) {
+                                    setState(() {
+                                      dinnerSupChecked[i] =
+                                          !dinnerSupChecked[i];
+                                    });
+                                  },
+                                  isChecked: dinnerSupChecked[i] ? true : false,
+                                  borderColor: Color.fromARGB(255, 54, 23, 206),
+                                  checkedColor:
+                                      Color.fromARGB(255, 54, 23, 206),
+                                  uncheckedColor: Colors.white,
+                                  checkedWidget:
+                                      Icon(Icons.done, color: Colors.white),
+                                  uncheckedWidget: Icon(Icons.done,
+                                      color: Color.fromARGB(255, 54, 23, 206)),
+                                  animationDuration: Duration(seconds: 0),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
