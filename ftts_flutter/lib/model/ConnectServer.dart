@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:ftts_flutter/provider/supplementProvider.dart';
+
 import '../utils/nutInfo.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -143,6 +145,7 @@ class ConnectServer {
     try{
       var supinfo = await dio.get('${Url}supplements/info', queryParameters: {"sup_name": name});
       Map<String,dynamic> supnut_info;
+      //Provider.of<supplementProvider>(context,listen:false).supplement
       supnut_info={
         "vitA": double.parse(supinfo.data['vitA'].toString()),
         "vitB1": double.parse(supinfo.data['vitB1'].toString()),
@@ -160,6 +163,7 @@ class ConnectServer {
         "omega": double.parse(supinfo.data['omega'].toString()),
         //영양소 추가
       };
+     // supplementProvider
       print("nut_info data: "+nut_info['kcal'].toString());
       return supnut_info;
     }
