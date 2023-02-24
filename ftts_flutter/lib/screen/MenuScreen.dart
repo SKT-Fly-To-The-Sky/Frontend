@@ -55,17 +55,10 @@ class MenuScreen extends StatelessWidget {
               margin: EdgeInsets.all(15),
               child: Row(
                 children: [
-                  // IconButton(
-                  //     onPressed: () {
-                  //       Navigator.of(context).push(MaterialPageRoute(
-                  //           builder: ((context) => const MainScreen())));
-                  //     },
-                  //     icon: const Icon(Icons.restaurant)),
-                  // Text("식단")
                   TextButton.icon(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => const MainScreen())));
+                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                            builder: ((context) => const MainScreen())),(route)=>true);
                       },
                       style:
                           TextButton.styleFrom(foregroundColor: Colors.black),
@@ -76,8 +69,8 @@ class MenuScreen extends StatelessWidget {
                   ),
                   TextButton.icon(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => SupplementsMainScreen())));
+                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                            builder: ((context) => SupplementsMainScreen())),(route)=>true);
                       },
                       style:
                           TextButton.styleFrom(foregroundColor: Colors.black),
