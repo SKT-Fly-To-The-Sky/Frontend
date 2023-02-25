@@ -141,8 +141,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                      builder: ((context) => navigations[i])),(route)=>true);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: ((context) => navigations[i])));
                 },
                 label: Text(
                   text[i],

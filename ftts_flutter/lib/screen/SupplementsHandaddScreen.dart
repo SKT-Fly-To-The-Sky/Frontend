@@ -174,9 +174,24 @@ class SerchDelegate extends SearchDelegate {
                                         print(provide.supplemetsLunchInfo);
                                         print('영양성분 찾기 실패');
                                       }
+                                      Navigator.of(context).popUntil((route) => route.isFirst);
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SupplementsMainScreen()));
                                     }
                                     //Navigator.pop(context);
-                                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => SupplementsMainScreen()), (route) => true);
+                                   else{
+                                      //약이름이 이미 있다면 팝업창으로 중복된 약이 이미 있음을 알려주기
+                                      AlertDialog(
+                                        title: Text(''),
+                                        content: Text(query + '영양제가 중복되었습니다!'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('닫기'))
+                                        ],
+                                      );
+                                    }
                                   },
                                   child: Text('네')),
                               TextButton(

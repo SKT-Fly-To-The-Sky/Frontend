@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ftts_flutter/screen/HomeScreen.dart';
 import '../utils/TMapPlugin.dart';
 import 'MainScreen.dart';
 import 'SupplementsMainScreen.dart';
@@ -57,8 +58,8 @@ class MenuScreen extends StatelessWidget {
                 children: [
                   TextButton.icon(
                       onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                            builder: ((context) => const MainScreen())),(route)=>true);
+                        Navigator.of(context).popUntil((route) => route.isFirst);
+                        Navigator.of(context).push(MaterialPageRoute(builder: ((context) => const MainScreen())));
                       },
                       style:
                           TextButton.styleFrom(foregroundColor: Colors.black),
@@ -69,8 +70,9 @@ class MenuScreen extends StatelessWidget {
                   ),
                   TextButton.icon(
                       onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                            builder: ((context) => SupplementsMainScreen())),(route)=>true);
+                        Navigator.of(context).popUntil((route) => route.isFirst);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => SupplementsMainScreen())));
                       },
                       style:
                           TextButton.styleFrom(foregroundColor: Colors.black),

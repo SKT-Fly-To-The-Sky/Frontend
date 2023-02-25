@@ -4,20 +4,9 @@ class supplementProvider with ChangeNotifier {
 
   List<String> supplementList = ["약이름 아침","약이름 점심","약이름 저녁"];
 
-  // List<bool> supplementChecked = [false];
-  // List<String> supplementCnts = ["1정"];
-  //
-  // List<String> lunchSupList = ["점심약"];
-  // List<bool> lunchSupChecked = [false];
-  // List<String> lunchSupCnts = ["1정"];
-  //
-  // List<String> dinnerSupList = ["저녁약"];
-  // List<bool> dinnerSupChecked = [false];
-  // List<String> dinnerSupCnts = ["1정"];
-
-  List<dynamic> supplemetsMorningInfo=[['약이름 아침',false,'1회 섭취량']];
-  List<dynamic> supplemetsLunchInfo=[['약이름 점심',false,'1회 섭취량']];
-  List<dynamic> supplemetsDinnerInfo=[['약이름 저녁',false,'1회 섭취량']];
+  List<dynamic> supplemetsMorningInfo=[['약이름 아침',false,'1정']];
+  List<dynamic> supplemetsLunchInfo=[['약이름 점심',false,'1정']];
+  List<dynamic> supplemetsDinnerInfo=[['약이름 저녁',false,'1정']];
 
   Map<String, dynamic> supplementnutInfo = {
     'kcal': 0.0,
