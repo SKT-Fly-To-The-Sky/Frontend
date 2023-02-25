@@ -3,6 +3,8 @@ import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 import 'package:flutter/material.dart';
 import '../model/ConnectServer.dart';
+import 'package:provider/provider.dart';
+import '../provider/dateProvider.dart';
 
 final List<String> nutName = [
   'kcal',
@@ -52,18 +54,22 @@ class _DetailGraphState extends State<DetailGraph> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    var graphprovider = Provider.of<graphProvider>(context, listen: false);
 
-    Map<String, double> nutPercent = {
-      'kcal': 52,
-      'carbo': 52,
-      'protein': 28,
-      'fat': 25,
-      'sugar': 25,
-      'chole': 25,
-      'fiber': 25,
-      'calcium': 25,
-      'iron': 25,
-      'magne': 25,
+    Map<String, dynamic>? _onedayInfo;
+    Map<String, double>? _nutPercent;
+    _onedayInfo = graphprovider.oneday_info;
+    _nutPercent = {
+      'kcal': _onedayInfo!['kcal']!.toDouble(),
+      'carbo': _onedayInfo!['carbo']!.toDouble(),
+      'protein': _onedayInfo!['protein']!.toDouble(),
+      'fat': _onedayInfo!['fat']!.toDouble(),
+      'sugar': _onedayInfo!['sugar']!.toDouble(),
+      'chole': _onedayInfo!['chole']!.toDouble(),
+      'fiber': _onedayInfo!['fiber']!.toDouble(),
+      'calcium': _onedayInfo!['calcium']!.toDouble(),
+      'iron': _onedayInfo!['iron']!.toDouble(),
+      'magne': _onedayInfo!['magne']!.toDouble(),
     };
 
     List<VBarChartModel> barChartData = [];
@@ -72,21 +78,21 @@ class _DetailGraphState extends State<DetailGraph> {
     for (int i = 0; i < 5; i++) {
       barChartData.add(VBarChartModel(
           index: i,
-          colors: setColor(nutPercent[nutName[i]]!),
-          jumlah: (nutPercent[nutName[i]]! >= 100)
+          colors: setColor(_nutPercent[nutName[i]]!),
+          jumlah: (_nutPercent[nutName[i]]! >= 100)
               ? (100)
-              : (nutPercent[nutName[i]]!),
-          tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
+              : (_nutPercent[nutName[i]]!),
+          tooltip: "${_nutPercent[nutName[i]]!.toInt()}%",
           label: nutKor[nutName[i]]));
     }
     for (int i = 5; i < nutName.length; i++) {
       barChartData2.add(VBarChartModel(
           index: i,
-          colors: setColor(nutPercent[nutName[i]]!),
-          jumlah: (nutPercent[nutName[i]]! >= 100)
+          colors: setColor(_nutPercent[nutName[i]]!),
+          jumlah: (_nutPercent[nutName[i]]! >= 100)
               ? (100)
-              : (nutPercent[nutName[i]]!),
-          tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
+              : (_nutPercent[nutName[i]]!),
+          tooltip: "${_nutPercent[nutName[i]]!.toInt()}%",
           label: nutKor[nutName[i]]));
     }
 
