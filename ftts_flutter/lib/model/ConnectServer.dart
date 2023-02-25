@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../utils/nutInfo.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -199,11 +198,11 @@ class ConnectServer {
     //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
     dio.options.connectTimeout = 5000;
     dio.options.receiveTimeout = 5000;
+
     try {
       var supinfo = await dio
           .get('${Url}supplements/info', queryParameters: {"sup_name": name});
       Map<String, dynamic> supnut_info;
-
       supnut_info = {
         "vitA": double.parse(supinfo.data['vitA'].toString()),
         "vitB1": double.parse(supinfo.data['vitB1'].toString()),
@@ -221,8 +220,6 @@ class ConnectServer {
         "omega": double.parse(supinfo.data['omega'].toString()),
         "Time": supinfo.data['add_eat_time'].toString()
       };
-
-      // supplementProvider
       print("nut_info data: " + nut_info['kcal'].toString());
       return supnut_info;
     } catch (e) {

@@ -19,6 +19,7 @@ double sodium = 0;
 double zinc = 0;
 double copper = 0;
 
+// 이미지 하나 당 영양성분
 Map<String, dynamic> nut_info = {
   'time_div': 'morning',
   'date': onlydate,
