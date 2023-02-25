@@ -17,35 +17,55 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
     var provide = Provider.of<supplementProvider>(context, listen: false);
 
     List<String> morningSupNames = provide.supplementList;
-    List<bool> morningSupChecked = provide.supplementChecked;
-    List<String> morningSupCnts = provide.supplementCnts;
+    // List<bool> morningSupChecked = provide.supplementChecked;
+    // List<String> morningSupCnts = provide.supplementCnts;
+    //
+    // List<String> lunchSupNames = provide.lunchSupList;
+    // List<bool> lunchSupChecked = provide.lunchSupChecked;
+    // List<String> lunchSupCnts = provide.lunchSupCnts;
+    //
+    // List<String> dinnerSupNames = provide.dinnerSupList;
+    // List<bool> dinnerSupChecked = provide.dinnerSupChecked;
+    // List<String> dinnerSupCnts = provide.dinnerSupCnts;
 
-    List<String> lunchSupNames = provide.lunchSupList;
-    List<bool> lunchSupChecked = provide.lunchSupChecked;
-    List<String> lunchSupCnts = provide.lunchSupCnts;
-
-    List<String> dinnerSupNames = provide.dinnerSupList;
-    List<bool> dinnerSupChecked = provide.dinnerSupChecked;
-    List<String> dinnerSupCnts = provide.dinnerSupCnts;
+    List<dynamic> morningData=provide.supplemetsMorningInfo;
+    List<dynamic> lunchData=provide.supplemetsLunchInfo;
+    List<dynamic> dinnerData=provide.supplemetsDinnerInfo;
 
     // int sum = morningSupChecked.where((e) => e == true).length;
     // int total = morningSupNames.length;
 
-    int sum = morningSupChecked.where((e) => e == true).length +
-        lunchSupChecked.where((e) => e == true).length +
-        dinnerSupChecked.where((e) => e == true).length;
-    int total =
-        morningSupNames.length + lunchSupNames.length + dinnerSupNames.length;
-    double percent = sum / total * 100;
+    // int sum = morningSupChecked.where((e) => e == true).length +
+    //     lunchSupChecked.where((e) => e == true).length +
+    //     dinnerSupChecked.where((e) => e == true).length;
+    //
+    // int total = morningSupNames.length + lunchSupNames.length + dinnerSupNames.length;
+    // double percent = sum / total * 100;
+
+    print("ALLSupNames");
+    print(morningSupNames);
+    print("morningSupNames");
+    print(morningData);
+    print("lunchSupNames");
+    print(lunchData);
+    print("dinnerSupNames");
+    print(dinnerData);
+
+    int newsum=morningData.where((e)=>e[1]==true).fold(0,(sum,_)=>sum+1).toInt()+
+        lunchData.where((e)=>e[1]==true).fold(0,(sum,_)=>sum+1).toInt()+
+        dinnerData.where((e)=>e[1]==true).fold(0,(sum,_)=>sum+1).toInt();
+
+    double newpercent=newsum/morningSupNames.length*100;
 
     List<VBarChartModel> barChartData = [
       VBarChartModel(
         index: 0,
         colors: [Color(0xFF3617CE), Colors.teal],
-        jumlah: percent.ceil().toDouble(),
-        tooltip: "${percent.ceil()}%",
+        jumlah: newpercent.ceil().toDouble(),
+        tooltip: "${newpercent.ceil()}%",
       ),
     ];
+
     return Container(
       child: Column(
         children: [
@@ -78,7 +98,8 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: morningSupNames.length,
+                  itemCount: //morningSupNames.length,
+                  morningData.length,
                   itemBuilder: (context, i) {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 10, top: 5),
@@ -100,9 +121,9 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      morningSupChecked[i]
+                                      morningData[i][1]
                                           ? Text(
-                                              morningSupNames[i],
+                                        morningData[i][0],
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   color: Colors.grey,
@@ -110,11 +131,11 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                                       .lineThrough),
                                             )
                                           : Text(
-                                              morningSupNames[i],
+                                        morningData[i][0],
                                               style: TextStyle(fontSize: 18),
                                             ),
                                       Text(
-                                        morningSupCnts[i],
+                                        morningData[i][2],
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.grey),
                                       ),
@@ -124,12 +145,12 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                 child: RoundCheckBox(
                                   onTap: (selected) {
                                     setState(() {
-                                      morningSupChecked[i] =
-                                          !morningSupChecked[i];
+                                      provide.changeCheck(i, '아침');
+                                      // morningData[i][1]=!morningData[i][1];
                                     });
                                   },
                                   isChecked:
-                                      morningSupChecked[i] ? true : false,
+                                      morningData[i][1]?true:false,
                                   borderColor: Color.fromARGB(255, 54, 23, 206),
                                   checkedColor:
                                       Color.fromARGB(255, 54, 23, 206),
@@ -152,7 +173,8 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: lunchSupNames.length,
+                  itemCount: //lunchSupNames.length,
+                  lunchData.length,
                   itemBuilder: (context, i) {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 10, top: 5),
@@ -174,9 +196,9 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      morningSupChecked[i]
+                                    lunchData[i][1]
                                           ? Text(
-                                              lunchSupNames[i],
+                                      lunchData[i][0],
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   color: Colors.grey,
@@ -184,11 +206,12 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                                       .lineThrough),
                                             )
                                           : Text(
-                                              lunchSupNames[i],
+                                              // lunchSupNames[i],
+                                      lunchData[i][0],
                                               style: TextStyle(fontSize: 18),
                                             ),
                                       Text(
-                                        lunchSupCnts[i],
+                                        lunchData[i][2],
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.grey),
                                       ),
@@ -198,10 +221,11 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                 child: RoundCheckBox(
                                   onTap: (selected) {
                                     setState(() {
-                                      lunchSupChecked[i] = !lunchSupChecked[i];
+                                      provide.changeCheck(i, '점심');
+
                                     });
                                   },
-                                  isChecked: lunchSupChecked[i] ? true : false,
+                                  isChecked: lunchData[i][1]?true:false,
                                   borderColor: Color.fromARGB(255, 54, 23, 206),
                                   checkedColor:
                                       Color.fromARGB(255, 54, 23, 206),
@@ -224,7 +248,7 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: dinnerSupNames.length,
+                  itemCount: dinnerData.length,
                   itemBuilder: (context, i) {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 10, top: 5),
@@ -246,9 +270,10 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      dinnerSupChecked[i]
+                                      dinnerData[i][1]
+                                      //dinnerSupChecked[i]
                                           ? Text(
-                                              dinnerSupNames[i],
+                                              dinnerData[i][0],
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   color: Colors.grey,
@@ -256,11 +281,13 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                                       .lineThrough),
                                             )
                                           : Text(
-                                              dinnerSupNames[i],
+                                              dinnerData[i][0],
+                                              //dinnerSupNames[i],
                                               style: TextStyle(fontSize: 18),
                                             ),
                                       Text(
-                                        dinnerSupCnts[i],
+                                        dinnerData[i][2],
+                                        //dinnerSupCnts[i],
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.grey),
                                       ),
@@ -270,11 +297,12 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                 child: RoundCheckBox(
                                   onTap: (selected) {
                                     setState(() {
-                                      dinnerSupChecked[i] =
-                                          !dinnerSupChecked[i];
+                                      provide.changeCheck(i, '저녁');
                                     });
                                   },
-                                  isChecked: dinnerSupChecked[i] ? true : false,
+                                  isChecked: //dinnerSupChecked[i]
+                                  dinnerData[i][1]
+                                      ? true : false,
                                   borderColor: Color.fromARGB(255, 54, 23, 206),
                                   checkedColor:
                                       Color.fromARGB(255, 54, 23, 206),
@@ -305,17 +333,17 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
 Widget Morning() {
   return Container(
       child: Row(
-    children: [
-      Icon(
+        children: [
+          Icon(
         Icons.wb_twighlight,
         color: Colors.yellow,
       ),
-      Container(
-        width: 5,
+          Container(
+            width: 5,
       ),
-      Text(
-        "아침",
-        style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
+          Text(
+            "아침",
+            style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
       ),
     ],
   ));

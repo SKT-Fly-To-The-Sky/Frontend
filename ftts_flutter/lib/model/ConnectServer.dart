@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:ftts_flutter/provider/supplementProvider.dart';
+import 'package:provider/provider.dart';
+
 import '../utils/nutInfo.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +10,7 @@ import 'package:intl/intl.dart';
 
 class ConnectServer {
   XFile? file;
+
   // final String Url = 'http://jeongsuri.iptime.org:10019/';
   final String Url = 'http://jeongsuri.iptime.org:10019/';
   final dio = Dio();
@@ -66,49 +70,6 @@ class ConnectServer {
     }
   }
 
-  // DailyGrpah에서 보여줄 하루 영양성분
-  // Future<Map<String, dynamic>> getOneDayNutInfo(
-  //     String userid, String date) async {
-  //   try {
-  //     var oneDayNutInfo = await dio.get('${Url}dodo/intakes/nutrients/day');
-  //     List<String> nutInfoList = [
-  //       'kcal',
-  //       'protein',
-  //       'fat',
-  //       'carbo',
-  //       'sugar',
-  //       'chole',
-  //       'fiber',
-  //       'calcium',
-  //       'iron',
-  //       'magne',
-  //       'potass',
-  //       'zinc',
-  //       'copper'
-  //     ];
-  // for(String s in nutInfoList){
-  //   day_info[s] =
-  // }
-  // day_info['calcium'] =
-  //     calcium + double.parse(oneDayNutInfo.data['calcium'].toString());
-  // day_info['iron'] =
-  //     iron + double.parse(oneDayNutInfo.data['iron'].toString());
-  // day_info['magne'] =
-  //     magne + double.parse(oneDayNutInfo.data['magne'].toString());
-  // day_info['potass'] =
-  //     potass + double.parse(oneDayNutInfo.data['potass'].toString());
-  // day_info['sodium'] =
-  //     sodium + double.parse(oneDayNutInfo.data['sodium'].toString());
-  // day_info['zinc'] =
-  //     zinc + double.parse(oneDayNutInfo.data['zinc'].toString());
-  // day_info['copper'] =
-  //     copper + double.parse(oneDayNutInfo.data['copper'].toString());
-  //     return day_info;
-  //   } catch (e) {
-  //     return day_info;
-  //   }
-  // }
-
   Future<Map<String, dynamic>> foodNutinfo(List<String> name) async {
     DateTime date = DateTime.now();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -152,7 +113,7 @@ class ConnectServer {
 
       Map<String, dynamic> post_info = {
         "time_div": 'morning',
-        "date": onlydate,
+        "date": onlyDate,
         "time": " "
       };
       post_info.addAll(nut_info);
@@ -199,8 +160,45 @@ class ConnectServer {
     return data;
   }
 
+  //1안
+  Future<String> SupplementTime(String name) async {
+    //log 설정
+    dio.interceptors.add(LogInterceptor(
+        responseBody: true,
+        error: true,
+        requestHeader: false,
+        responseHeader: false,
+        request: false,
+        requestBody: false));
+    //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
+    dio.options.connectTimeout = 5000;
+    dio.options.receiveTimeout = 5000;
+    String Time = '';
+    try {
+      var supinfo = await dio
+          .get('${Url}supplements/info', queryParameters: {"sup_name": name});
+      Time = supinfo.data['add_eat_time'];
+      return Time;
+    } catch (e) {
+      return '아침';
+    }
+  }
+
   Future<Map<String, dynamic>> SupplementsNutinfo(String name) async {
     print('SupplementsNutinfo');
+
+    //log 설정
+    dio.interceptors.add(LogInterceptor(
+        responseBody: true,
+        error: true,
+        requestHeader: false,
+        responseHeader: false,
+        request: false,
+        requestBody: false));
+    //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
+    dio.options.connectTimeout = 5000;
+    dio.options.receiveTimeout = 5000;
+
     try {
       var supinfo = await dio
           .get('${Url}supplements/info', queryParameters: {"sup_name": name});
@@ -220,7 +218,7 @@ class ConnectServer {
         "vitE": double.parse(supinfo.data['vitE'].toString()),
         "vitK": double.parse(supinfo.data['vitK'].toString()),
         "omega": double.parse(supinfo.data['omega'].toString()),
-        //영양소 추가
+        "Time": supinfo.data['add_eat_time'].toString()
       };
       print("nut_info data: " + nut_info['kcal'].toString());
       return supnut_info;
@@ -241,6 +239,7 @@ class ConnectServer {
         "vitE": 0.0,
         "vitK": 0.0,
         "omega": 0.0,
+        "Time": '아침'
       };
       print("nut_info data: " + nut_info['kcal'].toString());
       return nut_info;

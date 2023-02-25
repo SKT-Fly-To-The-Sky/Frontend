@@ -45,8 +45,7 @@ class _MainScreenState extends State<MainScreen> {
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()));
+                Navigator.pop(context);
               },
             )
           ],

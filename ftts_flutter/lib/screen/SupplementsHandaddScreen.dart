@@ -149,36 +149,47 @@ class SerchDelegate extends SearchDelegate {
                               TextButton(
                                   onPressed: () async {
                                     print("textbutton");
-                                    var provide =
-                                        Provider.of<supplementProvider>(context,
-                                            listen: false);
+                                    var provide = Provider.of<supplementProvider>(context, listen: false);
+                                    print("in Hand add");
                                     print(provide.supplementList);
-                                    if (provide.supplementList
-                                            .indexOf(query!) ==
-                                        -1) {
+                                    if (provide.supplementList.indexOf(query!) == -1) {
                                       provide.addName(query!.toString());
-
                                       print(provide.supplementList);
+
                                       Map<String, dynamic>? result;
                                       try {
-                                        result = await connectServer
-                                            .SupplementsNutinfo(
-                                                query!.toString());
-                                        provide.updatenutInfo(result);
-                                        print(
-                                            "supplementnutInfo------------------");
+                                        result = await connectServer.SupplementsNutinfo(query!.toString());
+
+                                        //영양정보 추가, 아침점심저녁 list에 아이템 추가
+                                        provide.updatenutInfo(query.toString(),result);
+                                        print("supplementnutInfo------------------");
                                         print(provide.supplementnutInfo);
-                                      } catch (e) {
+
+                                      }
+                                      catch (e) {
+                                        //예외처리로 default로 점심에 추가
+                                        provide.addNameText(query.toString(), "점심", "1정");
+                                        print(provide.supplemetsLunchInfo);
                                         print('영양성분 찾기 실패');
                                       }
+                                      Navigator.of(context).popUntil((route) => route.isFirst);
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SupplementsMainScreen()));
                                     }
-                                    Navigator.pop(context);
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                SupplementsMainScreen()),
-                                        (route) => true);
+                                    //Navigator.pop(context);
+                                   else{
+                                      //약이름이 이미 있다면 팝업창으로 중복된 약이 이미 있음을 알려주기
+                                      AlertDialog(
+                                        title: Text(''),
+                                        content: Text(query + '영양제가 중복되었습니다!'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('닫기'))
+                                        ],
+                                      );
+                                    }
                                   },
                                   child: Text('네')),
                               TextButton(

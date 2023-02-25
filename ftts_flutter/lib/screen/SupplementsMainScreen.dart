@@ -164,22 +164,25 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
 
         //supplementList에 result값이 있는지 확인한다.
 
-        if (Provider.of<supplementProvider>(context, listen: false)
-                .supplementList
-                .indexOf(result) ==
-            -1) {
+        if (Provider.of<supplementProvider>(context, listen: false).supplementList.indexOf(result) == -1) {
           //supplementList에 result값이 없다면 list에 result를 추가한다.
+
           _supplementProduct.addName(result.toString());
           //약이름에 대한 영양정보를 받아온다.
+
           try {
             sup_nut = await connectServer.SupplementsNutinfo(result!);
             //영양정보를 supplementnutInfo에 더한다.
-            _supplementProduct.updatenutInfo(sup_nut!);
+            _supplementProduct.updatenutInfo(result,sup_nut!);
           } catch (e) {
+            //예외처리용으로 우선 점심으로 처리.
+            _supplementProduct.addNameText(result,'점심','1정');
+            print(_supplementProduct.supplemetsLunchInfo);
             print('영양성분 찾기 실패');
           }
+
           //창 닫기
-          Navigator.pop(context, 'Cancel');
+          Navigator.pop(context);
         } else {
           //약이름이 이미 있다면 팝업창으로 중복된 약이 이미 있음을 알려주기
           AlertDialog(
@@ -262,7 +265,7 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
                 ),
                 TextButton(
                   style: TextButton.styleFrom(foregroundColor: Colors.black),
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  onPressed: () => Navigator.pop(context),
                   child: const Text('닫기'),
                 )
               ],
@@ -296,8 +299,7 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
           IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()));
+              Navigator.pop(context);
             },
           )
         ],
@@ -374,109 +376,4 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
     );
   }
 
-//   Widget RecommendItem() {
-//     final List<String> text = [
-//       "Doctor's Best 비타민 D3 5000IU",
-//       "Solgar 비타민 D3 콜레칼시페롤 25mcg 1000IU",
-//       "Osteo Bi-Flex 트리플 스트렝스 보충제 비타민 D"
-//     ];
-//     final List<Image> images = [
-//       Image(
-//         image: AssetImage('assets/pill_1.jpg'),
-//         width: 150,
-//       ),
-//       Image(image: AssetImage('assets/pill_2.jpg'), width: 150),
-//       Image(image: AssetImage('assets/pill_3.jpg'), width: 150),
-//     ];
-//     final List<Uri> urls = [
-//       Uri.parse(
-//           "https://www.11st.co.kr/products/pa/3612205141?&trTypeCd=MAS90&trCtgrNo=585021"),
-//       Uri.parse(
-//           "https://www.11st.co.kr/products/pa/3602719350?&trTypeCd=MAG3&trCtgrNo=585021"),
-//       Uri.parse(
-//           "https://www.11st.co.kr/products/pa/3612139599?&trTypeCd=MAG3&trCtgrNo=585021"),
-//     ];
-//
-//     Future<void> _launchUrl(url) async {
-//       if (!await launchUrl(url)) {
-//         throw Exception('Could not launch $url');
-//       }
-//     }
-//
-//     return Container(
-//       margin: EdgeInsets.only(right: 20),
-//       height: 350,
-//       // width: 300,
-//       child: ListView.builder(
-//           scrollDirection: Axis.horizontal,
-//           itemCount: images.length,
-//           itemBuilder: (context, i) {
-//             return Container(
-//               width: 300,
-//               padding: const EdgeInsets.only(
-//                   left: 15, right: 10, top: 10, bottom: 15),
-//               child: Column(
-//                 children: [
-//                   Container(
-//                     width: 300,
-//                     height: 300,
-//                     decoration: BoxDecoration(
-//                       border: Border.all(
-//                         width: 0.0,
-//                         color: Color.fromARGB(255, 216, 216, 216),
-//                       ),
-//                       borderRadius: BorderRadius.circular(10),
-//                       color: Colors.white,
-//                     ),
-//                     child: Column(
-//                       mainAxisAlignment: MainAxisAlignment.start,
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         SizedBox(
-//                           height: 10,
-//                         ),
-//                         Center(
-//                           child: images[i],
-//                         ),
-//                         Container(
-//                           margin: EdgeInsets.only(
-//                               left: 10, top: 10, right: 10),
-//                           child: Text(
-//                             text[i],
-//                             style: const TextStyle(
-//                               fontSize: 18,
-//                               // fontWeight: FontWeight.bold
-//                             ),
-//                           ),
-//                         ),
-//                         Container(
-//                           margin: EdgeInsets.only(
-//                               left: 10, top: 5, right: 10),
-//                           child: Row(
-//                             mainAxisAlignment: MainAxisAlignment.end,
-//                             children: [
-//                               Image(
-//                                 image: AssetImage('assets/11th_logo.png'),
-//                                 width: 30,
-//                               ),
-//                               TextButton(
-//                                   style: TextButton.styleFrom(
-//                                     primary: Color(0xFF3617CE),
-//                                   ),
-//                                   onPressed: () {
-//                                     _launchUrl(urls[i]);
-//                                   },
-//                                   child: Text("쇼핑하러 가기"))
-//                             ],
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             );
-//           }),
-//     );
-//   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ftts_flutter/screen/HomeScreen.dart';
 import '../utils/TMapPlugin.dart';
 import 'MainScreen.dart';
 import 'SupplementsMainScreen.dart';
@@ -55,17 +56,10 @@ class MenuScreen extends StatelessWidget {
               margin: EdgeInsets.all(15),
               child: Row(
                 children: [
-                  // IconButton(
-                  //     onPressed: () {
-                  //       Navigator.of(context).push(MaterialPageRoute(
-                  //           builder: ((context) => const MainScreen())));
-                  //     },
-                  //     icon: const Icon(Icons.restaurant)),
-                  // Text("식단")
                   TextButton.icon(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => const MainScreen())));
+                        Navigator.of(context).popUntil((route) => route.isFirst);
+                        Navigator.of(context).push(MaterialPageRoute(builder: ((context) => const MainScreen())));
                       },
                       style:
                           TextButton.styleFrom(foregroundColor: Colors.black),
@@ -76,6 +70,7 @@ class MenuScreen extends StatelessWidget {
                   ),
                   TextButton.icon(
                       onPressed: () {
+                        Navigator.of(context).popUntil((route) => route.isFirst);
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: ((context) => SupplementsMainScreen())));
                       },

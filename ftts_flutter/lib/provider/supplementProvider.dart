@@ -1,21 +1,13 @@
 import 'package:flutter/cupertino.dart';
 
 class supplementProvider with ChangeNotifier {
-  List<String> supplementList = ["프로바이더 테스트"];
-  List<bool> supplementChecked = [false];
-  List<String> supplementCnts = ["1정"];
 
-  List<String> lunchSupList = ["점심약"];
-  List<bool> lunchSupChecked = [false];
-  List<String> lunchSupCnts = ["1정"];
+  List<String> supplementList = ["약이름 아침","약이름 점심","약이름 저녁"];
 
-  List<String> dinnerSupList = ["저녁약"];
-  List<bool> dinnerSupChecked = [false];
-  List<String> dinnerSupCnts = ["1정"];
+  List<dynamic> supplemetsMorningInfo=[['약이름 아침',false,'1정']];
+  List<dynamic> supplemetsLunchInfo=[['약이름 점심',false,'1정']];
+  List<dynamic> supplemetsDinnerInfo=[['약이름 저녁',false,'1정']];
 
-  // for (int i = 0; i < supplementList.length; i++) {
-  //     supplementChecked.add(false);
-  //   }
   Map<String, dynamic> supplementnutInfo = {
     'kcal': 0.0,
     'protein': 0.0,
@@ -47,18 +39,46 @@ class supplementProvider with ChangeNotifier {
     "omega": 0.0,
   };
 
-  List<String> get _supplementsList => supplementList;
-  Map<String, dynamic> get _supplementsnutInfo => supplementnutInfo;
-
   addName(String input) {
     // 여기에 인자로 timeDiv(아침,점심,저녁)을 추가로 더 받아야 함
     supplementList.add(input);
-    supplementChecked.add(false);
-    supplementCnts.add("1정");
+    // supplementChecked.add(false);
+    // supplementCnts.add("1정");
     notifyListeners();
   }
 
-  updatenutInfo(Map<String, dynamic> result) {
+  addNameText(String input,String Time,String num){
+    switch(Time){
+      case '아침':
+        supplemetsMorningInfo.add([input,false,num]);
+        break;
+      case '점심':
+        supplemetsLunchInfo.add([input,false,num]);
+        break;
+      case '저녁':
+        supplemetsDinnerInfo.add([input,false,num]);
+        break;
+    }
+    notifyListeners();
+  }
+
+  changeCheck(int i,String Time){
+    switch(Time){
+      case '아침':
+        supplemetsMorningInfo[i][1]=!supplemetsMorningInfo[i][1];
+        break;
+      case '점심':
+        supplemetsLunchInfo[i][1]=!supplemetsLunchInfo[i][1];
+        break;
+      case '저녁':
+        supplemetsDinnerInfo[i][1]=!supplemetsDinnerInfo[i][1];
+        break;
+
+    }
+    notifyListeners();
+  }
+
+  updatenutInfo(String name,Map<String, dynamic> result) {
     supplementnutInfo['vitA'] += result['vitA'];
     supplementnutInfo['vitB1'] += result['vitB1'];
     supplementnutInfo['vitB2'] += result['vitB2'];
@@ -73,6 +93,18 @@ class supplementProvider with ChangeNotifier {
     supplementnutInfo['vitE'] += result['vitE'];
     supplementnutInfo['vitF'] += result['vitF'];
     supplementnutInfo['omega'] += result['omega'];
+
+    switch(result['Time']){
+      case '아침':
+        supplemetsMorningInfo.add([name,false,"1정"]);
+        break;
+      case '점심':
+        supplemetsLunchInfo.add([name,false,"1정"]);
+        break;
+      case '저녁':
+        supplemetsDinnerInfo.add([name,false,"1정"]);
+        break;
+    }
     notifyListeners();
   }
 }
