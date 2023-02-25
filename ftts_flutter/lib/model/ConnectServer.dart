@@ -15,7 +15,7 @@ class ConnectServer {
   String data = "";
   List<String> foodName = [];
 
-  Future<List<String>?> uploading(XFile file) async {
+  Future<List<String>?> uploading(XFile file,String selectDay) async {
     //데이터 변환
     FormData formData = FormData.fromMap({
       'file': await MultipartFile.fromFile(
@@ -36,18 +36,16 @@ class ConnectServer {
     dio.options.connectTimeout = 5000;
     dio.options.receiveTimeout = 5000;
     try {
-      DateTime date = DateTime.now();
-      final DateFormat formatter = DateFormat('yyyy-MM-dd');
-      String onlydate = formatter.format(date);
+
       var sendImage = await dio.post('${Url}dodo/intakes/images',
-          queryParameters: {'time_div': 'morning', 'date': onlydate},
+          queryParameters: {'time_div': 'morning', 'date': selectDay},
           data: formData);
       if (sendImage.data['message'] == 'image data saved successfully') {
         var classficationResult = await dio.get('${Url}classification',
             queryParameters: {
               'userid': 'dodo',
               'time_div': 'morning',
-              'date': onlydate
+              'date': selectDay
             });
 
         if (classficationResult.statusCode == 200) {
@@ -67,10 +65,8 @@ class ConnectServer {
     }
   }
 
-  Future<Map<String, dynamic>> foodNutinfo(List<String> name) async {
-    DateTime date = DateTime.now();
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    String onlyDate = formatter.format(date);
+  Future<Map<String, dynamic>> foodNutinfo(List<String> name,String selectDay) async {
+
     try {
       for (int i = 0; i < name.length; i++) {
         var foodsInfo = await dio
@@ -110,7 +106,7 @@ class ConnectServer {
 
       Map<String, dynamic> post_info = {
         "time_div": 'morning',
-        "date": onlyDate,
+        "date": selectDay,
         "time": " "
       };
       post_info.addAll(nut_info);
