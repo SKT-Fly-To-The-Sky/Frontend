@@ -139,6 +139,8 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("&+*******************************");
+    print(_result);
     //그래프 색상 설정 함수. 100프로 이상이면 red, 100이하 80이상이면 green, 80이하면 yellow
     List<Color> setColor(double a) {
       if (a > 100) {
@@ -269,15 +271,16 @@ class ResultScreen extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     //child: (_image!='fail')?Expanded(child:Image.network(_result![0])):
-                    child: (_image != null) && (_result != '불고기')
+                    child: (_image != null) && (_result![0] != '불고기')
                         ? Expanded(
                             child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Container(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Container(
                                 width: 200,
                                 height: 100,
                                 child: Image.file(File(_image!.path!),
-                                    fit: BoxFit.fill)),
+                                    fit: BoxFit.fill),
+                            ),
                           ))
                         : Expanded(
                             child: ClipRRect(
@@ -286,7 +289,7 @@ class ResultScreen extends StatelessWidget {
                               width: 200,
                               height: 100,
                               child: Image(
-                                  image: AssetImage('assets/kimchi.jpg'),
+                                  image: AssetImage('assets/firegogi.jpg'),
                                   fit: BoxFit.fill),
                             ),
                           ))),
