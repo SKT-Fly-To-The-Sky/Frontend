@@ -183,7 +183,7 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
           }
 
           //창 닫기
-          Navigator.pop(context, 'Cancel');
+          Navigator.pop(context);
         } else {
           //약이름이 이미 있다면 팝업창으로 중복된 약이 이미 있음을 알려주기
           AlertDialog(
@@ -266,7 +266,7 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
                 ),
                 TextButton(
                   style: TextButton.styleFrom(foregroundColor: Colors.black),
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  onPressed: () => Navigator.pop(context),
                   child: const Text('닫기'),
                 )
               ],
@@ -300,8 +300,7 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
           IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {
-              Navigator.pushAndRemoveUntil(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),(route)=>true);
+              Navigator.pop(context);
             },
           )
         ],

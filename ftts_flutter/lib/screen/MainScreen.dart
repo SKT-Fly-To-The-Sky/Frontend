@@ -54,105 +54,107 @@ class _MainScreenState extends State<MainScreen> {
           leading: IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
-              Navigator.pushAndRemoveUntil(context,
-                  MaterialPageRoute(builder: (context) => MenuScreen()),(route)=>true);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MenuScreen()));
             },
           ),
           actions: [
             IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
-                Navigator.pushAndRemoveUntil(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),(route)=>true);
+                Navigator.pop(context);
               },
             )
           ],
         ),
         body: SingleChildScrollView(
             child: Column(children: [
-          CustomCalendar(),
-          Container(
-              margin: const EdgeInsets.only(
-                  left: 20, right: 20, bottom: 15, top: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-              ), // width: 200,
-              height: 300,
-              child: ContainedTabBarView(
-                tabs: [
-                  Text(
-                    'Daily',
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
+              CustomCalendar(),
+              Container(
+                  margin: const EdgeInsets.only(
+                      left: 20, right: 20, bottom: 15, top: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
                   ),
-                  Text(
-                    'Detail',
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                  ),
-                ],
-                views: [
-                  DailyGraph(),
-                  DetailGraph(),
-                ],
-              )),
-          Container(
-            margin: EdgeInsets.only(left: 20),
-            child: Row(
-              children: [
-                Icon(Icons.rice_bowl_sharp),
-                Container(
-                  width: 5,
-                ),
-                Text(
-                  "하루 섭취량",
-                  style: TextStyle(fontSize: 17.0),
-                )
-              ],
-            ),
-          ),
-          Container(
-            margin:
-                const EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-            ),
-            height: 380,
-            child: ContainedTabBarView(
-              onChange: (index) => print(index),
-              tabs: [
-                for (int i = 0; i < foodTimeDiv.length; i++)
-                  Column(
-                    children: [
-                      Container(
-                        height: 3,
-                      ),
+                  height: 300,
+                  child: ContainedTabBarView(
+                    tabs: [
                       Text(
-                        foodTimeDiv[i],
+                        'Daily',
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        (foodKcal[foodEng[foodTimeDiv[i]]] == 0)
-                            ? "-"
-                            : "${foodKcal[foodEng[foodTimeDiv[i]]]!.toInt()}kcal",
+                        'Detail',
                         style: TextStyle(
-                          color: Colors.black,
-                        ),
+                            color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                     ],
-                  ),
-              ],
-              views: [
-                StaticUploader(),
-                ImageUploader(),
-                UploaderBtn(),
-                UploaderBtn(),
-              ],
-            ),
-          ),
-        ])));
+                    views: [
+                      DailyGraph(),
+                      DetailGraph(),
+                    ],
+                  )),
+              Container(
+                margin: EdgeInsets.only(left: 20),
+                child: Row(
+                  children: [
+                    Icon(Icons.rice_bowl_sharp),
+                    Container(
+                      width: 5,
+                    ),
+                    Text(
+                      "하루 섭취량",
+                      style: TextStyle(fontSize: 17.0),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                margin:
+                const EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                height: 380,
+                child: ContainedTabBarView(
+                  onChange: (index) => print(index),
+                  tabs: [
+                    for (int i = 0; i < foodTimeDiv.length; i++)
+                      Column(
+                        children: [
+                          Container(
+                            height: 3,
+                          ),
+                          Text(
+                            foodTimeDiv[i],
+                            style: TextStyle(
+                                color: Colors.black, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            (foodKcal[foodEng[foodTimeDiv[i]]] == 0)
+                                ? "-"
+                                : "${foodKcal[foodEng[foodTimeDiv[i]]]!.toInt()}kcal",
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                  views: [
+                    StaticUploader(),
+                    ImageUploader(),
+                    UploaderBtn(),
+                    UploaderBtn(),
+                  ],
+                ),
+              ),
+            ]
+            )
+        )
+    );
   }
 }
