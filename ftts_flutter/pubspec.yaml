@@ -89,6 +89,8 @@ flutter:
     - assets/pill_2.jpg
     - assets/pill_3.jpg
     - assets/diet_morning.jpg
+    - assets/adot_loading.gif
+    - assets/firegogi.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

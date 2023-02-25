@@ -5,8 +5,6 @@ import 'package:provider/provider.dart';
 import '../provider/supplementProvider.dart';
 
 class SupplementsHandaddScreen extends StatelessWidget {
-  var inputData = '';
-  final connectServer = ConnectServer();
 
   @override
   Widget build(BuildContext context) {
@@ -148,16 +146,42 @@ class SerchDelegate extends SearchDelegate {
                             children: [
                               TextButton(
                                   onPressed: () async {
-                                    print("textbutton");
+
                                     var provide = Provider.of<supplementProvider>(context, listen: false);
-                                    print("in Hand add");
-                                    print(provide.supplementList);
                                     if (provide.supplementList.indexOf(query!) == -1) {
+                                      print("중복X");
+                                      showDialog(context: context, builder: (context){
+                                        return Container(
+                                          color: const Color(0xFFF2F5FA),
+                                          child:Column(children: <Widget>[
+                                            SizedBox(height: 60,),
+                                            Text(
+                                              '철분은 식사 전에 섭취하는게 좋아요!',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontFamily: 'NotoSansKR',
+                                                  color: Colors.black,
+                                                  fontSize: 23,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Expanded(
+                                              child: Image(
+                                                image: AssetImage('assets/adot_loading.gif'),
+                                                fit: BoxFit.fitWidth,
+                                              ),),
+                                            CircularProgressIndicator()
+                                          ],),
+                                        );
+                                      }
+                                      );
+
                                       provide.addName(query!.toString());
                                       print(provide.supplementList);
 
                                       Map<String, dynamic>? result;
+
                                       try {
+
                                         result = await connectServer.SupplementsNutinfo(query!.toString());
 
                                         //영양정보 추가, 아침점심저녁 list에 아이템 추가
@@ -177,18 +201,22 @@ class SerchDelegate extends SearchDelegate {
                                     }
                                     //Navigator.pop(context);
                                    else{
+                                     print("중복");
                                       //약이름이 이미 있다면 팝업창으로 중복된 약이 이미 있음을 알려주기
-                                      AlertDialog(
-                                        title: Text(''),
-                                        content: Text(query + '영양제가 중복되었습니다!'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('닫기'))
-                                        ],
-                                      );
+                                     showDialog(context: context, builder: (context){
+                                       return AlertDialog(
+                                         title: Text(''),
+                                         content: Text(query + '영양제가 중복되었습니다!'),
+                                         actions: <Widget>[
+                                           TextButton(
+                                               onPressed: () {
+                                                 Navigator.pop(context);
+                                                 Navigator.pop(context);
+                                               },
+                                               child: Text('닫기'))
+                                         ],
+                                       );
+                                     });
                                     }
                                   },
                                   child: Text('네')),

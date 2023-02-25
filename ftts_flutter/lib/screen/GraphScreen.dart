@@ -4,7 +4,6 @@ import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 import 'dart:io';
-import 'ResultScreen.dart';
 
 class GraphScreen extends StatelessWidget {
   final XFile? _image;
@@ -94,7 +93,7 @@ class GraphScreen extends StatelessWidget {
               children: <Widget>[
                 Flexible(
                     flex: 1,
-                    child: (_image != null) && (_result != '불고기')
+                    child: (_image != null) && (_result![0] != '불고기')
                         //음식 추정 실패시 김치전 사진이 나오도록
                         ? Expanded(
                             child: ClipRRect(
@@ -112,7 +111,7 @@ class GraphScreen extends StatelessWidget {
                                 width: 200,
                                 height: 100,
                                 child: Image(
-                                  image: AssetImage('assets/kimchi.jpg'),
+                                  image: AssetImage('assets/firegogi.jpg'),
                                   fit: BoxFit.fill),
                               ),
                             ))),

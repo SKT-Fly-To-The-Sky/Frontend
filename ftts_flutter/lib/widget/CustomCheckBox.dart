@@ -17,30 +17,11 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
     var provide = Provider.of<supplementProvider>(context, listen: false);
 
     List<String> morningSupNames = provide.supplementList;
-    // List<bool> morningSupChecked = provide.supplementChecked;
-    // List<String> morningSupCnts = provide.supplementCnts;
-    //
-    // List<String> lunchSupNames = provide.lunchSupList;
-    // List<bool> lunchSupChecked = provide.lunchSupChecked;
-    // List<String> lunchSupCnts = provide.lunchSupCnts;
-    //
-    // List<String> dinnerSupNames = provide.dinnerSupList;
-    // List<bool> dinnerSupChecked = provide.dinnerSupChecked;
-    // List<String> dinnerSupCnts = provide.dinnerSupCnts;
+
 
     List<dynamic> morningData=provide.supplemetsMorningInfo;
     List<dynamic> lunchData=provide.supplemetsLunchInfo;
     List<dynamic> dinnerData=provide.supplemetsDinnerInfo;
-
-    // int sum = morningSupChecked.where((e) => e == true).length;
-    // int total = morningSupNames.length;
-
-    // int sum = morningSupChecked.where((e) => e == true).length +
-    //     lunchSupChecked.where((e) => e == true).length +
-    //     dinnerSupChecked.where((e) => e == true).length;
-    //
-    // int total = morningSupNames.length + lunchSupNames.length + dinnerSupNames.length;
-    // double percent = sum / total * 100;
 
     print("ALLSupNames");
     print(morningSupNames);
