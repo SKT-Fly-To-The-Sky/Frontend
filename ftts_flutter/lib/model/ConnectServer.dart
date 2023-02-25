@@ -1,8 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:ftts_flutter/provider/supplementProvider.dart';
-import 'package:provider/provider.dart';
-
 import '../utils/nutInfo.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
@@ -152,10 +149,10 @@ class ConnectServer {
       //post image
       var response =
           await dio.post('${Url}supplements/classification', data: formData);
-      data = response.data['result'].toString();
+      data = response.data['name'].toString();
     } catch (e) {
       data =
-          'Macrolife Naturals, Miracle Reds, Superfood, Goji, Pomegranate,  Acai,  Mangosteen, 0.3 oz (9.5 g)';
+          '비타민D';
     }
     return data;
   }

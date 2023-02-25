@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     layoutSize = MediaQuery.of(context);
 
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFFFFDFF),
         appBar: AppBar(
           iconTheme: const IconThemeData(color: Colors.black),
           automaticallyImplyLeading: false,
@@ -68,14 +68,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(
-              height: 60,
+              height: 50,
             ),
-            Container(
-                height: 370,
+            Expanded(
                 child: Center(
                   child: Image(
                     image: AssetImage('assets/adot_home.gif'),
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.fitHeight,
                   ),
                 )),
             SubMenu(),

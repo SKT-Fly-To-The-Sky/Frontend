@@ -6,7 +6,6 @@ import 'package:ftts_flutter/provider/supplementProvider.dart';
 import 'package:ftts_flutter/screen/SupplementsHandaddScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import '../model/ConnectServer.dart';
-import 'HomeScreen.dart';
 import 'MenuScreen.dart';
 import 'SupplementsGraphScreen.dart';
 import '../widget/CustomCheckBox.dart';
@@ -159,12 +158,36 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
         String? result;
         Map<String, dynamic>? sup_nut;
 
+        showDialog(context: context, builder: (context){
+          return Scaffold(body: Container(
+            color: const Color(0xFFF2F5FA),
+            child:Column(children: const <Widget>[
+              SizedBox(height: 60,),
+              Text(
+                '철분은 식사 전에 섭취하는게 좋아요!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: 'NotoSansKR',
+                    color: Colors.black,
+                    fontSize: 23,
+                    fontWeight: FontWeight.bold),
+              ),
+              Expanded(
+                child: Image(
+                  image: AssetImage('assets/adot_loading.gif'),
+                  fit: BoxFit.fitWidth,
+                ),),
+              CircularProgressIndicator()
+            ],),
+          ),);
+        }
+        );
         //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 임의의 약이름을 반환한다.
         result = await connectServer.Supplementsuploading(_image!);
 
         //supplementList에 result값이 있는지 확인한다.
 
-        if (Provider.of<supplementProvider>(context, listen: false).supplementList.indexOf(result) == -1) {
+        if (Provider.of<supplementProvider>(context, listen: false).supplementList.indexOf(result) == -1&&result!=null) {
           //supplementList에 result값이 없다면 list에 result를 추가한다.
 
           _supplementProduct.addName(result.toString());
@@ -174,28 +197,32 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
             sup_nut = await connectServer.SupplementsNutinfo(result!);
             //영양정보를 supplementnutInfo에 더한다.
             _supplementProduct.updatenutInfo(result,sup_nut!);
-          } catch (e) {
+          }
+          catch (e) {
             //예외처리용으로 우선 점심으로 처리.
             _supplementProduct.addNameText(result,'점심','1정');
             print(_supplementProduct.supplemetsLunchInfo);
             print('영양성분 찾기 실패');
           }
-
           //창 닫기
+          Navigator.pop(context);
           Navigator.pop(context);
         } else {
           //약이름이 이미 있다면 팝업창으로 중복된 약이 이미 있음을 알려주기
-          AlertDialog(
-            title: Text(''),
-            content: Text(result + '영양제가 중복되었습니다!'),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('닫기'))
-            ],
-          );
+          showDialog(context: context, builder: (context){
+            return AlertDialog(
+              title: Text(''),
+              content: Text(result! + '영양제가 중복되었습니다!'),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: Text('닫기'))
+              ],
+            );
+          });
         }
       } else {
         print("_image is null");

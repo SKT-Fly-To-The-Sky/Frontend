@@ -23,12 +23,13 @@ class _ImageUploaderState extends State<ImageUploader> {
 
   // 이미지 회전시키기
   double radians = 90 * math.pi / 180;
-
+  
   // 이미지 업로더 위젯
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
+    
     // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
     Future getImage(ImageSource imageSource) async {
       // Timeline.startSync('interesting function');
@@ -38,13 +39,39 @@ class _ImageUploaderState extends State<ImageUploader> {
           );
 
       if (_image != null) {
+
+        showDialog(context: context, builder: (context){
+          return Container(
+            color: const Color(0xFFF2F5FA),
+              child:Column(children: <Widget>[
+                SizedBox(height: 60,),
+                Text(
+                  '딸기는 과일 중에 비타민C가 가장 많이 포함되어 있어요!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'NotoSansKR',
+                    color: Colors.black,
+                    fontSize: 23,
+                    fontWeight: FontWeight.bold),
+                ),
+                Expanded(
+                  child: Image(
+                  image: AssetImage('assets/adot_loading.gif'),
+                  fit: BoxFit.fitWidth,
+                ),),
+                CircularProgressIndicator()
+              ],),
+          );
+        }
+        );
+
         List<String>? result;
         Map<String, dynamic>? nut;
         //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 'fail'를 반환한다.
         //음식 이름 받아오기
         result = await connectServer.uploading(_image!);
         nut = await connectServer.foodNutinfo(result!);
-
+        Navigator.pop(context);
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -56,6 +83,7 @@ class _ImageUploaderState extends State<ImageUploader> {
           _nut = nut;
           //ResultScreen에 이미지, classfication 결과, 영양소 정보 전달
         });
+
       } else {
         print("_image is null");
       }
@@ -65,7 +93,7 @@ class _ImageUploaderState extends State<ImageUploader> {
         ? Container(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Row(
+                  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   FloatingActionButton(
@@ -219,6 +247,7 @@ class _ImageUploaderState extends State<ImageUploader> {
       ],
     ));
   }
+
 }
 
 class StaticUploader extends StatelessWidget {
