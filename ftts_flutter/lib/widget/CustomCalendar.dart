@@ -26,24 +26,21 @@ class _CustomCalendarState extends State<CustomCalendar> {
     _selectedDay = DateTime.now();
   }
 
-  Future<void> _getEventData(DateTime day) async {
-    try {
-      _dateString = DateFormat('yyyy-MM-dd').format(day);
-      print(_dateString);
-      Response response = await Dio().get(
-          'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/day?date=${_dateString}');
-      setState(() {
-        _oneDayInfo = response.data['result'];
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     var dateprovider = Provider.of<dateProvider>(context, listen: false);
     var graphprovider = Provider.of<graphProvider>(context, listen: false);
+    Future<void> _getOneDayInfo(DateTime day) async {
+      try {
+        _dateString = DateFormat('yyyy-MM-dd').format(day);
+        Response response = await Dio().get(
+            'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/day?date=${_dateString}');
+        _oneDayInfo = await response.data['result'];
+      } catch (e) {
+        print("_getOneDayInfo error!!");
+      }
+    }
+
     return TableCalendar(
       locale: 'ko-KR',
       firstDay: kFirstDay,
@@ -53,16 +50,16 @@ class _CustomCalendarState extends State<CustomCalendar> {
       selectedDayPredicate: (day) {
         return isSameDay(_selectedDay, day);
       },
-      onDaySelected: (selectedDay, focusedDay) {
-        if (!isSameDay(_selectedDay, selectedDay)) {
-          setState(() {
-            _selectedDay = selectedDay;
-            _focusedDay = focusedDay;
-            dateprovider.changeDate(_selectedDay); // 선택한 날짜에 해당하는 그래프 위젯 렌더링
-            graphprovider.changeGraph(_oneDayInfo);
-            print("change onDaySelected");
-          });
-        }
+      onDaySelected: (selectedDay, focusedDay) async {
+        setState(() {
+          _selectedDay = selectedDay;
+          _focusedDay = focusedDay;
+        });
+        _selectedDay = selectedDay;
+        _focusedDay = focusedDay;
+        await _getOneDayInfo(_selectedDay);
+        dateprovider.changeDate(_selectedDay); // 선택한 날짜에 해당하는 그래프 위젯 렌더링
+        graphprovider.changeOneDayInfo(_oneDayInfo);
       },
       onFormatChanged: (format) {
         if (_calendarFormat != format) {

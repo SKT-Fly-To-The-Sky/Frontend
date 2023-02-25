@@ -42,25 +42,28 @@ class DailyGraph extends StatefulWidget {
 class _DailyGraphState extends State<DailyGraph> {
   final connectServer = ConnectServer();
 
-  static double kcal = 752;
-  List<DoughnutChartData> doughnutChartData = [
-    DoughnutChartData('섭취한 칼로리', (2600 - kcal), Color(0xFF3617CE)),
-    DoughnutChartData('남은 칼로리', kcal, Color(0xFFe8e8e8)),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    var graphprovider = Provider.of<graphProvider>(context, listen: false);
-    Map<String, dynamic> _onedayInfo = graphprovider.oneday_info;
-    print("build dailyFoodWidget");
     double screenWidth = MediaQuery.of(context).size.width;
-    Map<String, double> nutPercent = {
-      'kcal': _onedayInfo['kcal']!.toDouble(),
-      'carbo': _onedayInfo['carbo']!.toDouble(),
-      'protein': _onedayInfo['protein']!.toDouble(),
-      'fat': _onedayInfo['fat']!
+    var graphprovider = Provider.of<graphProvider>(context, listen: false);
+
+    double? kcal;
+    Map<String, dynamic>? _onedayInfo;
+    Map<String, double>? nutPercent;
+    _onedayInfo = graphprovider.oneday_info;
+    kcal = _onedayInfo!['kcal']!.toDouble();
+    nutPercent = {
+      'kcal': _onedayInfo!['kcal']!.toDouble(),
+      'carbo': _onedayInfo!['carbo']!.toDouble(),
+      'protein': _onedayInfo!['protein']!.toDouble(),
+      'fat': _onedayInfo!['fat']!.toDouble()
     };
+
     List<VBarChartModel> barChartData = [];
+    List<DoughnutChartData> doughnutChartData = [
+      DoughnutChartData('섭취한 칼로리', (2600 - kcal!), Color(0xFF3617CE)),
+      DoughnutChartData('남은 칼로리', kcal!, Color(0xFFe8e8e8)),
+    ];
     for (int i = 0; i < nutName.length; i++) {
       barChartData.add(VBarChartModel(
           index: i,
@@ -100,7 +103,7 @@ class _DailyGraphState extends State<DailyGraph> {
                       CircularChartAnnotation(
                           widget: Container(
                         child: Text(
-                          "${2600 - _onedayInfo['kcal']}kcal",
+                          "${2600 - kcal.toInt()}kcal",
                           style: TextStyle(fontSize: 18),
                         ),
                       ))
