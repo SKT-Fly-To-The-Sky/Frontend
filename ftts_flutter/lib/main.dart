@@ -9,7 +9,8 @@ import 'package:intl/date_symbol_data_local.dart';
 void main() {
   initializeDateFormatting().then((_) => runApp(MultiProvider(providers: [
         ChangeNotifierProvider(create: (context) => supplementProvider()),
-        ChangeNotifierProvider(create: (context) => dateProvider())
+        ChangeNotifierProvider(create: (context) => dateProvider()),
+        ChangeNotifierProvider(create: (context) => graphProvider())
       ], child: MyApp())));
 }
 

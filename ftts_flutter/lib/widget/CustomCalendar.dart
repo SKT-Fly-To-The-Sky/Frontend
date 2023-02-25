@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ftts_flutter/widget/DailyGraph.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:provider/provider.dart';
 import 'package:ftts_flutter/provider/dateProvider.dart';
-import '../screen/MainScreen.dart';
+import 'package:intl/intl.dart';
+import 'package:dio/dio.dart';
 import '../utils.dart';
 
 class CustomCalendar extends StatefulWidget {
@@ -16,11 +16,34 @@ class CustomCalendar extends StatefulWidget {
 class _CustomCalendarState extends State<CustomCalendar> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
-  DateTime _selectedDay = DateTime.now();
+  late DateTime _selectedDay;
+  Map<String, dynamic> _oneDayInfo = {};
+  String _dateString = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDay = DateTime.now();
+  }
+
+  Future<void> _getEventData(DateTime day) async {
+    try {
+      _dateString = DateFormat('yyyy-MM-dd').format(day);
+      print(_dateString);
+      Response response = await Dio().get(
+          'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/day?date=${_dateString}');
+      setState(() {
+        _oneDayInfo = response.data['result'];
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<dateProvider>(context, listen: false);
+    var dateprovider = Provider.of<dateProvider>(context, listen: false);
+    var graphprovider = Provider.of<graphProvider>(context, listen: false);
     return TableCalendar(
       locale: 'ko-KR',
       firstDay: kFirstDay,
@@ -35,7 +58,8 @@ class _CustomCalendarState extends State<CustomCalendar> {
           setState(() {
             _selectedDay = selectedDay;
             _focusedDay = focusedDay;
-            provider.changeDate(_selectedDay); // 선택한 날짜에 해당하는 그래프 위젯 렌더링
+            dateprovider.changeDate(_selectedDay); // 선택한 날짜에 해당하는 그래프 위젯 렌더링
+            graphprovider.changeGraph(_oneDayInfo);
             print("change onDaySelected");
           });
         }

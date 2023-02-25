@@ -21,7 +21,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    var provide = Provider.of<dateProvider>(context, listen: false);
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xFFF4F6F9),
@@ -65,9 +64,9 @@ class DailyFoodWidget extends StatefulWidget {
 class _DailyFoodWidgetState extends State<DailyFoodWidget> {
   @override
   Widget build(BuildContext context) {
-    print("build dailyFoodWidget");
     String date = DateFormat('yyyy-MM-dd')
         .format(context.watch<dateProvider>().providerDate);
+
     List<String> foodTimeDiv = ['아침', '점심', '저녁', '간식'];
     Map<String, String> foodEng = {
       '아침': 'morning',

@@ -1,14 +1,11 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../screen/ResultScreen.dart';
 import '../model/ConnectServer.dart';
-import 'dart:developer';
 import 'package:rounded_background_text/rounded_background_text.dart';
 import 'dart:math' as math;
 import '../utils/nutInfo.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class ImageUploader extends StatefulWidget {
   const ImageUploader({Key? key}) : super(key: key);

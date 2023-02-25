@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ftts_flutter/model/ConnectServer.dart';
 import 'package:ftts_flutter/screen/SupplementsMainScreen.dart';
 import 'package:provider/provider.dart';
-import '../model/ConnectServer.dart';
 import '../provider/supplementProvider.dart';
-import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 
 class SupplementsHandaddScreen extends StatelessWidget {
   var inputData = '';

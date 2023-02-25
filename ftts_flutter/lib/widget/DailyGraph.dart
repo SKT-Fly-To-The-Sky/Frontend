@@ -4,6 +4,8 @@ import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 import 'package:flutter/material.dart';
 import '../model/ConnectServer.dart';
+import 'package:provider/provider.dart';
+import '../provider/dateProvider.dart';
 
 final List<String> nutName = ['kcal', 'carbo', 'protein', 'fat'];
 final Map<String, String> nutKor = {
@@ -48,12 +50,15 @@ class _DailyGraphState extends State<DailyGraph> {
 
   @override
   Widget build(BuildContext context) {
+    var graphprovider = Provider.of<graphProvider>(context, listen: false);
+    Map<String, dynamic> _onedayInfo = graphprovider.oneday_info;
+    print("build dailyFoodWidget");
     double screenWidth = MediaQuery.of(context).size.width;
     Map<String, double> nutPercent = {
-      'kcal': 52,
-      'carbo': 52,
-      'protein': 28,
-      'fat': 25
+      'kcal': _onedayInfo['kcal']!.toDouble(),
+      'carbo': _onedayInfo['carbo']!.toDouble(),
+      'protein': _onedayInfo['protein']!.toDouble(),
+      'fat': _onedayInfo['fat']!
     };
     List<VBarChartModel> barChartData = [];
     for (int i = 0; i < nutName.length; i++) {
@@ -94,8 +99,8 @@ class _DailyGraphState extends State<DailyGraph> {
                     annotations: <CircularChartAnnotation>[
                       CircularChartAnnotation(
                           widget: Container(
-                        child: const Text(
-                          "1848kcal",
+                        child: Text(
+                          "${2600 - _onedayInfo['kcal']}kcal",
                           style: TextStyle(fontSize: 18),
                         ),
                       ))
