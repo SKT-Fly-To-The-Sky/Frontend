@@ -9,10 +9,16 @@ import '../model/ConnectServer.dart';
 import 'package:rounded_background_text/rounded_background_text.dart';
 import '../utils/nutInfo.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class ImageUploader extends StatefulWidget {
   String timeDiv;
-  ImageUploader(this.timeDiv, {Key? key}) : super(key: key);
+  String imgDate;
+  ImageUploader(
+    this.timeDiv,
+    this.imgDate, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ImageUploader> createState() => _ImageUploaderState();
@@ -27,28 +33,25 @@ class _ImageUploaderState extends State<ImageUploader> {
   late Future<Image> timeDivImage;
   File? imageFile;
   Response? response;
+  String? imgUrl;
 
   @override
   void initState() {
     super.initState();
-    // Future.delayed(_getTimeDivImage());
-    // print("ImageUploader initstate 실행");
+    _getTimeDivImage();
   }
 
-  _getTimeDivImage() async {
-    String onlydate = DateFormat('yyyy-MM-dd')
-        .format(context.watch<dateProvider>().providerDate);
-    String url =
-        'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${onlydate}';
+  Future<void> _getTimeDivImage() async {
+    imgUrl =
+        'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${widget.imgDate}';
     try {
       response = await Dio()
-          .get(url, options: Options(responseType: ResponseType.bytes));
+          .get(imgUrl!, options: Options(responseType: ResponseType.bytes));
+      print("url");
+      print(imgUrl);
       print("response 이미지 불러오기 성공");
-      print(url);
-      // timeDivImage = await response.data['image'];
-      // imageFile = new File(url);
-      // await imageFile.writeAsBytes(response.data);
     } catch (e) {
+      print(imgUrl);
       print("response 이미지 불러오기 실패");
       print(e);
     }
@@ -59,6 +62,7 @@ class _ImageUploaderState extends State<ImageUploader> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     _getTimeDivImage();
+
     // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
     Future getImage(ImageSource imageSource) async {
       // Timeline.startSync('interesting function');
@@ -178,8 +182,8 @@ class _ImageUploaderState extends State<ImageUploader> {
                 width: 210,
                 height: 140,
                 child: response != null
-                    ? Image.memory(
-                        response!.data,
+                    ? Image.network(
+                        imgUrl!,
                         fit: BoxFit.fill,
                       )
                     : Image(
