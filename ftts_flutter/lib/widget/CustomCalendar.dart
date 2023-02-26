@@ -43,6 +43,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
 
     return TableCalendar(
       locale: 'ko-KR',
+      daysOfWeekHeight: 20,
       firstDay: kFirstDay,
       lastDay: kLastDay,
       focusedDay: _focusedDay,

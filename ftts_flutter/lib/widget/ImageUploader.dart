@@ -7,11 +7,8 @@ import 'package:provider/provider.dart';
 import '../screen/ResultScreen.dart';
 import '../model/ConnectServer.dart';
 import 'package:rounded_background_text/rounded_background_text.dart';
-import 'dart:math' as math;
 import '../utils/nutInfo.dart';
-import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
-import 'dart:io';
 
 class ImageUploader extends StatefulWidget {
   String timeDiv;
@@ -30,9 +27,6 @@ class _ImageUploaderState extends State<ImageUploader> {
   late Future<Image> timeDivImage;
   File? imageFile;
   Response? response;
-
-  // 이미지 회전시키기
-  double radians = 270 * math.pi / 180;
 
   @override
   void initState() {
@@ -174,17 +168,23 @@ class _ImageUploaderState extends State<ImageUploader> {
         child: Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            SizedBox(
+              height: 5,
+            ),
             Container(
-                height: 200,
+                margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
+                width: 210,
+                height: 140,
                 child: response != null
-                    ? Transform.rotate(
-                        angle: radians, child: Image.memory(response!.data))
-                    : Transform.rotate(
-                        angle: radians,
-                        child: _morningImage,
-                      )),
+                    ? Image.memory(
+                        response!.data,
+                        fit: BoxFit.fill,
+                      )
+                    : Image(
+                        image: AssetImage('assets/firegogi.jpg'),
+                        fit: BoxFit.fill)),
             Column(
               children: [
                 Row(
@@ -200,7 +200,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                           backgroundColor: Color(0xffffb3ba),
                         )),
                     Text(
-                      '${_nut!['carbo'].toInt()} kcal',
+                      '${_nut!['carbo'].toInt()}',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -221,7 +221,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                           backgroundColor: Color(0xffffffba),
                         )),
                     Text(
-                      '${_nut!['protein'].toInt()} kcal',
+                      '${_nut!['protein'].toInt()}',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -242,7 +242,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                           backgroundColor: Color(0xffbae1ff),
                         )),
                     Text(
-                      '${_nut!['fat'].toInt()} kcal',
+                      '${_nut!['fat'].toInt()}',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
