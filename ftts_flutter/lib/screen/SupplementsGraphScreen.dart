@@ -23,6 +23,9 @@ class SupplementsGrapeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var _nutinfo=Provider.of<supplementProvider>(context,listen: false).supplementnutInfo;
 
+    print("supplement data 확인-------------");
+    print(_nutinfo['vitA']);
+
     List<dynamic> recommedInfo=[
       ['비타민A','vitA',3000,'㎍'],['비타민B1','vitB1',1.2,'mg'],['비타민B2','vitB2',1.5,'mg'],['비타민B3','vitB3',16,'mg'],
       ['비타민B5','vitB5',5,'mg'],['비타민B6','vitB6',100,'mg'],['비타민B7','vitB7',30,'㎍'],['비타민B9','vitB9', 1000,'㎍'],
@@ -33,11 +36,16 @@ class SupplementsGrapeScreen extends StatelessWidget {
     List<VBarChartModel> bardata = [];
 
     for (int i=0;i<recommedInfo.length;i++){
+      var result=(_nutinfo[recommedInfo[i][1]]/recommedInfo[i][2])*100;
+      if((result)>=100){
+        result=100.0;
+      }
+
       bardata.add(VBarChartModel(
           index: i,
           colors: setColor((_nutinfo[recommedInfo[i][1]]/recommedInfo[i][2])*100),
-          jumlah: (_nutinfo[recommedInfo[i][1]]/recommedInfo[i][2])*100,
-          tooltip: ((_nutinfo[recommedInfo[i][1]]/recommedInfo[i][2])*100).ceil().toString()+recommedInfo[i][3],//+단위
+          jumlah: result,
+          tooltip: (_nutinfo[recommedInfo[i][1]]).ceil().toString()+recommedInfo[i][3],//+단위
           label: recommedInfo[i][0]
       ));
     }
@@ -52,7 +60,7 @@ class SupplementsGrapeScreen extends StatelessWidget {
           barSize: 13,
           maxX: 100,
           labelSizeFactor: 0.28,
-          tooltipSize: 35,
+          tooltipSize: 50,
           showBackdrop: true,
           showLegend: true,
           barStyle: BarStyle.DEFAULT,
