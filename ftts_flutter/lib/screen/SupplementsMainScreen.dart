@@ -333,71 +333,71 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
       ),
       body: SingleChildScrollView(
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: EdgeInsets.only(left: 20, top: 15, bottom: 10),
-            child: Row(
-              children: [
-                Text(
-                  "영양제 섭취율",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 20, top: 15, bottom: 10),
+                child: Row(
+                  children: [
+                    Text(
+                      "영양제 섭취율",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(left: 150),
+                        child: TextButton(
+                            style: TextButton.styleFrom(
+                              primary: Color(0xFF3617CE),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          SupplementsGrapeScreen()));
+                              },
+                            child: Text("상세 보기"))),
+                  ],
                 ),
-                Container(
-                    margin: EdgeInsets.only(left: 150),
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                          primary: Color(0xFF3617CE),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      SupplementsGrapeScreen()));
-                        },
-                        child: Text("상세 보기"))),
-              ],
-            ),
-          ),
-          CheckBoxListView(),
-          Container(
-            child: Center(
-              child: IconButton(
-                icon: Icon(Icons.add),
-                iconSize: 30,
-                color: Color(0xFF3617CE),
-                onPressed: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: const Text('영양제 추가하기'),
-                    content: const Text('추가 방법을 고르시오'),
-                    actions: <Widget>[
-                      selectbutton(),
-                    ],
+              ),
+              CheckBoxListView(),
+              Container(
+                child: Center(
+                  child: IconButton(
+                    icon: Icon(Icons.add),
+                    iconSize: 30,
+                    color: Color(0xFF3617CE),
+                    onPressed: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('영양제 추가하기'),
+                        content: const Text('추가 방법을 고르시오'),
+                        actions: <Widget>[
+                          selectbutton(),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-          Container(
-              margin: EdgeInsets.only(left: 20, top: 15, bottom: 5, right: 20),
-              child: Row(
-                children: [
-                  Icon(Icons.medication_liquid_sharp),
-                  Container(
-                    width: 5,
-                  ),
-                  Text(
-                    "영양제 추천",
-                    style: TextStyle(
-                        // fontWeight: FontWeight.bold,
-                        fontSize: 17),
-                  ),
-                ],
-              )),
-          Center(child: JsonListView())
+              Container(
+                  margin: EdgeInsets.only(left: 20, top: 15, bottom: 5, right: 20),
+                  child: Row(
+                    children: [
+                      Icon(Icons.medication_liquid_sharp),
+                      Container(
+                        width: 5,
+                      ),
+                      Text(
+                        "영양제 추천",
+                        style: TextStyle(
+                          // fontWeight: FontWeight.bold,
+                          fontSize: 17),
+                      ),
+                    ],
+                  )),
+              Center(child: JsonListView())
         ],
       )),
     );
