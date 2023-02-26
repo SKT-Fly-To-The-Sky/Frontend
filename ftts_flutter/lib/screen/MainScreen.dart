@@ -100,23 +100,7 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
   Widget build(BuildContext context) {
     date = DateFormat('yyyy-MM-dd')
         .format(context.watch<dateProvider>().providerDate);
-    //
     _getKcal();
-
-    // List<String> foodTimeDiv = ['아침', '점심', '저녁', '간식'];
-    // Map<String, String> foodEng = {
-    //   '아침': 'morning',
-    //   '점심': 'lunch',
-    //   '저녁': 'dinner',
-    //   '간식': 'snack'
-    // };
-    // Map<String, double> foodKcal = {
-    //   'morning': 752,
-    //   'lunch': 0,
-    //   'dinner': 0,
-    //   'snack': 0
-    // };
-
     return Container(
       child: Column(
         children: [
@@ -172,7 +156,6 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
             child: ContainedTabBarView(
               onChange: (index) {
                 setState(() {});
-                // timedivprovider.timediv = foodEng[foodTimeDiv[index]]!;
               },
               tabs: [
                 for (int i = 0; i < foodTimeDiv.length; i++)

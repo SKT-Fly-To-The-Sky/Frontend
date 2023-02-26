@@ -51,6 +51,7 @@ class _ImageUploaderState extends State<ImageUploader> {
       print(imgUrl);
       print("response 이미지 불러오기 성공");
     } catch (e) {
+      response == null;
       print(imgUrl);
       print("response 이미지 불러오기 실패");
       print(e);
