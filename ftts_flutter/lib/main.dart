@@ -13,7 +13,8 @@ void main() {
   initializeDateFormatting().then((_) => runApp(MultiProvider(providers: [
         ChangeNotifierProvider(create: (context) => supplementProvider()),
         ChangeNotifierProvider(create: (context) => dateProvider()),
-        ChangeNotifierProvider(create: (context) => graphProvider())
+        ChangeNotifierProvider(create: (context) => graphProvider()),
+        // ChangeNotifierProvider(create: (context) => timeDivProvider())
       ], child: MyApp())));
 }
 
