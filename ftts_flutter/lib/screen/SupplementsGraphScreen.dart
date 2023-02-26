@@ -33,11 +33,16 @@ class SupplementsGrapeScreen extends StatelessWidget {
     List<VBarChartModel> bardata = [];
 
     for (int i=0;i<recommedInfo.length;i++){
+      var result=(_nutinfo[recommedInfo[i][1]]/recommedInfo[i][2])*100;
+      if((result)>=100){
+        result=100.0;
+      }
+
       bardata.add(VBarChartModel(
           index: i,
           colors: setColor((_nutinfo[recommedInfo[i][1]]/recommedInfo[i][2])*100),
-          jumlah: (_nutinfo[recommedInfo[i][1]]/recommedInfo[i][2])*100,
-          tooltip: ((_nutinfo[recommedInfo[i][1]]/recommedInfo[i][2])*100).ceil().toString()+recommedInfo[i][3],//+단위
+          jumlah: result,
+          tooltip: (_nutinfo[recommedInfo[i][1]]).ceil().toString()+recommedInfo[i][3],//+단위
           label: recommedInfo[i][0]
       ));
     }
@@ -52,7 +57,7 @@ class SupplementsGrapeScreen extends StatelessWidget {
           barSize: 13,
           maxX: 100,
           labelSizeFactor: 0.28,
-          tooltipSize: 35,
+          tooltipSize: 50,
           showBackdrop: true,
           showLegend: true,
           barStyle: BarStyle.DEFAULT,
