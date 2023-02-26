@@ -88,8 +88,7 @@ class _DetailGraphState extends State<DetailGraph> {
 
     Widget Grape(){
       return Container(
-        color: Colors.red,
-          width: screenWidth * 0.47,
+          width: screenWidth * 0.48,
           child: VerticalBarchart(
               background: Colors.transparent,
               labelColor: Colors.black,
@@ -106,7 +105,6 @@ class _DetailGraphState extends State<DetailGraph> {
 
     Widget Grape2(){
       return Container(
-          color:Colors.blue,
           width: screenWidth * 0.44,
           child: VerticalBarchart(
             background: Colors.transparent,
