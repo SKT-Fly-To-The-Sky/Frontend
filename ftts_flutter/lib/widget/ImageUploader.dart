@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:ftts_flutter/provider/dateProvider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../screen/ResultScreen.dart';
 import '../model/ConnectServer.dart';
 import 'package:rounded_background_text/rounded_background_text.dart';
@@ -69,8 +72,12 @@ class _ImageUploaderState extends State<ImageUploader> {
         Map<String, dynamic>? nut;
         //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 'fail'를 반환한다.
         //음식 이름 받아오기
-        result = await connectServer.uploading(_image!);
-        nut = await connectServer.foodNutinfo(result!);
+        var date=Provider.of<dateProvider>(context, listen: false).providerDate;
+        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        String onlydate = formatter.format(date);
+
+        result = await connectServer.uploading(_image!,onlydate!);
+        nut = await connectServer.foodNutinfo(result!,onlydate!);
         Navigator.pop(context);
         Navigator.push(
             context,
