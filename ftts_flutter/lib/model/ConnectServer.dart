@@ -13,7 +13,7 @@ class ConnectServer {
   String data = "";
   List<String> foodName = [];
 
-  Future<List<String>?> uploading(XFile file,String selectDay) async {
+  Future<List<String>?> uploading(XFile file, String selectDay) async {
     //데이터 변환
     FormData formData = FormData.fromMap({
       'file': await MultipartFile.fromFile(
@@ -34,7 +34,6 @@ class ConnectServer {
     dio.options.connectTimeout = 5000;
     dio.options.receiveTimeout = 5000;
     try {
-
       var sendImage = await dio.post('${Url}dodo/intakes/images',
           queryParameters: {'time_div': 'morning', 'date': selectDay},
           data: formData);
@@ -62,8 +61,8 @@ class ConnectServer {
     }
   }
 
-  Future<Map<String, dynamic>> foodNutinfo(List<String> name,String selectDay) async {
-
+  Future<Map<String, dynamic>> foodNutinfo(
+      List<String> name, String selectDay) async {
     try {
       for (int i = 0; i < name.length; i++) {
         var foodsInfo = await dio
@@ -144,8 +143,7 @@ class ConnectServer {
           await dio.post('${Url}supplements/classification', data: formData);
       data = response.data['name'].toString();
     } catch (e) {
-      data =
-          '비타민D';
+      data = '비타민D';
     }
     return data;
   }

@@ -9,9 +9,13 @@ import '../model/ConnectServer.dart';
 import 'package:rounded_background_text/rounded_background_text.dart';
 import 'dart:math' as math;
 import '../utils/nutInfo.dart';
+import 'package:intl/intl.dart';
+import 'package:dio/dio.dart';
+import 'dart:io';
 
 class ImageUploader extends StatefulWidget {
-  const ImageUploader({Key? key}) : super(key: key);
+  String timeDiv;
+  ImageUploader(this.timeDiv, {Key? key}) : super(key: key);
 
   @override
   State<ImageUploader> createState() => _ImageUploaderState();
@@ -23,16 +27,44 @@ class _ImageUploaderState extends State<ImageUploader> {
   final connectServer = ConnectServer();
   List<String>? _result = ["음식메뉴"];
   Map<String, dynamic>? _nut = nut_info;
+  late Future<Image> timeDivImage;
+  File? imageFile;
+  Response? response;
 
   // 이미지 회전시키기
-  double radians = 90 * math.pi / 180;
-  
+  double radians = 270 * math.pi / 180;
+
+  @override
+  void initState() {
+    super.initState();
+    // Future.delayed(_getTimeDivImage());
+    // print("ImageUploader initstate 실행");
+  }
+
+  _getTimeDivImage() async {
+    String onlydate = DateFormat('yyyy-MM-dd')
+        .format(context.watch<dateProvider>().providerDate);
+    String url =
+        'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${onlydate}';
+    try {
+      response = await Dio()
+          .get(url, options: Options(responseType: ResponseType.bytes));
+      print("response 이미지 불러오기 성공");
+      print(url);
+      // timeDivImage = await response.data['image'];
+      // imageFile = new File(url);
+      // await imageFile.writeAsBytes(response.data);
+    } catch (e) {
+      print("response 이미지 불러오기 실패");
+      print(e);
+    }
+  }
+
   // 이미지 업로더 위젯
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
-    
+    _getTimeDivImage();
     // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
     Future getImage(ImageSource imageSource) async {
       // Timeline.startSync('interesting function');
@@ -42,42 +74,50 @@ class _ImageUploaderState extends State<ImageUploader> {
           );
 
       if (_image != null) {
-
-        showDialog(context: context, builder: (context){
-          return Container(
-            color: const Color(0xFFF2F5FA),
-              child:Column(children: <Widget>[
-                SizedBox(height: 60,),
-                Text(
-                  '딸기는 과일 중에 비타민C가 가장 많이 포함되어 있어요!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'NotoSansKR',
-                    color: Colors.black,
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold),
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Container(
+                color: const Color(0xFFF2F5FA),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 60,
+                    ),
+                    Text(
+                      '딸기는 과일 중에 비타민C가 가장 많이 포함되어 있어요!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: 'NotoSansKR',
+                          color: Colors.black,
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Expanded(
+                      child: Image(
+                        image: AssetImage('assets/adot_loading.gif'),
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                    CircularProgressIndicator()
+                  ],
                 ),
-                Expanded(
-                  child: Image(
-                  image: AssetImage('assets/adot_loading.gif'),
-                  fit: BoxFit.fitWidth,
-                ),),
-                CircularProgressIndicator()
-              ],),
-          );
-        }
-        );
+              );
+            });
 
         List<String>? result;
         Map<String, dynamic>? nut;
         //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 'fail'를 반환한다.
         //음식 이름 받아오기
-        var date=Provider.of<dateProvider>(context, listen: false).providerDate;
+        var date =
+            Provider.of<dateProvider>(context, listen: false).providerDate;
         final DateFormat formatter = DateFormat('yyyy-MM-dd');
         String onlydate = formatter.format(date);
 
-        result = await connectServer.uploading(_image!,onlydate!);
-        nut = await connectServer.foodNutinfo(result!,onlydate!);
+        // classification 결과 반환 - 음식 메뉴 이름 list
+        result = await connectServer.uploading(_image!, onlydate!);
+        // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 - map
+        nut = await connectServer.foodNutinfo(result!, onlydate!);
         Navigator.pop(context);
         Navigator.push(
             context,
@@ -90,43 +130,46 @@ class _ImageUploaderState extends State<ImageUploader> {
           _nut = nut;
           //ResultScreen에 이미지, classfication 결과, 영양소 정보 전달
         });
-
       } else {
         print("_image is null");
       }
     }
 
-    return _image == null
-        ? Container(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  FloatingActionButton(
-                    heroTag: 'camera',
-                    backgroundColor: Color(0xFF3617CE),
-                    child: Icon(Icons.add_a_photo),
-                    tooltip: 'pick Image',
-                    onPressed: () {
-                      getImage(ImageSource.camera);
-                    },
-                  ),
-                  FloatingActionButton(
-                    heroTag: 'gallery',
-                    backgroundColor: Color(0xFF3617CE),
-                    child: Icon(Icons.wallpaper),
-                    tooltip: 'pick Image',
-                    onPressed: () {
-                      getImage(ImageSource.gallery);
-                    },
-                  ),
-                ])
-          ]))
-        : ShowImage();
+    return //_image == null
+        response == null
+            ? Container(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          FloatingActionButton(
+                            heroTag: 'camera',
+                            backgroundColor: Color(0xFF3617CE),
+                            child: Icon(Icons.add_a_photo),
+                            tooltip: 'pick Image',
+                            onPressed: () {
+                              getImage(ImageSource.camera);
+                            },
+                          ),
+                          FloatingActionButton(
+                            heroTag: 'gallery',
+                            backgroundColor: Color(0xFF3617CE),
+                            child: Icon(Icons.wallpaper),
+                            tooltip: 'pick Image',
+                            onPressed: () {
+                              getImage(ImageSource.gallery);
+                            },
+                          ),
+                        ])
+                  ]))
+            : ShowImage();
   }
 
   Widget ShowImage() {
+    final Image _morningImage =
+        Image(image: AssetImage('assets/diet_morning.jpg'));
     return Container(
         child: Column(
       children: [
@@ -134,14 +177,14 @@ class _ImageUploaderState extends State<ImageUploader> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              height: 200,
-              child: Transform.rotate(
-                angle: radians,
-                child: Image.file(
-                  File(_image!.path),
-                ),
-              ),
-            ),
+                height: 200,
+                child: response != null
+                    ? Transform.rotate(
+                        angle: radians, child: Image.memory(response!.data))
+                    : Transform.rotate(
+                        angle: radians,
+                        child: _morningImage,
+                      )),
             Column(
               children: [
                 Row(
@@ -157,7 +200,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                           backgroundColor: Color(0xffffb3ba),
                         )),
                     Text(
-                      '365 kcal',
+                      '${_nut!['carbo'].toInt()} kcal',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -178,7 +221,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                           backgroundColor: Color(0xffffffba),
                         )),
                     Text(
-                      '365 kcal',
+                      '${_nut!['protein'].toInt()} kcal',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -199,7 +242,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                           backgroundColor: Color(0xffbae1ff),
                         )),
                     Text(
-                      '365 kcal',
+                      '${_nut!['fat'].toInt()} kcal',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -249,163 +292,12 @@ class _ImageUploaderState extends State<ImageUploader> {
                         ))),
               ],
             ),
-          ],
-        ),
-      ],
-    ));
-  }
-
-}
-
-class StaticUploader extends StatelessWidget {
-  const StaticUploader({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    String url = 'assets/diet_morning.jpg';
-
-    final Image _morningImage =
-        Image(image: AssetImage('assets/diet_morning.jpg'));
-    // final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
-    // final XFile _fileImg = _image.file;
-    final List<String> _result = ["음식메뉴"];
-
-    double radians = 270 * math.pi / 180;
-    return Container(
-        child: Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              height: 200,
-              child: Transform.rotate(
-                angle: radians,
-                child: _morningImage,
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                        margin: EdgeInsets.fromLTRB(15, 0, 10, 10),
-                        child: RoundedBackgroundText(
-                          '탄',
-                          style: const TextStyle(
-                              fontFamily: 'NotoSansKR',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                          backgroundColor: Color(0xffffb3ba),
-                        )),
-                    Text(
-                      '140.7 g',
-                      style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    Container(
-                        margin: EdgeInsets.fromLTRB(15, 0, 10, 10),
-                        child: RoundedBackgroundText(
-                          '단',
-                          style: const TextStyle(
-                              fontFamily: 'NotoSansKR',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                          backgroundColor: Color(0xffffffba),
-                        )),
-                    Text(
-                      '20.4 g',
-                      style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    Container(
-                        margin: EdgeInsets.fromLTRB(15, 0, 10, 5),
-                        child: RoundedBackgroundText(
-                          '지',
-                          style: const TextStyle(
-                              fontFamily: 'NotoSansKR',
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                          backgroundColor: Color(0xffbae1ff),
-                        )),
-                    Text(
-                      '10.2 g',
-                      style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
-                    )
-                  ],
-                ),
-              ],
-            )
-          ],
-        ),
-        Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 15.0, right: 7.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(Icons.restaurant_menu_outlined),
-                      Text(
-                        " 음식 메뉴",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                    margin: EdgeInsets.only(
-                      left: 150,
-                    ),
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                          primary: Color(0xFF3617CE),
-                        ),
-                        onPressed: () {
-                          print("nut info");
-                          print(nut_info);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ResultScreen(null, _result, nut_info!)));
-                        },
-                        child: Text(
-                          "상세 보기",
-                          style: TextStyle(fontSize: 14),
-                        ))),
-              ],
-            ),
             Container(
               margin: EdgeInsets.only(left: 0.0, right: 3.0, bottom: 5.0),
               child: Wrap(
                 direction: Axis.horizontal,
                 alignment: WrapAlignment.start,
-                children: [
-                  FoodMenu('누룽지'),
-                  FoodMenu('샐러드'),
-                  FoodMenu('깍두기'),
-                  FoodMenu('쌀밥'),
-                  FoodMenu('오이무침'),
-                  FoodMenu('계란찜')
-                ],
+                children: [for (String res in _result!) FoodMenu(res)],
               ),
             )
           ],
@@ -423,36 +315,4 @@ Widget FoodMenu(String text) {
         style: const TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
         backgroundColor: Colors.grey[100],
       ));
-}
-
-class UploaderBtn extends StatelessWidget {
-  const UploaderBtn({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[
-        FloatingActionButton(
-          heroTag: 'camera',
-          backgroundColor: Color(0xFF3617CE),
-          child: Icon(Icons.add_a_photo),
-          tooltip: 'pick Image',
-          onPressed: () {
-            // getImage(ImageSource.camera);
-          },
-        ),
-        FloatingActionButton(
-          heroTag: 'gallery',
-          backgroundColor: Color(0xFF3617CE),
-          child: Icon(Icons.wallpaper),
-          tooltip: 'pick Image',
-          onPressed: () {
-            // getImage(ImageSource.gallery);
-          },
-        ),
-      ])
-    ]));
-  }
 }

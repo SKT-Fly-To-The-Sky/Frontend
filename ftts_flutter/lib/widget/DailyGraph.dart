@@ -49,10 +49,10 @@ class _DailyGraphState extends State<DailyGraph> {
 
     double? kcal;
     Map<String, dynamic>? _onedayInfo;
-    Map<String, double>? nutPercent;
+    Map<String, double>? _nutPercent;
     _onedayInfo = graphprovider.oneday_info;
     kcal = _onedayInfo!['kcal']!.toDouble();
-    nutPercent = {
+    _nutPercent = {
       'kcal': _onedayInfo!['kcal']!.toDouble(),
       'carbo': _onedayInfo!['carbo']!.toDouble(),
       'protein': _onedayInfo!['protein']!.toDouble(),
@@ -67,11 +67,11 @@ class _DailyGraphState extends State<DailyGraph> {
     for (int i = 0; i < nutName.length; i++) {
       barChartData.add(VBarChartModel(
           index: i,
-          colors: setColor(nutPercent[nutName[i]]!),
-          jumlah: (nutPercent[nutName[i]]! >= 100)
+          colors: setColor(_nutPercent[nutName[i]]!),
+          jumlah: (_nutPercent[nutName[i]]! >= 100)
               ? (100)
-              : (nutPercent[nutName[i]]!),
-          tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
+              : (_nutPercent[nutName[i]]!),
+          tooltip: "${_nutPercent[nutName[i]]!.toInt()}%",
           label: nutKor[nutName[i]]));
     }
 
