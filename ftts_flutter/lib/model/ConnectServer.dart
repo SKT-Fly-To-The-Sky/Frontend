@@ -3,12 +3,10 @@ import 'dart:io';
 import '../utils/nutInfo.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 
 class ConnectServer {
   XFile? file;
 
-  // final String Url = 'http://jeongsuri.iptime.org:10019/';
   final String Url = 'http://jeongsuri.iptime.org:10019/';
   final dio = Dio();
 
@@ -50,11 +48,10 @@ class ConnectServer {
 
         if (classficationResult.statusCode == 200) {
           //값
-          for (int i = 0;
-              i < int.parse(classficationResult.data['object_num'].toString());
-              i++) {
-            foodName
-                ?.add(classficationResult.data['object'][i]['name'].toString());
+          for (int i = 0; i < int.parse(classficationResult.data['object_num'].toString()); i++) {
+            if(classficationResult.data['object'][i]['name'.toString()!='unknown']){
+              foodName?.add(classficationResult.data['object'][i]['name'].toString());
+            }
             //영양소 값 합산
           }
         }

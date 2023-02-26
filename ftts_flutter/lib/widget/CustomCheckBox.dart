@@ -110,15 +110,19 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                                   color: Colors.grey,
                                                   decoration: TextDecoration
                                                       .lineThrough),
+                                        overflow: TextOverflow.fade,
+                                        maxLines: 1,
                                             )
                                           : Text(
                                         morningData[i][0],
                                               style: TextStyle(fontSize: 18),
+                                        overflow: TextOverflow.fade,
                                             ),
                                       Text(
                                         morningData[i][2],
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.grey),
+                                        maxLines: 1,
                                       ),
                                     ],
                                   )),
@@ -185,12 +189,16 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                                   color: Colors.grey,
                                                   decoration: TextDecoration
                                                       .lineThrough),
-                                            )
+                                      overflow: TextOverflow.fade,
+                                      maxLines: 1,
+                                    )
                                           : Text(
                                               // lunchSupNames[i],
                                       lunchData[i][0],
                                               style: TextStyle(fontSize: 18),
-                                            ),
+                                      overflow: TextOverflow.fade,
+                                      maxLines: 1,
+                                    ),
                                       Text(
                                         lunchData[i][2],
                                         style: TextStyle(
@@ -260,11 +268,15 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
                                                   color: Colors.grey,
                                                   decoration: TextDecoration
                                                       .lineThrough),
+                                        overflow: TextOverflow.fade,
+                                        maxLines: 1,
                                             )
                                           : Text(
                                               dinnerData[i][0],
                                               //dinnerSupNames[i],
                                               style: TextStyle(fontSize: 18),
+                                        overflow: TextOverflow.fade,
+                                        maxLines: 1,
                                             ),
                                       Text(
                                         dinnerData[i][2],
