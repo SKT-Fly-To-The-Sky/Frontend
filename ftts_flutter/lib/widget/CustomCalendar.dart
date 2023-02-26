@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ftts_flutter/provider/supplementProvider.dart';
+import 'package:ftts_flutter/utils/nutInfo.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:provider/provider.dart';
 import 'package:ftts_flutter/provider/dateProvider.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
+import '../model/ConnectServer.dart';
 import '../utils.dart';
 
 class CustomCalendar extends StatefulWidget {
@@ -30,16 +33,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
   Widget build(BuildContext context) {
     var dateprovider = Provider.of<dateProvider>(context, listen: false);
     var graphprovider = Provider.of<graphProvider>(context, listen: false);
-    Future<void> _getOneDayInfo(DateTime day) async {
-      try {
-        _dateString = DateFormat('yyyy-MM-dd').format(day);
-        Response response = await Dio().get(
-            'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/day?date=${_dateString}');
-        _oneDayInfo = await response.data['result'];
-      } catch (e) {
-        print("_getOneDayInfo error!!");
-      }
-    }
+    final connectServer = ConnectServer();
 
     return TableCalendar(
       locale: 'ko-KR',
@@ -58,9 +52,14 @@ class _CustomCalendarState extends State<CustomCalendar> {
         });
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        await _getOneDayInfo(_selectedDay);
+
+        _dateString = DateFormat('yyyy-MM-dd').format(_selectedDay);
+
+        Map<String,dynamic>? result;
+        result = await connectServer.getOneDayInfo(_dateString);
+        graphprovider.changeOneDayInfo(result!);
         dateprovider.changeDate(_selectedDay); // 선택한 날짜에 해당하는 그래프 위젯 렌더링
-        graphprovider.changeOneDayInfo(_oneDayInfo);
+
       },
       onFormatChanged: (format) {
         if (_calendarFormat != format) {

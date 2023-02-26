@@ -18,19 +18,9 @@ class _CheckBoxListViewState extends State<CheckBoxListView> {
 
     List<String> morningSupNames = provide.supplementList;
 
-
     List<dynamic> morningData=provide.supplemetsMorningInfo;
     List<dynamic> lunchData=provide.supplemetsLunchInfo;
     List<dynamic> dinnerData=provide.supplemetsDinnerInfo;
-
-    print("ALLSupNames");
-    print(morningSupNames);
-    print("morningSupNames");
-    print(morningData);
-    print("lunchSupNames");
-    print(lunchData);
-    print("dinnerSupNames");
-    print(dinnerData);
 
     int newsum=morningData.where((e)=>e[1]==true).fold(0,(sum,_)=>sum+1).toInt()+
         lunchData.where((e)=>e[1]==true).fold(0,(sum,_)=>sum+1).toInt()+
