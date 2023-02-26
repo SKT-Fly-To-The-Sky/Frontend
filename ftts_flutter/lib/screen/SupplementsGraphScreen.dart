@@ -23,6 +23,9 @@ class SupplementsGrapeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var _nutinfo=Provider.of<supplementProvider>(context,listen: false).supplementnutInfo;
 
+    print("supplement data 확인-------------");
+    print(_nutinfo['vitA']);
+
     List<dynamic> recommedInfo=[
       ['비타민A','vitA',3000,'㎍'],['비타민B1','vitB1',1.2,'mg'],['비타민B2','vitB2',1.5,'mg'],['비타민B3','vitB3',16,'mg'],
       ['비타민B5','vitB5',5,'mg'],['비타민B6','vitB6',100,'mg'],['비타민B7','vitB7',30,'㎍'],['비타민B9','vitB9', 1000,'㎍'],

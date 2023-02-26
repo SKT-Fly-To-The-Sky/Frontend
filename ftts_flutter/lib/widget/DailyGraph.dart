@@ -7,13 +7,13 @@ import '../model/ConnectServer.dart';
 import 'package:provider/provider.dart';
 import '../provider/dateProvider.dart';
 
-final List<String> nutName = ['kcal', 'carbo', 'protein', 'fat'];
-final Map<String, String> nutKor = {
-  'kcal': '칼로리',
-  'carbo': '탄수화물',
-  'protein': '단백질',
-  'fat': '지방'
-};
+// final List<String> nutName = ['kcal', 'carbo', 'protein', 'fat'];
+// final Map<String, String> nutKor = {
+//   'kcal': '칼로리',
+//   'carbo': '탄수화물',
+//   'protein': '단백질',
+//   'fat': '지방'
+// };
 
 List<Color> setColor(double a) {
   if (a >= 100) {
@@ -27,6 +27,7 @@ List<Color> setColor(double a) {
 
 class DoughnutChartData {
   DoughnutChartData(this.x, this.y, this.color);
+
   final String x;
   final double y;
   final Color color;
@@ -40,39 +41,69 @@ class DailyGraph extends StatefulWidget {
 }
 
 class _DailyGraphState extends State<DailyGraph> {
-  final connectServer = ConnectServer();
+  //final connectServer = ConnectServer();
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     var graphprovider = Provider.of<graphProvider>(context, listen: false);
 
-    double? kcal;
-    Map<String, dynamic>? _onedayInfo;
-    Map<String, double>? _nutPercent;
+    Map<String, dynamic> _onedayInfo;
+
     _onedayInfo = graphprovider.oneday_info;
-    kcal = _onedayInfo!['kcal']!.toDouble();
-    _nutPercent = {
-      'kcal': _onedayInfo!['kcal']!.toDouble(),
-      'carbo': _onedayInfo!['carbo']!.toDouble(),
-      'protein': _onedayInfo!['protein']!.toDouble(),
-      'fat': _onedayInfo!['fat']!.toDouble()
-    };
+    print("데이터 확인 ---------------");
+    print(_onedayInfo['kcal']);
+    List<dynamic> recommedInfo = [
+      ['칼로리', 'kcal', 2600,],
+      ['탄수화물', 'carbo', 130],
+      ['단백질', 'protein', 65],
+      ['지방', 'fat', 65],
+    ];
 
     List<VBarChartModel> barChartData = [];
+
     List<DoughnutChartData> doughnutChartData = [
-      DoughnutChartData('섭취한 칼로리', (2600 - kcal!), Color(0xFF3617CE)),
-      DoughnutChartData('남은 칼로리', kcal!, Color(0xFFe8e8e8)),
+      DoughnutChartData('섭취한 칼로리', (recommedInfo[0][2] - (_onedayInfo['kcal'])), Color(0xFF3617CE)),
+      DoughnutChartData('남은 칼로리', (_onedayInfo['kcal']), Color(0xFFe8e8e8)),
     ];
-    for (int i = 0; i < nutName.length; i++) {
+
+    for (int i = 0; i < recommedInfo.length; i++) {
+
+      var result = (_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100;
+      if ((result) > 100) {
+        result = 100.0;
+      }
+
       barChartData.add(VBarChartModel(
           index: i,
-          colors: setColor(_nutPercent[nutName[i]]!),
-          jumlah: (_nutPercent[nutName[i]]! >= 100)
-              ? (100)
-              : (_nutPercent[nutName[i]]!),
-          tooltip: "${_nutPercent[nutName[i]]!.toInt()}%",
-          label: nutKor[nutName[i]]));
+          colors: setColor((_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100),
+          jumlah: result,
+          tooltip: ((_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100).ceil().toString() +"%",
+          label: recommedInfo[i][0]));
+    }
+
+
+    Widget Grape(){
+      return Container(
+          width: screenWidth * 0.50,
+          child: VerticalBarchart(
+            background: Colors.transparent,
+            labelColor: Colors.black,
+            labelSizeFactor: 0.45,
+            tooltipColor: Colors.black,
+            data: barChartData,
+            showBackdrop: true,
+            barStyle: BarStyle.DEFAULT,
+            barSize: 12,
+            maxX: 100,
+            showLegend: true,
+            legend: [
+              Vlegend(isSquare: false, color: Colors.green, text: "적정"),
+              Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
+              Vlegend(isSquare: false, color: Colors.yellow, text: "부족"),
+            ],
+          )
+      );
     }
 
     return Container(
@@ -83,65 +114,46 @@ class _DailyGraphState extends State<DailyGraph> {
         children: [
           Container(
               child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 20.0),
-                child: Text(
-                  "남은 칼로리",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-              ),
-              Container(
-                height: 150,
-                width: 150,
-                child: SfCircularChart(
-                    centerY: '80',
-                    margin: EdgeInsets.zero,
-                    annotations: <CircularChartAnnotation>[
-                      CircularChartAnnotation(
-                          widget: Container(
-                        child: Text(
-                          "${2600 - kcal.toInt()}kcal",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ))
-                    ],
-                    series: <CircularSeries>[
-                      DoughnutSeries<DoughnutChartData, String>(
-                          dataSource: doughnutChartData,
-                          pointColorMapper: (DoughnutChartData data, _) =>
-                              data.color,
-                          xValueMapper: (DoughnutChartData data, _) => data.x,
-                          yValueMapper: (DoughnutChartData data, _) => data.y,
-                          innerRadius: '70%')
-                    ]),
-              ),
-            ],
-          )),
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 20.0),
+                      child: Text(
+                        "남은 칼로리",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                    ),
+                  Container(
+                    height: 150,
+                    width: 150,
+                    child: SfCircularChart(
+                        centerY: '80',
+                        margin: EdgeInsets.zero,
+                        annotations: <CircularChartAnnotation>[
+                          CircularChartAnnotation(
+                              widget: Container(
+                                child: Text(
+                                  ((recommedInfo[0][2]-(_onedayInfo['kcal'])).ceil()).toString()+"kacl",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ))
+                        ],
+                        series: <CircularSeries>[
+                          DoughnutSeries<DoughnutChartData, String>(
+                              dataSource: doughnutChartData,
+                              pointColorMapper: (DoughnutChartData data, _) => data.color,
+                              xValueMapper: (DoughnutChartData data, _) => data.x,
+                              yValueMapper: (DoughnutChartData data, _) => data.y,
+                              innerRadius: '70%')
+                        ]),
+                  ),
+                ],
+              )),
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Container(
-                  width: screenWidth * 0.50,
-                  child: VerticalBarchart(
-                    background: Colors.transparent,
-                    labelColor: Colors.black,
-                    labelSizeFactor: 0.45,
-                    tooltipColor: Colors.black,
-                    data: barChartData,
-                    showBackdrop: true,
-                    barStyle: BarStyle.DEFAULT,
-                    barSize: 12,
-                    maxX: 100,
-                    showLegend: true,
-                    legend: [
-                      Vlegend(isSquare: false, color: Colors.green, text: "적정"),
-                      Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
-                      Vlegend(
-                          isSquare: false, color: Colors.yellow, text: "부족"),
-                    ],
-                  ))),
+              child: Grape()
+          ),
         ],
       ),
     );

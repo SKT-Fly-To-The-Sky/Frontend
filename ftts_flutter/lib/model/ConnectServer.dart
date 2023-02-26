@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:intl/intl.dart';
+
 import '../utils/nutInfo.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
@@ -61,8 +63,7 @@ class ConnectServer {
     }
   }
 
-  Future<Map<String, dynamic>> foodNutinfo(
-      List<String> name, String selectDay) async {
+  Future<Map<String, dynamic>> foodNutinfo(List<String> name, String selectDay) async {
     try {
       for (int i = 0; i < name.length; i++) {
         var foodsInfo = await dio
@@ -188,8 +189,7 @@ class ConnectServer {
     dio.options.receiveTimeout = 5000;
 
     try {
-      var supinfo = await dio
-          .get('${Url}supplements/info', queryParameters: {"sup_name": name});
+      var supinfo = await dio.get('${Url}supplements/info', queryParameters: {"sup_name": name});
       Map<String, dynamic> supnut_info;
       supnut_info = {
         "vitA": double.parse(supinfo.data['vitA'].toString()),
@@ -231,6 +231,72 @@ class ConnectServer {
       };
       print("nut_info data: " + nut_info['kcal'].toString());
       return nut_info;
+    }
+  }
+
+
+  Future<Map<String, dynamic>> getOneDayInfo(String day) async {
+    print('Day fppd info');
+
+    //log 설정
+    dio.interceptors.add(LogInterceptor(
+        responseBody: true,
+        error: true,
+        requestHeader: false,
+        responseHeader: false,
+        request: false,
+        requestBody: false));
+    //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
+    dio.options.connectTimeout = 5000;
+    dio.options.receiveTimeout = 5000;
+
+    try {
+      var supinfo = await dio.get('http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/day',queryParameters: {"date": day});
+      Map<String, dynamic> _onedayInfo;
+      _onedayInfo = {
+        "userid":supinfo.data['userid'].toString(),
+        "date":supinfo.data['date'].toString(),
+        "kcal": double.parse(supinfo.data['kcal'].toString()),
+        "protein": double.parse(supinfo.data['protein'].toString()),
+        "fat": double.parse(supinfo.data['fat'].toString()),
+        "carbo": double.parse(supinfo.data['carbo'].toString()),
+        "sugar": double.parse(supinfo.data['sugar'].toString()),
+        "chole": double.parse(supinfo.data['chole'].toString()),
+        "fiber": double.parse(supinfo.data['fiber'].toString()),
+        "calcium": double.parse(supinfo.data['calcium'].toString()),
+        "magne": double.parse(supinfo.data['magne'].toString()),
+        "iron":double.parse(supinfo.data['iron'].toString()),
+        "potass": double.parse(supinfo.data['potass'].toString()),
+        "sodium": double.parse(supinfo.data['sodium'].toString()),
+        "zinc":double.parse(supinfo.data['zinc'].toString()),
+        "copper": double.parse(supinfo.data['copper'].toString()),
+      };
+      print("_onedayInfo data: " + _onedayInfo['kcal'].toString());
+      return _onedayInfo;
+    } catch (e) {
+      print("catch");
+      Map<String, dynamic> _onedayInfo;
+      _onedayInfo = {
+        "userid":"dodo",
+        "date":day,
+        "kcal": 0.0,
+        "protein": 0.0,
+        "fat": 0.0,
+        "carbo": 0.0,
+        "sugar": 0.0,
+        "chole": 0.0,
+        "fiber": 0.0,
+        "calcium": 0.0,
+        "magne": 0.0,
+        "iron":0.0,
+        "potass": 0.0,
+        "sodium": 0.0,
+        "zinc":0.0,
+        "copper": 0.0,
+      };
+      print("_onedayInfo data: " + _onedayInfo['kcal'].toString());
+      print("catech end--------------------");
+      return _onedayInfo;
     }
   }
 }

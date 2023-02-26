@@ -326,16 +326,14 @@ class SerchDelegate extends SearchDelegate {
                                       Map<String, dynamic>? result;
 
                                       try {
-                                        result = await connectServer
-                                            .SupplementsNutinfo(
-                                                query!.toString());
+                                        result = await connectServer.SupplementsNutinfo(query!.toString());
 
                                         //영양정보 추가, 아침점심저녁 list에 아이템 추가
-                                        provide.updatenutInfo(
-                                            query.toString(), result);
-                                        print(
-                                            "supplementnutInfo------------------");
+                                        provide.updatenutInfo(query.toString(), result);
+
+                                        print("supplementnutInfo------------------");
                                         print(provide.supplementnutInfo);
+
                                       } catch (e) {
                                         //예외처리로 default로 점심에 추가
                                         provide.addNameText(
