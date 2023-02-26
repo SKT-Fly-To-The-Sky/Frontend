@@ -1,7 +1,8 @@
 import 'package:flutter/services.dart';
 
 class TMapPlugin {
-  static const MethodChannel _channel = const MethodChannel('com.example.ftts_flutter/android');
+  static const MethodChannel _channel =
+      const MethodChannel('com.example.ftts_flutter/android');
 
   static Future<void> exeTMap(String food) async {
     try {

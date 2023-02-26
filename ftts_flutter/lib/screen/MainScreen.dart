@@ -194,13 +194,10 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
                   ),
               ],
               views: [
-                // StaticUploader(),
                 ImageUploader("morning"),
                 ImageUploader("lunch"),
                 ImageUploader("dinner"),
                 ImageUploader("snack"),
-                // UploaderBtn(),
-                // UploaderBtn(),
               ],
             ),
           )

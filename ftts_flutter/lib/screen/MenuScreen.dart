@@ -57,8 +57,10 @@ class MenuScreen extends StatelessWidget {
                 children: [
                   TextButton.icon(
                       onPressed: () {
-                        Navigator.of(context).popUntil((route) => route.isFirst);
-                        Navigator.of(context).push(MaterialPageRoute(builder: ((context) => const MainScreen())));
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => const MainScreen())));
                       },
                       style:
                           TextButton.styleFrom(foregroundColor: Colors.black),
@@ -69,7 +71,8 @@ class MenuScreen extends StatelessWidget {
                   ),
                   TextButton.icon(
                       onPressed: () {
-                        Navigator.of(context).popUntil((route) => route.isFirst);
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: ((context) => SupplementsMainScreen())));
                       },
@@ -89,10 +92,9 @@ class MenuScreen extends StatelessWidget {
                         TMapPlugin.exeTMap("김치찌개");
                       },
                       style:
-                      TextButton.styleFrom(foregroundColor: Colors.black),
+                          TextButton.styleFrom(foregroundColor: Colors.black),
                       icon: Icon(Icons.map),
-                      label: Text("지도")
-                  ),
+                      label: Text("지도")),
                 ],
               ),
             ),
