@@ -1,8 +1,30 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-class SplashScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:ftts_flutter/screen/HomeScreen.dart';
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => new _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  startTime() async {
+    var _duration = Duration(seconds: 2);
+    return Timer(_duration, () {
+      Navigator.of(context).pushReplacementNamed('/homeScreen');
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTime();
+  }
+
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -10,23 +32,21 @@ class SplashScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/adot_logo.png',
-                    width: 200,
-                    height: 200,
-                  ),
-                  CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation(
-                      Color(0xFF334CFF),
-                    ),
-                  ),
-                ],
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(
+                  Color(0xFF334CFF),
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Image.asset(
+                'assets/adot_splash.jpg',
+                width: screenWidth,
+                // height: 200,
               ),
             ],
           ),
