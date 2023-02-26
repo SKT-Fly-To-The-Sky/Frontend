@@ -32,8 +32,9 @@ class _ImageUploaderState extends State<ImageUploader> {
   Map<String, dynamic>? _nut = nut_info;
   late Future<Image> timeDivImage;
   File? imageFile;
-  Response? response;
+  Response? response, foodresponse;
   String? imgUrl;
+  String? foodNamesUrl;
 
   @override
   void initState() {
@@ -44,9 +45,17 @@ class _ImageUploaderState extends State<ImageUploader> {
   Future<void> _getTimeDivImage() async {
     imgUrl =
         'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${widget.imgDate}';
+    foodNamesUrl =
+        'http://jeongsuri.iptime.org:10019/classification?userid=dodo&time_div=${widget.timeDiv}&date=${widget.imgDate}';
     try {
       response = await Dio()
           .get(imgUrl!, options: Options(responseType: ResponseType.bytes));
+      print("foodurl");
+      print(foodNamesUrl);
+      foodresponse = await Dio().get(foodNamesUrl!);
+      _result = foodresponse!.data['object'];
+      print("foodresponse");
+      print(foodresponse);
       print("url");
       print(imgUrl);
       print("response 이미지 불러오기 성공");
