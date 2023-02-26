@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import '../widget/DetailGraph.dart';
 import 'package:provider/provider.dart';
 import '../provider/dateProvider.dart';
+import 'package:dio/dio.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -60,24 +61,60 @@ class DailyFoodWidget extends StatefulWidget {
 }
 
 class _DailyFoodWidgetState extends State<DailyFoodWidget> {
+  String? date;
+  String? url;
+  String? timeDiv;
+  Response? response;
+
+  List<String> foodTimeDiv = ['아침', '점심', '저녁', '간식'];
+  Map<String, String> foodEng = {
+    '아침': 'morning',
+    '점심': 'lunch',
+    '저녁': 'dinner',
+    '간식': 'snack'
+  };
+  Map<String, double> foodKcal = {
+    'morning': 0,
+    'lunch': 0,
+    'dinner': 0,
+    'snack': 0
+  };
+  _getKcal() async {
+    try {
+      for (String t in foodTimeDiv)
+        url =
+            'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/time-div?time_div=${t}&date=${date}';
+      response = await Dio().get(url!);
+      foodKcal[timeDiv!] = response!.data['kcal'];
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    String date = DateFormat('yyyy-MM-dd')
+    date = DateFormat('yyyy-MM-dd')
         .format(context.watch<dateProvider>().providerDate);
-
-    List<String> foodTimeDiv = ['아침', '점심', '저녁', '간식'];
-    Map<String, String> foodEng = {
-      '아침': 'morning',
-      '점심': 'lunch',
-      '저녁': 'dinner',
-      '간식': 'snack'
-    };
-    Map<String, double> foodKcal = {
-      'morning': 752,
-      'lunch': 0,
-      'dinner': 0,
-      'snack': 0
-    };
+    //
+    _getKcal();
+    // List<String> foodTimeDiv = ['아침', '점심', '저녁', '간식'];
+    // Map<String, String> foodEng = {
+    //   '아침': 'morning',
+    //   '점심': 'lunch',
+    //   '저녁': 'dinner',
+    //   '간식': 'snack'
+    // };
+    // Map<String, double> foodKcal = {
+    //   'morning': 752,
+    //   'lunch': 0,
+    //   'dinner': 0,
+    //   'snack': 0
+    // };
 
     return Container(
       child: Column(
@@ -157,10 +194,13 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
                   ),
               ],
               views: [
-                StaticUploader(),
-                ImageUploader(),
-                UploaderBtn(),
-                UploaderBtn(),
+                // StaticUploader(),
+                ImageUploader("morning"),
+                ImageUploader("lunch"),
+                ImageUploader("dinner"),
+                ImageUploader("snack"),
+                // UploaderBtn(),
+                // UploaderBtn(),
               ],
             ),
           )
