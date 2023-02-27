@@ -205,11 +205,11 @@ class _StaticDetailGraphState extends State<StaticDetailGraph> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     Map<String, double> nutPercent = {
-      'kcal': 52,
-      'carbo': 52,
-      'protein': 28,
-      'fat': 25,
-      'sugar': 25,
+      'kcal': 62,
+      'carbo': 170,
+      'protein': 118,
+      'fat': 126,
+      'sugar': 160,
       'chole': 25,
       'fiber': 25,
       'calcium': 25,

@@ -22,8 +22,8 @@ Map<String, dynamic> staticDailyData = {
 
 Map<String, dynamic> nutPercent = {
   //[칼로리, 탄, 단, 지]
-  '2023-02-25': [2300, 386.8, 133.08, 181.4],
-  '2023-02-26': [1748.5, 232.7, 70, 59.576],
+  '2023-02-25': [2300, 88, 297, 204, 279],
+  '2023-02-26': [1748.5, 67, 179, 107, 91],
   '2023-02-27': [1612.3, 62, 170, 118, 126],
 };
 
@@ -66,14 +66,14 @@ class _StaticDailyGraphState extends State<StaticDailyGraph> {
     ];
 
     List<VBarChartModel> barChartData = [];
-    for (int i = 1; i < nutName.length; i++) {
+    for (int i = 0; i < nutName.length; i++) {
       barChartData.add(VBarChartModel(
           index: i,
-          colors: setColor(nutPercent[widget.graphDate][i]!),
-          jumlah: (nutPercent[widget.graphDate][i]! >= 100)
+          colors: setColor((nutPercent[widget.graphDate])[i + 1]!.toDouble()),
+          jumlah: ((nutPercent[widget.graphDate])[i + 1]!.toDouble() >= 100)
               ? (100)
-              : (nutPercent[widget.graphDate][i]!),
-          tooltip: "${nutPercent[widget.graphDate][i]!.toInt()}%",
+              : ((nutPercent[widget.graphDate])[i + 1]!.toDouble()),
+          tooltip: "${(nutPercent[widget.graphDate])[i + 1]!.toInt()}%",
           label: nutKor[nutName[i]]));
     }
 
