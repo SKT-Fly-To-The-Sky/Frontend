@@ -50,18 +50,11 @@ class _ImageUploaderState extends State<ImageUploader> {
     try {
       response = await Dio()
           .get(imgUrl!, options: Options(responseType: ResponseType.bytes));
-      print("foodurl");
-      print(foodNamesUrl);
       foodresponse = await Dio().get(foodNamesUrl!);
       _result = foodresponse!.data['object'];
-      print("foodresponse");
-      print(foodresponse);
-      print("url");
-      print(imgUrl);
       print("response 이미지 불러오기 성공");
     } catch (e) {
       response == null;
-      print(imgUrl);
       print("response 이미지 불러오기 실패");
       print(e);
     }
