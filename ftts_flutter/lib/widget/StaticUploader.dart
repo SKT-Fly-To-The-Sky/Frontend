@@ -88,12 +88,12 @@ Map<String, dynamic> data = {
       42
     ], //lunch
     [
-      ['연어초밥'],
+      ['김치', '쌀밥', '국수'],
       'assets/diet_day3_dinner.jpg',
       447.3,
-      71,
-      18.8,
-      9.7
+      96,
+      22.8,
+      30.7
     ], //dinner
   ],
 };
