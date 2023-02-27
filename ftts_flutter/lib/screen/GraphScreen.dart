@@ -7,7 +7,7 @@ import 'dart:io';
 
 class GraphScreen extends StatelessWidget {
   final XFile? _image;
-  final List<String>? _result;
+  final List<dynamic>? _result;
   final Map<String, dynamic>? _nutinfo;
 
   const GraphScreen(this._image, this._result, this._nutinfo, {super.key});
@@ -62,10 +62,10 @@ class GraphScreen extends StatelessWidget {
         child: VerticalBarchart(
           background: Colors.transparent,
           data: bardata,
-          barSize: 12,
-          labelSizeFactor: 0.27,
+          barSize: 11,
+          labelSizeFactor: 0.24,
           maxX: 100,
-          tooltipSize: 35,
+          tooltipSize: 45,
           showBackdrop: true,
           showLegend: true,
           barStyle: BarStyle.DEFAULT,
@@ -93,7 +93,7 @@ class GraphScreen extends StatelessWidget {
               children: <Widget>[
                 Flexible(
                     flex: 1,
-                    child: (_image != null) && (_result![0] != '불고기')
+                    child: (_image != null) && (_result![0][0] != '불고기')
                         //음식 추정 실패시 김치전 사진이 나오도록
                         ? Expanded(
                             child: ClipRRect(
@@ -119,7 +119,7 @@ class GraphScreen extends StatelessWidget {
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                            for (var res in _result!) Text(res as String)
+                            for (int i=0;i<_result!.length;i++) Text(_result![i][0])
                       ],
                     ))
               ],

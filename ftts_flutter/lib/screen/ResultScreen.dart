@@ -1,3 +1,6 @@
+
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -15,30 +18,35 @@ import 'package:http/http.dart' as http;
 
 class JsonListView extends StatefulWidget {
   @override
-  _JsonListViewState createState() => _JsonListViewState();
+  _JsonListViewState createState( ) => _JsonListViewState();
 }
 
 class _JsonListViewState extends State<JsonListView> {
+
   List<dynamic> _jsonData = [];
+  final dio = Dio();
 
   @override
   void initState() {
+    print("test/??????");
     super.initState();
-    _fetchJsonData();
+    foodRecommand('morning');
   }
 
-  Future<void> _fetchJsonData() async {
-    final response = await http.get(Uri.parse(
-      //주소 바꿔야함! 메뉴 티맵도 지워도 될?듯?
-        'http://jeongsuri.iptime.org:10019/dodo/food/recommand'));
 
-    if (response.statusCode == 200) {
+  Future<void> foodRecommand(String day) async{
+    var foodrecommand=[];
+    var recommanddata= await dio.get('http://jeongsuri.iptime.org:10019/dodo/foods/recommand',queryParameters: {'time_div':"morning"});
+
+    if(recommanddata.statusCode==200){
       setState(() {
-        // _jsonData = json.decode(utf8.decode(response.body.runes.toList()));
-        _jsonData = json.decode(response.body);
-      });
-    }
-    // print("fdsafsd");
+        for(int i=0;i<3;i++){
+          foodrecommand.add([recommanddata.data[i]["name"].toString(),recommanddata.data[i]["image"].toString()]);
+        }
+        _jsonData=foodrecommand;
+      }
+      );
+     }
   }
 
   @override
@@ -75,51 +83,58 @@ class _JsonListViewState extends State<JsonListView> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Center(
-                          // child: Image.memory(Uint8List.fromList(base64.decode(data['image']))),
-                            child: Image.network(data['image'])),
-                        Container(
-                          margin: EdgeInsets.only(left: 10, top: 10, right: 10),
-                          child: Text(
-                            "다음 식사는 "+utf8.decode(data['name'].codeUnits)+" 어때요?",
-                            style: const TextStyle(
-                              fontSize: 15,
-                              // fontWeight: FontWeight.bold
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(flex:3 ,child: Center(
+                            child:ClipRRect(
+                               borderRadius: BorderRadius.circular(8.0),
+                                child: Container(
+                                  width: 300,
+                                  height: 300,
+                                  child: Image.network(data[1],fit: BoxFit.fill,))),
+                          ),) ,
+                          Expanded(
+                            flex: 1,
+                              child:
+                                Container(
+                                  margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                                    child: Text(
+                                      "다음 식사는 "+data[0]+" 어때요?",
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                )
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: Container(
+                                margin: EdgeInsets.only(left: 10, top: 5, right: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Image(
+                                      image: AssetImage('assets/Tmap_logo.png'),
+                                      width: 30,
+                                    ),
+                                    TextButton(
+                                        style: TextButton.styleFrom(
+                                          primary: Color(0xFF3617CE),
+                                        ),
+                                        onPressed: () {
+                                          TMapPlugin.exeTMap(data[0]);
+                                          },
+                                        child: Text("근처 식당 경로찾기")
+                                )
+                              ],
                             ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10, top: 5, right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Image(
-                                image: AssetImage('assets/Tmap_logo.png'),
-                                width: 30,
-                              ),
-
-                              TextButton(
-                                  style: TextButton.styleFrom(
-                                    primary: Color(0xFF3617CE),
-                                  ),
-                                  onPressed: () {
-                                    // _launchUrl(utf8.decode(data['link'].codeUnits));
-                                    TMapPlugin.exeTMap(utf8.decode(data['name'].codeUnits));
-                                  },
-                                  child: Text("근처 식당 경로찾기")
-                              )
-                            ],
-                          ),
-                        ),
+                          )),
                       ],
-                    ),
+                    ),),
                   ),
                 ],
               ),
@@ -132,7 +147,7 @@ class _JsonListViewState extends State<JsonListView> {
 
 class ResultScreen extends StatelessWidget {
   final XFile? _image;
-  final List<String>? _result;
+  final List<dynamic>? _result;
   final Map<String, dynamic>? _nutinfo;
 
   ResultScreen(this._image, this._result, this._nutinfo, {super.key});
@@ -175,10 +190,7 @@ class ResultScreen extends StatelessWidget {
     }
 
     List<DoughnutChartData> doughnutChartData = [
-      DoughnutChartData(
-          '탄수화물',
-          _nutinfo!['carbo'] /
-              (_nutinfo!['carbo'] + _nutinfo!['protein'] + _nutinfo!['fat']),
+      DoughnutChartData('탄수화물', _nutinfo!['carbo'] / (_nutinfo!['carbo'] + _nutinfo!['protein'] + _nutinfo!['fat']),
           Color(0xFF5757)),
       DoughnutChartData(
           '단백질',
@@ -205,10 +217,10 @@ class ResultScreen extends StatelessWidget {
           child: VerticalBarchart(
             background: Colors.transparent,
             data: bardata,
-            barSize: 12,
+            barSize: 11,
             labelSizeFactor: 0.24,
             maxX: 100,
-            tooltipSize: 35,
+            tooltipSize: 45,
             showBackdrop: true,
             showLegend: true,
             barStyle: BarStyle.DEFAULT,
@@ -222,8 +234,8 @@ class ResultScreen extends StatelessWidget {
 
     Widget CircleGraph() {
       return Container(
-          height: 150,
-          width: 150,
+          height: 180,
+          width: 180,
           child: SfCircularChart(series: <CircularSeries>[
             // Renders doughnut chart
             DoughnutSeries<DoughnutChartData, String>(
@@ -231,7 +243,10 @@ class ResultScreen extends StatelessWidget {
                 pointColorMapper: (DoughnutChartData data, _) => data.color,
                 xValueMapper: (DoughnutChartData data, _) => data.x,
                 yValueMapper: (DoughnutChartData data, _) => data.y,
-                radius: '90%'
+                dataLabelMapper: (DoughnutChartData data,_)=>data.x,
+                dataLabelSettings: DataLabelSettings(isVisible: true,
+                labelIntersectAction: LabelIntersectAction.shift),
+                radius: '100%'
                 // cornerStyle: CornerStyle.bothCurve
                 )
           ]));
@@ -239,8 +254,8 @@ class ResultScreen extends StatelessWidget {
 
     Widget CircleGraph2() {
       return Container(
-          height: 150,
-          width: 150,
+          height: 180,
+          width: 180,
           child: SfCircularChart(series: <CircularSeries>[
             // Renders doughnut chart
             DoughnutSeries<DoughnutChartData, String>(
@@ -248,7 +263,10 @@ class ResultScreen extends StatelessWidget {
                 pointColorMapper: (DoughnutChartData data, _) => data.color,
                 xValueMapper: (DoughnutChartData data, _) => data.x,
                 yValueMapper: (DoughnutChartData data, _) => data.y,
-                radius: '90%'
+                dataLabelMapper: (DoughnutChartData data,_)=>data.x,
+                dataLabelSettings: DataLabelSettings(isVisible: true,
+                    labelIntersectAction: LabelIntersectAction.shift),
+                radius: '100%'
                 // cornerStyle: CornerStyle.bothCurve
                 )
           ]));
@@ -271,7 +289,7 @@ class ResultScreen extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     //child: (_image!='fail')?Expanded(child:Image.network(_result![0])):
-                    child: (_image != null) && (_result![0] != '불고기')
+                    child: (_image != null) && (_result![0][0]!= '불고기')
                         ? Expanded(
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
@@ -297,7 +315,7 @@ class ResultScreen extends StatelessWidget {
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        for (var res in _result!) Text(res as String)
+                        for (int i=0;i<_result!.length;i++) Text(_result![i][0])
                       ],
                     ))
               ],
