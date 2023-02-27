@@ -92,6 +92,8 @@ class _ImageUploaderState extends State<ImageUploader> {
           source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
           //이미지 resize 부분, height, width 설정, Quality 설정
           );
+      print("_image");
+      print(_image);
 
       if (_image != null) {
         showDialog(
@@ -209,14 +211,17 @@ class _ImageUploaderState extends State<ImageUploader> {
                 margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
                 width: 210,
                 height: 140,
-                child: imgresponse != null
+                child: _image == null
+                    // imgresponse != null
                     ? Image.network(
                         imgUrl!,
                         fit: BoxFit.fill,
                       )
-                    : Image(
-                        image: AssetImage('assets/firegogi.jpg'),
-                        fit: BoxFit.fill)),
+                    : Image.file(File(_image!.path))),
+            // Image(
+            //     image: AssetImage('assets/firegogi.jpg'),
+            //     fit: BoxFit.fill)
+
             Column(
               children: [
                 Row(

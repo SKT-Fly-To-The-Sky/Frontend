@@ -33,8 +33,8 @@ class ConnectServer {
         requestBody: false));
 
     //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
-    dio.options.connectTimeout = 5000;
-    dio.options.receiveTimeout = 5000;
+    dio.options.connectTimeout = 100000;
+    dio.options.receiveTimeout = 100000;
     try {
       var sendImage = await dio.post('${Url}dodo/intakes/images',
           queryParameters: {'time_div': 'morning', 'date': selectDay},
@@ -46,31 +46,28 @@ class ConnectServer {
               'time_div': 'morning',
               'date': selectDay
             });
-        print("testing2----------------");
-        print(classficationResult.data['object'][1].toString());
+        print("--------------------------------------------------");
+        print(classficationResult.data.toString());
+        print(classficationResult.data['object']);
 
         if (classficationResult.statusCode == 200) {
           //값
           for (int i = 0;
               i < int.parse(classficationResult.data['object_num'].toString());
               i++) {
-            print("for문===========================");
-            print(classficationResult.data['object'][i]['name'].toString());
-            print("예외처리 안되는 중");
-
             if (classficationResult.data['object'][i]['name'].toString() !=
-                    'unknown' &&
-                classficationResult.data['object'].toString() != "[]") {
-              foodName?.add(
-                  classficationResult.data['object'][i]['name'].toString());
-              foodSize?.add(classficationResult.data['object'][i]['size']);
+                null) {
+              print("for문===========================");
+              print(classficationResult.data['object'][i]['name'].toString());
+              print("예외처리 안되는 중");
+
               foodCls?.add([
                 classficationResult.data['object'][i]['name'].toString(),
-                classficationResult.data['object'][i]['size']
+                classficationResult.data['object'][i]['volumes']
               ]);
+              print(foodCls);
             }
 
-            print(foodCls);
             //영양소 값 합산
           }
           if (foodCls == null) {

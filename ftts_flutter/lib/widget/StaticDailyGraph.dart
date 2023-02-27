@@ -57,10 +57,10 @@ class _StaticDailyGraphState extends State<StaticDailyGraph> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     Map<String, double> nutPercent = {
-      'kcal': 82,
-      'carbo': 88,
-      'protein': 48,
-      'fat': 75
+      'kcal': 44,
+      'carbo': 96,
+      'protein': 83,
+      'fat': 78
     };
     List<VBarChartModel> barChartData = [];
     for (int i = 0; i < nutName.length; i++) {
@@ -101,8 +101,8 @@ class _StaticDailyGraphState extends State<StaticDailyGraph> {
                     annotations: <CircularChartAnnotation>[
                       CircularChartAnnotation(
                           widget: Container(
-                        child: const Text(
-                          "1848kcal",
+                        child: Text(
+                          "${kcal.toInt()}kcal",
                           style: TextStyle(fontSize: 18),
                         ),
                       ))

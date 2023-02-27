@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../utils/TMapPlugin.dart';
 import 'MainScreen.dart';
 import 'SupplementsMainScreen.dart';
 
@@ -83,21 +82,7 @@ class MenuScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(15),
-              child: Row(
-                children: [
-                  TextButton.icon(
-                      onPressed: () {
-                        TMapPlugin.exeTMap("김치찌개");
-                      },
-                      style:
-                          TextButton.styleFrom(foregroundColor: Colors.black),
-                      icon: Icon(Icons.map),
-                      label: Text("지도")),
-                ],
-              ),
-            ),
+
           ],
         ));
   }
