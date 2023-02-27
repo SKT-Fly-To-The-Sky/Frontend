@@ -3,8 +3,10 @@ import "package:ftts_flutter/model/ConnectServer.dart";
 import "package:ftts_flutter/screen/SupplementsMainScreen.dart";
 import "package:provider/provider.dart";
 import "../provider/supplementProvider.dart";
+import "../widget/SupplementsList.dart";
 
 class SupplementsHandaddScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,14 +35,14 @@ class SupplementsHandaddScreen extends StatelessWidget {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
+      body:  Column(
           children: <Widget>[
             GestureDetector(
               onTap: () {
                 showSearch(context: context, delegate: SerchDelegate());
               },
               child: Container(
+
                 height: 50,
                 margin: EdgeInsets.all(10),
                 child: Container(
@@ -51,7 +53,7 @@ class SupplementsHandaddScreen extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
-                      children: const <Widget>[
+                      children:  <Widget>[
                         //border 넣기, 라운드넣기, text 넣?기?
                         SizedBox(
                           width: 10,
@@ -74,10 +76,11 @@ class SupplementsHandaddScreen extends StatelessWidget {
                       ],
                     )),
               ),
-            )
+            ),
+            SupplementsList(),
           ],
         ),
-      ),
+
     );
   }
 }
@@ -222,7 +225,6 @@ class SerchDelegate extends SearchDelegate {
     "[JW중외제약] 루테인지아잔틴 오메가3",
     " 뉴트맘스올인원 임산부 종합 비타민 영양제"
   ];
-  List<String> imageLink=[];
 
   final connectServer = ConnectServer();
 
@@ -381,7 +383,8 @@ class SerchDelegate extends SearchDelegate {
                             ],
                           )
                         ],
-                      ));
+                      )
+              );
             },
           );
         });

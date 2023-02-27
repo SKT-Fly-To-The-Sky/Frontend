@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:intl/intl.dart';
-
 import '../utils/nutInfo.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,58 +14,6 @@ class ConnectServer {
   List<String> foodName = [];
   List<double> foodSize=[];
 
-
-  // Future<List<String>?> uploading(XFile file, String selectDay) async {
-  //
-  //   //데이터 변환
-  //   FormData formData = FormData.fromMap({
-  //     'file': await MultipartFile.fromFile(
-  //       file.path,
-  //     )
-  //   });
-  //
-  //   //log 설정
-  //   dio.interceptors.add(LogInterceptor(
-  //       responseBody: true,
-  //       error: true,
-  //       requestHeader: false,
-  //       responseHeader: false,
-  //       request: false,
-  //       requestBody: false));
-  //
-  //   //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
-  //   dio.options.connectTimeout = 5000;
-  //   dio.options.receiveTimeout = 5000;
-  //   try {
-  //     var sendImage = await dio.post('${Url}dodo/intakes/images',
-  //         queryParameters: {'time_div': 'morning', 'date': selectDay},
-  //         data: formData);
-  //     if (sendImage.data['message'] == 'image data saved successfully') {
-  //       var classficationResult = await dio.get('${Url}classification',
-  //           queryParameters: {
-  //             'userid': 'dodo',
-  //             'time_div': 'morning',
-  //             'date': selectDay
-  //           });
-  //
-  //       if (classficationResult.statusCode == 200) {
-  //         //값
-  //         for (int i = 0; i < int.parse(classficationResult.data['object_num'].toString()); i++) {
-  //           if(classficationResult.data['object'][i]['name'.toString()!='unknown']){
-  //             foodName?.add(classficationResult.data['object'][i]['name'].toString());
-  //             foodSize?.add(classficationResult.data['object'][i]['size']);
-  //             foodCls?.add([classficationResult.data['object'][i]['name'].toString(),classficationResult.data['object'][i]['size']]);
-  //           }
-  //           print(foodCls);
-  //           //영양소 값 합산
-  //         }
-  //       }
-  //     }
-  //     return foodName;
-  //   } catch (e) {
-  //     return ['불고기'];
-  //   }
-  // }
   Future<List<dynamic>?> uploading(XFile file, String selectDay) async {
     List<dynamic> foodCls=[];
     //데이터 변환
@@ -87,35 +33,34 @@ class ConnectServer {
         requestBody: false));
 
     //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
-    dio.options.connectTimeout = 5000;
-    dio.options.receiveTimeout = 5000;
+    dio.options.connectTimeout = 100000;
+    dio.options.receiveTimeout = 100000;
     try {
       var sendImage = await dio.post('${Url}dodo/intakes/images', queryParameters: {'time_div': 'morning', 'date': selectDay}, data: formData);
       if (sendImage.data['message'] == 'image data saved successfully') {
 
-        var classficationResult = await dio.get('${Url}classification',
-            queryParameters: {
-              'userid': 'dodo',
-              'time_div': 'morning',
-              'date': selectDay
+        var classficationResult = await dio.get('${Url}classification', queryParameters: {'userid': 'dodo', 'time_div': 'morning', 'date': selectDay
             });
-        print("testing2----------------");
-        print(classficationResult.data['object'][1].toString());
+        print("--------------------------------------------------");
+        print(classficationResult.data.toString());
+        print(classficationResult.data['object']);
 
         if (classficationResult.statusCode == 200) {
           //값
           for (int i = 0; i < int.parse(classficationResult.data['object_num'].toString()); i++) {
-            print("for문===========================");
-            print(classficationResult.data['object'][i]['name'].toString());
-            print("예외처리 안되는 중");
+            if(classficationResult.data['object'][i]['name'].toString()!=null) {
 
-            if(classficationResult.data['object'][i]['name'].toString()!='unknown' && classficationResult.data['object'].toString()!="[]"){
-              foodName?.add(classficationResult.data['object'][i]['name'].toString());
-              foodSize?.add(classficationResult.data['object'][i]['size']);
-              foodCls?.add([classficationResult.data['object'][i]['name'].toString(),classficationResult.data['object'][i]['size']]);
+              print("for문===========================");
+              print(classficationResult.data['object'][i]['name'].toString());
+              print("예외처리 안되는 중");
+
+              foodCls?.add([
+                classficationResult.data['object'][i]['name'].toString(),
+                classficationResult.data['object'][i]['volumes']
+              ]);
+              print(foodCls);
             }
 
-            print(foodCls);
             //영양소 값 합산
           }
           if(foodCls==null){
@@ -129,46 +74,6 @@ class ConnectServer {
     }
   }
 
-  // Future<Map<String, dynamic>> foodNutinfo(List<String> name, String selectDay) async {
-  //   try {
-  //     for (int i = 0; i < name.length; i++) {
-  //       var foodsInfo = await dio.get('${Url}foods/info', queryParameters: {"food_name": name[i]});
-  //
-  //       nut_info['kcal'] = kcal + double.parse(foodsInfo.data["kcal"].toString());
-  //       nut_info['protein'] = protein + double.parse(foodsInfo.data['protein'].toString());
-  //       nut_info['fat'] = fat + double.parse(foodsInfo.data['fat'].toString());
-  //       nut_info['carbo'] = carbo + double.parse(foodsInfo.data['carbo'].toString());
-  //       nut_info['sugar'] = sugar + double.parse(foodsInfo.data['sugar'].toString());
-  //       nut_info['chole'] = chole + double.parse(foodsInfo.data['chole'].toString());
-  //       nut_info['fiber'] = fiber + double.parse(foodsInfo.data['fiber'].toString());
-  //       nut_info['calcium'] = calcium + double.parse(foodsInfo.data['calcium'].toString());
-  //       nut_info['iron'] = iron + double.parse(foodsInfo.data['iron'].toString());
-  //       nut_info['magne'] = magne + double.parse(foodsInfo.data['magne'].toString());
-  //       nut_info['potass'] = potass + double.parse(foodsInfo.data['potass'].toString());
-  //       nut_info['sodium'] = sodium + double.parse(foodsInfo.data['sodium'].toString());
-  //       nut_info['zinc'] = zinc + double.parse(foodsInfo.data['zinc'].toString());
-  //       nut_info['copper'] = copper + double.parse(foodsInfo.data['copper'].toString());
-  //     }
-  //
-  //     print("nut_info");
-  //     print(nut_info);
-  //
-  //     Map<String, dynamic> post_info = {
-  //       "time_div": 'morning',
-  //       "date": selectDay,
-  //       "time": " "
-  //     };
-  //     post_info.addAll(nut_info);
-  //
-  //     dio.post('${Url}dodo/intakes/nutrients',
-  //         options: Options(
-  //             headers: {HttpHeaders.contentTypeHeader: "application/json"}),
-  //         data: jsonEncode(post_info));
-  //     return nut_info;
-  //   } catch (e) {
-  //     return nut_info;
-  //   }
-  // }
   Future<Map<String, dynamic>> foodNutinfo(List<dynamic> foodCls, String selectDay) async {
     print(foodCls);
     print("foodCls testing----------------------------");
@@ -235,7 +140,11 @@ class ConnectServer {
       //post image
       var response =
           await dio.post('${Url}supplements/classification', data: formData);
-      data = response.data['name'].toString();
+
+      data = response.data['object'][0]['name'].toString();
+      print("supplement testing");
+      print(data);
+
     } catch (e) {
       data = '비타민D';
     }

@@ -57,9 +57,6 @@ class _JsonListViewState extends State<JsonListView> {
           itemCount: _jsonData.length,
           itemBuilder: (context, i) {
             final data = _jsonData[i];
-
-            print(Uri.parse(data['link']));
-
             return Container(
               width: 300,
               padding: const EdgeInsets.only(
@@ -77,50 +74,64 @@ class _JsonListViewState extends State<JsonListView> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Center(
-                            // child: Image.memory(Uint8List.fromList(base64.decode(data['image']))),
-                            child: Image.network(data['image'])),
-                        Container(
-                          margin: EdgeInsets.only(left: 10, top: 10, right: 10),
-                          child: Text(
-                            utf8.decode(data['name'].codeUnits),
-                            style: const TextStyle(
-                              fontSize: 18,
-                              // fontWeight: FontWeight.bold
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),child:Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex:3,
+                            child:Center(
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Container(
+                                    width: 300,
+                                      height: 300,
+                                      child: Image.network(data['image'],fit: BoxFit.fill,)
+                                  )
+                              )
+                            ),
+                          ),
+                        Expanded(
+                          flex: 1,
+                          child:
+                          Container(
+                            margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                            child: Text(
+                              utf8.decode(data['name'].codeUnits),
+                              style: const TextStyle(
+                                fontSize: 15,
+                              ),
                             ),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10, top: 5, right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Image(
-                                image: AssetImage('assets/11th_logo.png'),
-                                width: 30,
-                              ),
-                              TextButton(
-                                  style: TextButton.styleFrom(
-                                    primary: Color(0xFF3617CE),
-                                  ),
-                                  onPressed: () {
-                                    // _launchUrl(utf8.decode(data['link'].codeUnits));
-                                    _launchUrl(Uri.parse(data['link']));
-                                  },
-                                  child: Text("쇼핑하러 가기"))
-                            ],
+                        Expanded(
+                          flex: 1,
+                          child:
+                          Container(
+                            margin: EdgeInsets.only(left: 10, top: 5, right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Image(
+                                  image: AssetImage('assets/11th_logo.png'),
+                                  width: 30,
+                                ),
+                                TextButton(
+                                    style: TextButton.styleFrom(
+                                      primary: Color(0xFF3617CE),
+                                    ),
+                                    onPressed: () {
+                                      _launchUrl(Uri.parse(data['link']));
+                                    },
+                                    child: Text("쇼핑하러 가기"))
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
+                  ),)
                 ],
               ),
             );
