@@ -81,8 +81,7 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
   _getKcal() async {
     try {
       for (String t in foodTimeDiv)
-        url =
-            'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/time-div?time_div=${t}&date=${date}';
+        url = 'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/time-div?time_div=${t}&date=${date}';
       response = await Dio().get(url!);
       foodKcal[timeDiv!] = response!.data['kcal'];
     } catch (e) {
