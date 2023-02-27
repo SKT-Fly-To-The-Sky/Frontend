@@ -359,26 +359,28 @@ class ResultScreen extends StatelessWidget {
                 children: <Widget>[
                   SizedBox(
                       child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Row(
-                      children: <Widget>[
-                        Column(children: <Widget>[
-                          Text("오늘 섭취 영양소",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                          CircleGraph(),
-                        ]),
-                        Column(children: <Widget>[
-                          Text("권장 섭취 영양소",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                          CircleGraph2()
-                        ])
-                      ],
-                    ),
-                  ))
+                          fit: BoxFit.fitWidth,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: <Widget>[
+                                Column(children: <Widget>[
+                                  Text("오늘 섭취 영양소",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold)),
+                                  CircleGraph(),
+                                ]),
+                                Column(children: <Widget>[
+                                  Text("권장 섭취 영양소",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold)),
+                                  CircleGraph2()
+                                ])
+                              ],
+                            ),
+                          )))
                 ],
               ),
             ],

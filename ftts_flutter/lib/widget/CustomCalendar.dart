@@ -55,11 +55,13 @@ class _CustomCalendarState extends State<CustomCalendar> {
 
         _dateString = DateFormat('yyyy-MM-dd').format(_selectedDay);
 
-        Map<String,dynamic>? result;
-        result = await connectServer.getOneDayInfo(_dateString);
-        graphprovider.changeOneDayInfo(result!);
+        // Map<String, dynamic>? result;
+        // result = await connectServer.getOneDayInfo(_dateString);
+        // graphprovider.changeOneDayInfo(result!);
+        print(dateprovider.providerDate);
         dateprovider.changeDate(_selectedDay); // 선택한 날짜에 해당하는 그래프 위젯 렌더링
-
+        print("_selected Day-----");
+        print(dateprovider.providerDate);
       },
       onFormatChanged: (format) {
         if (_calendarFormat != format) {

@@ -3,6 +3,8 @@ import 'dart:io';
 import '../utils/nutInfo.dart';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:ftts_flutter/provider/dateProvider.dart';
 
 class ConnectServer {
   XFile? file;

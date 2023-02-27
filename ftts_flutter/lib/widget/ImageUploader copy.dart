@@ -25,11 +25,11 @@ class ImageUploader extends StatefulWidget {
   State<ImageUploader> createState() => _ImageUploaderState();
 }
 
-class _ImageUploaderState extends State<ImageUploader>
-    with AutomaticKeepAliveClientMixin {
+class _ImageUploaderState extends State<ImageUploader> {
   XFile? _image;
   final picker = ImagePicker();
   final connectServer = ConnectServer();
+  List<dynamic>? _clsResult; // 예측 결과 음식 메뉴 이름 리스트
   List<dynamic>? _result = [
     ["불고기", 1.0]
   ];
@@ -38,12 +38,9 @@ class _ImageUploaderState extends State<ImageUploader>
   Map<String, dynamic>? _nut = nut_info;
   late Future<Image> timeDivImage;
   File? imageFile;
-  Response? imgresponse, foodresponse;
-  String? imgUrl;
-  String? foodNamesUrl;
-
-  @override
-  bool get wantKeepAlive => true;
+  Response? imgresponse, timedivresponse;
+  String? imgUrl, timedivUrl;
+  Map<String, dynamic>? timedivInfo;
 
   @override
   void initState() {
@@ -54,32 +51,38 @@ class _ImageUploaderState extends State<ImageUploader>
   Future<void> _getTimeDivImage() async {
     imgUrl =
         'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${widget.imgDate}';
-    // foodNamesUrl =
-    //     'http://jeongsuri.iptime.org:10019/classification?userid=dodo&time_div=${widget.timeDiv}&date=${widget.imgDate}';
+    timedivUrl =
+        'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/time-div?time_div=${widget.timeDiv}&date=${widget.imgDate}';
 
     try {
       imgresponse = await Dio()
           .get(imgUrl!, options: Options(responseType: ResponseType.bytes));
-
-      print(imgUrl);
-
+      timedivresponse = await Dio().get(timedivUrl!);
+      print("timedivresponse");
+      print(timedivresponse);
+      timedivInfo = {
+        'kcal': double.parse(timedivresponse!.data['kcal'].toString()),
+        'carbo': double.parse(timedivresponse!.data['carbo'].toString()),
+        'protein': double.parse(timedivresponse!.data['protein'].toString()),
+        'fat': double.parse(timedivresponse!.data['fat'].toString())
+      };
       // foodresponse = await Dio().get(foodNamesUrl!);
+      // print(imgUrl);
       // print("foodresponse");
       // print(foodresponse!.data['object']);
       // print("FoodNamesUrl");
       // print(foodNamesUrl);
       // if (foodresponse!.data['object_num'] > 0) {
-      //   _result = [];
+      //   _clsResult = [];
       //   for (Map m in foodresponse!.data['object']) {
-      //     _result!.add(m['name']);
+      //     _clsResult!.add(m['name']);
       //   }
-      //   _result = _result!.toSet().toList();
-      //   print("_result --------");
-      //   print(_result);
-      // }
-      // print("response 이미지 불러오기 성공");
+      //   _clsResult = _clsResult!.toSet().toList();
+      //   print("_clsResult --------");
+      //   print(_clsResult);
+      print("response 이미지 불러오기 성공");
     } catch (e) {
-      imgresponse == null;
+      // imgresponse == null;
       print("response 이미지 불러오기 실패");
       print(e);
     }
@@ -90,6 +93,7 @@ class _ImageUploaderState extends State<ImageUploader>
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     _getTimeDivImage();
+
     // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
     Future getImage(ImageSource imageSource) async {
       // Timeline.startSync('interesting function');
@@ -101,7 +105,9 @@ class _ImageUploaderState extends State<ImageUploader>
       print(_image);
 
       setState(() {
-        image = File(_image!.path);
+        if (_image != null) {
+          image = File(_image!.path);
+        }
       });
 
       if (_image != null) {
@@ -136,27 +142,28 @@ class _ImageUploaderState extends State<ImageUploader>
               );
             });
 
-        //List<String>? result;
-        List<dynamic>? result;
+        List<dynamic>? result; //classfication 결과 받아오기
         Map<String, dynamic>? nut;
-        //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 'fail'를 반환한다.
-        //음식 이름 받아오기
-        var date =
-            Provider.of<dateProvider>(context, listen: false).providerDate;
-        final DateFormat formatter = DateFormat('yyyy-MM-dd');
-        String onlydate = formatter.format(date);
 
-        // classification 결과 반환 - 음식 메뉴 이름 list
-        result =
-            await connectServer.uploading(_image!, onlydate!, widget.timeDiv);
-        // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 - map
-        nut =
-            await connectServer.foodNutinfo(result!, onlydate!, widget.timeDiv);
+        // var date =
+        //     Provider.of<dateProvider>(context, listen: false).providerDate;
+        // final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        // String onlydate = formatter.format(date);
+        String onlydate = '2023-02-28';
+
+        result = await connectServer.uploading(_image!, onlydate!,
+            widget.timeDiv); // classification 결과 반환 - 음식 메뉴 이름 list
+
+        nut = await connectServer.foodNutinfo(result!, onlydate!,
+            widget.timeDiv); // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 - map
+        print("nut-----");
+        print(nut);
         Navigator.pop(context);
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ResultScreen(_image!, result!, nut!)));
+                builder: (context) => ResultScreen(_image!, result, nut!)));
+
         Future<bool> _getFutureBool() {
           return Future.delayed(Duration(milliseconds: 100000))
               .then((onValue) => true);
@@ -174,36 +181,34 @@ class _ImageUploaderState extends State<ImageUploader>
       }
     }
 
-    return //_image == null
-        (imgresponse == null && image == null)
-            ? Container(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          FloatingActionButton(
-                            heroTag: 'camera',
-                            backgroundColor: Color(0xFF3617CE),
-                            child: Icon(Icons.add_a_photo),
-                            tooltip: 'pick Image',
-                            onPressed: () {
-                              getImage(ImageSource.camera);
-                            },
-                          ),
-                          FloatingActionButton(
-                            heroTag: 'gallery',
-                            backgroundColor: Color(0xFF3617CE),
-                            child: Icon(Icons.wallpaper),
-                            tooltip: 'pick Image',
-                            onPressed: () {
-                              getImage(ImageSource.gallery);
-                            },
-                          ),
-                        ])
-                  ]))
-            : ShowImage();
+    return (imgresponse == null && image == null)
+        ? Container(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  FloatingActionButton(
+                    heroTag: 'camera',
+                    backgroundColor: Color(0xFF3617CE),
+                    child: Icon(Icons.add_a_photo),
+                    tooltip: 'pick Image',
+                    onPressed: () {
+                      getImage(ImageSource.camera);
+                    },
+                  ),
+                  FloatingActionButton(
+                    heroTag: 'gallery',
+                    backgroundColor: Color(0xFF3617CE),
+                    child: Icon(Icons.wallpaper),
+                    tooltip: 'pick Image',
+                    onPressed: () {
+                      getImage(ImageSource.gallery);
+                    },
+                  ),
+                ])
+          ]))
+        : ShowImage();
   }
 
   Widget ShowImage() {
@@ -223,10 +228,11 @@ class _ImageUploaderState extends State<ImageUploader>
                 width: 210,
                 height: 140,
                 child: image == null
-                    ? Image.network(
+                    ? Container(
+                        child: Image.network(
                         imgUrl!,
                         fit: BoxFit.fill,
-                      )
+                      ))
                     : Image.file(File(image!.path))),
             Column(
               children: [
@@ -264,7 +270,7 @@ class _ImageUploaderState extends State<ImageUploader>
                           backgroundColor: Color(0xffffffba),
                         )),
                     Text(
-                      '${_nut!['protein'].toInt()} g',
+                      '${_nut!['protein'].toInt()}',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -323,11 +329,11 @@ class _ImageUploaderState extends State<ImageUploader>
                         onPressed: () {
                           print("nut info");
                           print(_nut);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ResultScreen(_image!, _result!, _nut!)));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) =>
+                          //             ResultScreen(_image!, _result!, _nut!)));
                         },
                         child: Text(
                           "상세 보기",
@@ -337,13 +343,13 @@ class _ImageUploaderState extends State<ImageUploader>
             ),
             Container(
                 margin: EdgeInsets.only(left: 0.0, right: 3.0, bottom: 5.0),
-                child: (_result != null)
+                child: (_clsResult != null)
                     ? Wrap(
                         direction: Axis.horizontal,
                         alignment: WrapAlignment.start,
                         children: [
-                          for (int i = 0; i < _result!.length; i++)
-                            FoodMenu(_result![i][0])
+                          for (int i = 0; i < _clsResult!.length; i++)
+                            FoodMenu(_clsResult![i])
                         ],
                       )
                     : Container())

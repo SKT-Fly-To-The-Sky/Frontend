@@ -146,8 +146,6 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
                   } else if (index == 3) {
                     timedivprovider.changeTimeDiv("snack");
                   }
-                  print("timedivprovider");
-                  print(timedivprovider.providerTimediv);
                 });
               },
               tabs: [
@@ -177,13 +175,16 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
                   ),
               ],
               views: [
-                StaticUploader(date!, 0),
+                (date == '2023-02-28')
+                    ? ImageUploader("morning", date!)
+                    : StaticUploader(date!, 0),
                 (date == '2023-02-28')
                     ? ImageUploader("lunch", date!)
                     : StaticUploader(date!, 1),
                 (date == '2023-02-28')
                     ? ImageUploader("dinner", date!)
                     : StaticUploader(date!, 2),
+
                 // ImageUploader("morning", date!),
                 // ImageUploader("lunch", date!),
                 // ImageUploader("dinner", date!),
