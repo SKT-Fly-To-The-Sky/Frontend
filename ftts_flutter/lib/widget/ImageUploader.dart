@@ -25,7 +25,7 @@ class ImageUploader extends StatefulWidget {
   State<ImageUploader> createState() => _ImageUploaderState();
 }
 
-class _ImageUploaderState extends State<ImageUploader> {
+class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveClientMixin {
   XFile? _image;
   final picker = ImagePicker();
   final connectServer = ConnectServer();
@@ -40,6 +40,9 @@ class _ImageUploaderState extends State<ImageUploader> {
   Response? imgresponse, foodresponse;
   String? imgUrl;
   String? foodNamesUrl;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
