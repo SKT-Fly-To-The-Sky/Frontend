@@ -129,20 +129,46 @@ class ConnectServer {
       print("nut_info");
       print(nut_info);
 
-      Map<String, dynamic> post_info = {
-        "time_div": timeDiv,
-        "date": '2023-02-28',
-        "time": " "
+      var post_info = {
+        "time_div": "morning",
+        "date": selectDay,
+        "time": "string",
+        "protein": nut_info['protein'],
+        "fat": nut_info['fat'],
+        "carbo": nut_info['carbo'],
+        "sugar": nut_info['sugar'],
+        "chole": nut_info['chole'],
+        "fiber": nut_info['fiber'],
+        "calcium": nut_info['calcium'],
+        "iron": nut_info['iron'],
+        "magne": nut_info['magne'],
+        "potass": nut_info['potass'],
+        "sodium": nut_info['sodium'],
+        "zinc": nut_info['zinc'],
+        "copper": nut_info['copper'],
+        "vitA": 0,
+        "vitB1": 0,
+        "vitB2": 0,
+        "vitB3": 0,
+        "vitB5": 0,
+        "vitB6": 0,
+        "vitB7": 0,
+        "vitB9": 0,
+        "vitB12": 0,
+        "vitC": 0,
+        "vitD": 0,
+        "vitE": 0,
+        "vitK": 0,
+        "omega": 0,
+        "kcal": nut_info['kcal']
       };
-      post_info.addAll(nut_info);
 
       print("post_info");
       print(post_info);
       // print("post_info error");
       dio.post('${Url}dodo/intakes/nutrients',
-          options: Options(
-              headers: {HttpHeaders.contentTypeHeader: "application/json"}),
-          data: jsonEncode(post_info));
+          options: Options(headers: {'Content-Type': 'application/json'}),
+          data: json.encode(post_info));
       return nut_info;
     } catch (e) {
       return nut_info;
