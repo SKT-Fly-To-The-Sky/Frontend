@@ -61,9 +61,9 @@ class ConnectServer {
               ]);
               foodName.add(
                   classficationResult.data['object'][i]['name'].toString());
-              print(foodName);
-
-              print(foodCls);
+              foodName = (foodName.toSet()).toList();
+              print(foodName); // 음식메뉴
+              print(foodCls); // [음식메뉴, volume]
             }
             try {
               dio.post('${Url}dodo/intakes/foods/names',
@@ -136,9 +136,6 @@ class ConnectServer {
       print(nut_info);
 
       var post_info = {
-        "time_div": time,
-        "date": selectDay,
-        "time": "",
         "protein": nut_info['protein'],
         "fat": nut_info['fat'],
         "carbo": nut_info['carbo'],
@@ -171,6 +168,7 @@ class ConnectServer {
 
       print(post_info);
       dio.post('${Url}dodo/intakes/nutrients',
+          queryParameters: {'time_div': time, 'date': selectDay},
           options: Options(headers: {'Content-Type': 'application/json'}),
           data: json.encode(post_info));
       return nut_info;

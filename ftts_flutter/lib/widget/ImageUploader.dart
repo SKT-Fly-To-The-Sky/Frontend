@@ -30,7 +30,7 @@ class _ImageUploaderState extends State<ImageUploader>
   XFile? _image;
   final picker = ImagePicker();
   final connectServer = ConnectServer();
-
+  List<String>? _foodNames;
   List<dynamic>? _result = [
     ["불고기", 1.0]
   ];
@@ -74,19 +74,23 @@ class _ImageUploaderState extends State<ImageUploader>
   Future<void> _getfoodNames(String selectDay, String time) async {
     List<String> Result = [];
 
-    var response = await Dio().get(
-        'http://jeongsuri.iptime.org:10019/dodo/intakes/foods/names',
-        queryParameters: {"time_div": time, "date": selectDay});
-    if (response.statusCode == 200) {
-      for (int i = 0; i < response.data['object_num']; i++) {
-        print(response);
-        Result.add(response.data['object'][i]);
+    try {
+      var response = await Dio().get(
+          'http://jeongsuri.iptime.org:10019/dodo/intakes/foods/names',
+          queryParameters: {"time_div": time, "date": selectDay});
+      if (response.statusCode == 200) {
+        _foodNames = [];
+        for (int i = 0; i < response.data['object_num']; i++) {
+          print(response);
+          Result.add(response.data['object'][i]);
+        }
+        _foodNames = Result;
+        print(_foodNames);
+        // return _result;
       }
-      _result = Result;
-      print(_result);
-      // return _result;
+    } catch (e) {
+      print(e);
     }
-    // return ["불고기"];
   }
 
   // 이미지 업로더 위젯
@@ -151,7 +155,7 @@ class _ImageUploaderState extends State<ImageUploader>
         Map<String, dynamic>? nut;
         String onlydate = '2023-02-28';
 
-        // classification 결과 반환 - 음식 메뉴 이름
+        // classification 결과 반환 - foodCls: [음식이름, volume]
         result =
             await connectServer.uploading(_image!, onlydate!, widget.timeDiv!);
         // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 -
@@ -348,13 +352,13 @@ class _ImageUploaderState extends State<ImageUploader>
             ),
             Container(
                 margin: EdgeInsets.only(left: 0.0, right: 3.0, bottom: 5.0),
-                child: (_result != null)
+                child: (_foodNames != null) // && _result!.isEmpty)
                     ? Wrap(
                         direction: Axis.horizontal,
                         alignment: WrapAlignment.start,
                         children: [
                           for (int i = 0; i < _result!.length; i++)
-                            FoodMenu(_result![i])
+                            FoodMenu(_foodNames![i])
                         ],
                       )
                     : Container())
