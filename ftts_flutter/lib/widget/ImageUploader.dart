@@ -9,7 +9,6 @@ import '../model/ConnectServer.dart';
 import 'package:rounded_background_text/rounded_background_text.dart';
 import '../utils/nutInfo.dart';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 
 class ImageUploader extends StatefulWidget {
   String timeDiv;
@@ -30,10 +29,11 @@ class _ImageUploaderState extends State<ImageUploader> {
   XFile? _image;
   final picker = ImagePicker();
   final connectServer = ConnectServer();
-  List<String>? _foodNames;
   List<dynamic>? _result = [
     ["불고기", 1.0]
   ];
+  File? image;
+
   Map<String, dynamic>? _nut = nut_info;
   late Future<Image> timeDivImage;
   File? imageFile;
@@ -84,7 +84,6 @@ class _ImageUploaderState extends State<ImageUploader> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     _getTimeDivImage();
-
     // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
     Future getImage(ImageSource imageSource) async {
       // Timeline.startSync('interesting function');
@@ -94,6 +93,10 @@ class _ImageUploaderState extends State<ImageUploader> {
           );
       print("_image");
       print(_image);
+
+      setState(() {
+        image = File(_image!.path);
+      });
 
       if (_image != null) {
         showDialog(
@@ -147,7 +150,7 @@ class _ImageUploaderState extends State<ImageUploader> {
             MaterialPageRoute(
                 builder: (context) => ResultScreen(_image!, result!, nut!)));
         Future<bool> _getFutureBool() {
-          return Future.delayed(Duration(milliseconds: 10000))
+          return Future.delayed(Duration(milliseconds: 100000))
               .then((onValue) => true);
         }
 
@@ -163,36 +166,35 @@ class _ImageUploaderState extends State<ImageUploader> {
       }
     }
 
-    return //_image == null
-        imgresponse == null || _image == null
-            ? Container(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          FloatingActionButton(
-                            heroTag: 'camera',
-                            backgroundColor: Color(0xFF3617CE),
-                            child: Icon(Icons.add_a_photo),
-                            tooltip: 'pick Image',
-                            onPressed: () {
-                              getImage(ImageSource.camera);
-                            },
-                          ),
-                          FloatingActionButton(
-                            heroTag: 'gallery',
-                            backgroundColor: Color(0xFF3617CE),
-                            child: Icon(Icons.wallpaper),
-                            tooltip: 'pick Image',
-                            onPressed: () {
-                              getImage(ImageSource.gallery);
-                            },
-                          ),
-                        ])
-                  ]))
-            : ShowImage();
+    return (imgresponse == null && image == null)
+        ? Container(
+            color: Colors.blue,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    FloatingActionButton(
+                      heroTag: 'camera',
+                      backgroundColor: Color(0xFF3617CE),
+                      child: Icon(Icons.add_a_photo),
+                      tooltip: 'pick Image',
+                      onPressed: () {
+                        getImage(ImageSource.camera);
+                      },
+                    ),
+                    FloatingActionButton(
+                      heroTag: 'gallery',
+                      backgroundColor: Color(0xFF3617CE),
+                      child: Icon(Icons.wallpaper),
+                      tooltip: 'pick Image',
+                      onPressed: () {
+                        getImage(ImageSource.gallery);
+                      },
+                    ),
+                  ])
+            ]))
+        : ShowImage();
   }
 
   Widget ShowImage() {
@@ -211,17 +213,12 @@ class _ImageUploaderState extends State<ImageUploader> {
                 margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
                 width: 210,
                 height: 140,
-                child: _image == null
-                    // imgresponse != null
+                child: image == null
                     ? Image.network(
                         imgUrl!,
                         fit: BoxFit.fill,
                       )
-                    : Image.file(File(_image!.path))),
-            // Image(
-            //     image: AssetImage('assets/firegogi.jpg'),
-            //     fit: BoxFit.fill)
-
+                    : Image.file(File(image!.path))),
             Column(
               children: [
                 Row(
@@ -337,7 +334,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                         alignment: WrapAlignment.start,
                         children: [
                           for (int i = 0; i < _result!.length; i++)
-                            FoodMenu(_result![i])
+                            FoodMenu(_result![i][0])
                         ],
                       )
                     : Container())
