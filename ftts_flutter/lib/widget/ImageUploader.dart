@@ -37,10 +37,12 @@ class _ImageUploaderState extends State<ImageUploader>
   File? image;
 
   Map<String, dynamic>? _nut = nut_info;
+  List<int> timedivNut = [0, 0, 0, 0]; // kcal, carbo, protein, fat
+  Map<String, dynamic>? nut = nut_info;
   late Future<Image> timeDivImage;
   File? imageFile;
-  Response? imgresponse, foodresponse;
-  String? imgUrl;
+  Response? imgresponse, foodresponse, timedivresp;
+  String? imgUrl, timeDivUrl;
   String? foodNamesUrl;
 
   @override
@@ -59,14 +61,23 @@ class _ImageUploaderState extends State<ImageUploader>
     });
     imgUrl =
         'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${widget.imgDate}';
+    timeDivUrl =
+        'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/time-div?time_div=${widget.timeDiv}&date=${widget.imgDate}';
     try {
       imgresponse = await Dio()
           .get(imgUrl!, options: Options(responseType: ResponseType.bytes));
-
-      print("response 이미지 불러오기 성공");
+      timedivresp = await Dio().get(timeDivUrl!);
+      print(timedivresp!.data['kcal'].toInt());
+      timedivNut[0] = timedivresp!.data['kcal'].toInt();
+      timedivNut[1] = timedivresp!.data['carbo'].toInt();
+      timedivNut[2] = timedivresp!.data['protein'].toInt();
+      timedivNut[3] = timedivresp!.data['fat'].toInt();
+      // _nut['kcal'] = timedivNut[0];
+      // _nut['carbo'] = timedivNut[1];
+      // _nut['protein'] = timedivNut[2];
+      // _nut['fat'] = timedivNut[3];
     } catch (e) {
       imgresponse = null;
-      print("response 이미지 불러오기 실패");
       print(e);
     }
   }
@@ -152,7 +163,7 @@ class _ImageUploaderState extends State<ImageUploader>
             });
 
         List<dynamic>? result, foodNames;
-        Map<String, dynamic>? nut;
+
         String onlydate = '2023-02-28';
 
         // classification 결과 반환 - foodCls: [음식이름, volume]
@@ -161,7 +172,9 @@ class _ImageUploaderState extends State<ImageUploader>
         // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 -
         nut = await connectServer.foodNutinfo(
             result!, onlydate!, widget.timeDiv!);
-
+        // print("nut");
+        // print(nut);
+        // _nut = nut;
         Navigator.pop(context);
         Navigator.push(
             context,
@@ -258,7 +271,7 @@ class _ImageUploaderState extends State<ImageUploader>
                           backgroundColor: Color(0xffffb3ba),
                         )),
                     Text(
-                      '${_nut!['carbo'].toInt()}',
+                      '${timedivNut[1].toString()} g',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -279,7 +292,7 @@ class _ImageUploaderState extends State<ImageUploader>
                           backgroundColor: Color(0xffffffba),
                         )),
                     Text(
-                      '${_nut!['protein'].toInt()}',
+                      '${timedivNut[2].toString()} g',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -300,7 +313,7 @@ class _ImageUploaderState extends State<ImageUploader>
                           backgroundColor: Color(0xffbae1ff),
                         )),
                     Text(
-                      '${_nut!['fat'].toInt()}',
+                      '${timedivNut[3].toString()} g',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
