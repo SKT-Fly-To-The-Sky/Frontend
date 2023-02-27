@@ -1,8 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:rounded_background_text/rounded_background_text.dart';
-
-
 
 Map<String, dynamic> data = {
   '2023-02-25': [
@@ -77,7 +74,7 @@ Map<String, dynamic> data = {
       42
     ], //lunch
     [
-      ['김치', '쌀밥', '국수'],
+      ['김치', '탕수육', '쌀밥', '국수'],
       'assets/diet_day3_dinner.jpg',
       447.3,
       96,

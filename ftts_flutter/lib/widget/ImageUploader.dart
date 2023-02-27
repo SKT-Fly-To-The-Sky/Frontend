@@ -52,15 +52,25 @@ class _ImageUploaderState extends State<ImageUploader>
     _getTimeDivImage();
   }
 
+  bool serverConnect=false;
   Future<void> _getTimeDivImage() async {
+    setState(() {
+      serverConnect=true;
+    });
     imgUrl =
         'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${widget.imgDate}';
     foodNamesUrl =
         'http://jeongsuri.iptime.org:10019/classification?userid=dodo&time_div=${widget.timeDiv}&date=${widget.imgDate}';
 
     try {
+<<<<<<< HEAD
       imgresponse = await Dio()
           .get(imgUrl!, options: Options(responseType: ResponseType.bytes));
+=======
+
+      imgresponse = await Dio().get(imgUrl!, options: Options(responseType: ResponseType.bytes));
+
+>>>>>>> b18a456b0bb5295ec896255c728a781f022c2ff5
       foodresponse = await Dio().get(foodNamesUrl!);
 
       if (foodresponse!.data['object_num'] > 0) {
@@ -84,7 +94,8 @@ class _ImageUploaderState extends State<ImageUploader>
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    _getTimeDivImage();
+    if(serverConnect!){
+    _getTimeDivImage();}
     // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
     Future getImage(ImageSource imageSource) async {
       // Timeline.startSync('interesting function');
@@ -170,6 +181,10 @@ class _ImageUploaderState extends State<ImageUploader>
       }
     }
 
+
+
+
+
     return //_image == null
         (imgresponse == null && image == null)
             ? Container(
@@ -222,8 +237,13 @@ class _ImageUploaderState extends State<ImageUploader>
                     ? Image.network(
                         imgUrl!,
                         fit: BoxFit.fill,
-                      )
-                    : Image.file(File(image!.path))),
+                      ):_result![0][0]!='불고기'?
+                Image.file(File(image!.path))
+                    :Image(
+                    image: AssetImage('assets/firegogi.jpg'),
+                    fit: BoxFit.fill)
+            ),
+
             Column(
               children: [
                 Row(
