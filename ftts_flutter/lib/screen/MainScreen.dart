@@ -168,10 +168,12 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
                 (date == '2023-02-28')
                     ? ImageUploader("lunch", date!)
                     : StaticUploader(date!, 1),
-                // (date == '2023-02-28')
-                //     ? ImageUploader("dinner", date!)
-                //     : StaticUploader(date!, 2),
-                ImageUploader("dinner", date!),
+                (date == '2023-02-28')
+                    ? ImageUploader("dinner", date!)
+                    : StaticUploader(date!, 2),
+                // ImageUploader("morning", date!),
+                // ImageUploader("lunch", date!),
+                // ImageUploader("dinner", date!),
                 ImageUploader("snack", date!),
               ],
             ),
