@@ -107,7 +107,9 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
                   ),
                 ],
                 views: [
-                  date == '2023-02-28' ? DailyGraph() : StaticDailyGraph(date!),
+                  date == '2023-02-28'
+                      ? DailyGraph(date!)
+                      : StaticDailyGraph(date!),
                   date == '2023-02-28' ? DetailGraph() : StaticDetailGraph(),
                 ],
               )),

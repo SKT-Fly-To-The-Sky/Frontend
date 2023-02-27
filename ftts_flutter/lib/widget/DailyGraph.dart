@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
@@ -25,7 +26,8 @@ class DoughnutChartData {
 }
 
 class DailyGraph extends StatefulWidget {
-  const DailyGraph({Key? key}) : super(key: key);
+  String graphDate;
+  DailyGraph(this.graphDate, {Key? key}) : super(key: key);
 
   @override
   State<DailyGraph> createState() => _DailyGraphState();
@@ -33,17 +35,78 @@ class DailyGraph extends StatefulWidget {
 
 class _DailyGraphState extends State<DailyGraph> {
   //final connectServer = ConnectServer();
+  Response? graphresponse;
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    var graphprovider = Provider.of<graphProvider>(context, listen: false);
+    // var graphprovider = Provider.of<graphProvider>(context, listen: false);
+    // Map<String, dynamic> _onedayInfo;
+    // _onedayInfo = graphprovider.oneday_info;
+    List<double> onedayInfo = [
+      0,
+      0,
+      0,
+      0,
+    ];
+    Map<String, dynamic> _onedayInfo = {
+      "userid": "dodo",
+      "date": widget.graphDate,
+      "kcal": 0.0,
+      "protein": 0.0,
+      "fat": 0.0,
+      "carbo": 0.0,
+      "sugar": 0.0,
+      "chole": 0.0,
+      "fiber": 0.0,
+      "calcium": 0.0,
+      "iron": 0.0,
+      "magne": 0.0,
+      "potass": 0.0,
+      "sodium": 0.0,
+      "zinc": 0.0,
+      "copper": 0.0,
+    };
 
-    Map<String, dynamic> _onedayInfo;
-
-    _onedayInfo = graphprovider.oneday_info;
     print("데이터 확인 ---------------");
-    print(_onedayInfo['kcal']);
+    print(_onedayInfo);
+
+    Future<void> _drawDailyGraph() async {
+      setState(() {});
+      try {
+        graphresponse = await Dio().get(
+            'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/day?date=${widget.graphDate}');
+        if (graphresponse!.statusCode == 200) {
+          print(graphresponse!.data['result']['kcal']);
+          // _onedayInfo['kcal'] =
+          //     double.parse(graphresponse!.data['result']['kcal']).toString();
+          // _onedayInfo['carbo'] =
+          //     double.parse(graphresponse!.data['result']['carbo']).toString();
+          // _onedayInfo['protein'] =
+          //     double.parse(graphresponse!.data['result']['protein']).toString();
+          // _onedayInfo['fat'] =
+          //     double.parse(graphresponse!.data['result']['fat']).toString();
+          onedayInfo[0] = double.parse(graphresponse!.data['result']['kcal']);
+          onedayInfo[1] = double.parse(graphresponse!.data['result']['carbo']);
+          onedayInfo[2] =
+              double.parse(graphresponse!.data['result']['protein']);
+          onedayInfo[3] = double.parse(graphresponse!.data['result']['fat']);
+          print("onedayInfo");
+          print(onedayInfo);
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+
+    @override
+    void initState() {
+      super.initState();
+      _drawDailyGraph();
+    }
+
+    _drawDailyGraph();
+
     List<dynamic> recommedInfo = [
       [
         '칼로리',
@@ -58,26 +121,23 @@ class _DailyGraphState extends State<DailyGraph> {
     List<VBarChartModel> barChartData = [];
 
     List<DoughnutChartData> doughnutChartData = [
-      DoughnutChartData('섭취한 칼로리', (recommedInfo[0][2] - (_onedayInfo['kcal'])),
-          Color(0xFF3617CE)),
-      DoughnutChartData('남은 칼로리', (_onedayInfo['kcal']), Color(0xFFe8e8e8)),
+      DoughnutChartData(
+          '섭취한 칼로리', (recommedInfo[0][2] - (onedayInfo[0])), Color(0xFF3617CE)),
+      DoughnutChartData('남은 칼로리', (onedayInfo[0]), Color(0xFFe8e8e8)),
     ];
 
-    for (int i = 0; i < recommedInfo.length; i++) {
-      var result = (_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100;
+    for (int i = 0; i < onedayInfo.length; i++) {
+      var result = (onedayInfo[i] / recommedInfo[i][2]) * 100;
       if ((result) > 100) {
         result = 100.0;
       }
 
       barChartData.add(VBarChartModel(
           index: i,
-          colors: setColor(
-              (_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100),
+          colors: setColor((onedayInfo[i] / recommedInfo[i][2]) * 100),
           jumlah: result,
           tooltip:
-              ((_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100)
-                      .ceil()
-                      .toString() +
+              ((onedayInfo[i] / recommedInfo[i][2]) * 100).ceil().toString() +
                   "%",
           label: recommedInfo[i][0]));
     }

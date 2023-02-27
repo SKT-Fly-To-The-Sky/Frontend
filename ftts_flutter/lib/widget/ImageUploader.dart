@@ -96,6 +96,7 @@ class _ImageUploaderState extends State<ImageUploader>
           Result.add(response.data['object'][i]);
         }
         _foodNames = Result;
+        _foodNames = _foodNames!.toSet().toList();
         print(_foodNames);
         // return _result;
       }
@@ -127,7 +128,7 @@ class _ImageUploaderState extends State<ImageUploader>
       print(_image);
 
       setState(() {
-        image = File(_image!.path);
+        if (_image != null) image = File(_image!.path);
       });
 
       if (_image != null) {

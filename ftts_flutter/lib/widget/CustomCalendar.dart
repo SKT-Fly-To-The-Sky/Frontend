@@ -19,6 +19,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
   late DateTime _selectedDay;
   Map<String, dynamic> _oneDayInfo = {};
   String _dateString = '';
+  Map<String, dynamic>? oneDayInfo;
 
   @override
   void initState() {
@@ -52,9 +53,8 @@ class _CustomCalendarState extends State<CustomCalendar> {
 
         _dateString = DateFormat('yyyy-MM-dd').format(_selectedDay);
 
-        // Map<String, dynamic>? result;
-        // result = await connectServer.getOneDayInfo(_dateString);
-        // graphprovider.changeOneDayInfo(result!);
+        oneDayInfo = await connectServer.getOneDayInfo(_dateString);
+        graphprovider.changeOneDayInfo(oneDayInfo!);
         print(dateprovider.providerDate);
         dateprovider.changeDate(_selectedDay); // 선택한 날짜에 해당하는 그래프 위젯 렌더링
         print("_selected Day-----");
