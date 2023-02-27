@@ -49,9 +49,13 @@ class ConnectServer {
 
         if (classficationResult.statusCode == 200) {
           //값
-          for (int i = 0; i < int.parse(classficationResult.data['object_num'].toString()); i++) {
-            if(classficationResult.data['object'][i]['name'.toString()!='unknown']){
-              foodName?.add(classficationResult.data['object'][i]['name'].toString());
+          for (int i = 0;
+              i < int.parse(classficationResult.data['object_num'].toString());
+              i++) {
+            if (classficationResult.data['object'][i]
+                ['name'.toString() != 'unknown']) {
+              foodName?.add(
+                  classficationResult.data['object'][i]['name'].toString());
             }
             //영양소 값 합산
           }
@@ -63,7 +67,8 @@ class ConnectServer {
     }
   }
 
-  Future<Map<String, dynamic>> foodNutinfo(List<String> name, String selectDay) async {
+  Future<Map<String, dynamic>> foodNutinfo(
+      List<String> name, String selectDay) async {
     try {
       for (int i = 0; i < name.length; i++) {
         var foodsInfo = await dio
@@ -189,7 +194,8 @@ class ConnectServer {
     dio.options.receiveTimeout = 5000;
 
     try {
-      var supinfo = await dio.get('${Url}supplements/info', queryParameters: {"sup_name": name});
+      var supinfo = await dio
+          .get('${Url}supplements/info', queryParameters: {"sup_name": name});
       Map<String, dynamic> supnut_info;
       supnut_info = {
         "vitA": double.parse(supinfo.data['vitA'].toString()),
@@ -234,7 +240,6 @@ class ConnectServer {
     }
   }
 
-
   Future<Map<String, dynamic>> getOneDayInfo(String day) async {
     print('Day fppd info');
 
@@ -251,11 +256,13 @@ class ConnectServer {
     dio.options.receiveTimeout = 5000;
 
     try {
-      var supinfo = await dio.get('http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/day',queryParameters: {"date": day});
+      var supinfo = await dio.get(
+          'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/day',
+          queryParameters: {"date": day});
       Map<String, dynamic> _onedayInfo;
       _onedayInfo = {
-        "userid":supinfo.data['userid'].toString(),
-        "date":supinfo.data['date'].toString(),
+        "userid": supinfo.data['userid'].toString(),
+        "date": supinfo.data['date'].toString(),
         "kcal": double.parse(supinfo.data['kcal'].toString()),
         "protein": double.parse(supinfo.data['protein'].toString()),
         "fat": double.parse(supinfo.data['fat'].toString()),
@@ -265,10 +272,10 @@ class ConnectServer {
         "fiber": double.parse(supinfo.data['fiber'].toString()),
         "calcium": double.parse(supinfo.data['calcium'].toString()),
         "magne": double.parse(supinfo.data['magne'].toString()),
-        "iron":double.parse(supinfo.data['iron'].toString()),
+        "iron": double.parse(supinfo.data['iron'].toString()),
         "potass": double.parse(supinfo.data['potass'].toString()),
         "sodium": double.parse(supinfo.data['sodium'].toString()),
-        "zinc":double.parse(supinfo.data['zinc'].toString()),
+        "zinc": double.parse(supinfo.data['zinc'].toString()),
         "copper": double.parse(supinfo.data['copper'].toString()),
       };
       print("_onedayInfo data: " + _onedayInfo['kcal'].toString());
@@ -277,8 +284,8 @@ class ConnectServer {
       print("catch");
       Map<String, dynamic> _onedayInfo;
       _onedayInfo = {
-        "userid":"dodo",
-        "date":day,
+        "userid": "dodo",
+        "date": day,
         "kcal": 0.0,
         "protein": 0.0,
         "fat": 0.0,
@@ -288,15 +295,55 @@ class ConnectServer {
         "fiber": 0.0,
         "calcium": 0.0,
         "magne": 0.0,
-        "iron":0.0,
+        "iron": 0.0,
         "potass": 0.0,
         "sodium": 0.0,
-        "zinc":0.0,
+        "zinc": 0.0,
         "copper": 0.0,
       };
       print("_onedayInfo data: " + _onedayInfo['kcal'].toString());
       print("catech end--------------------");
       return _onedayInfo;
+    }
+  }
+
+  Future<Map<String, List<dynamic>>> getTimeDivInfo(String date) async {
+    // String? url;
+    // Response? response;
+    List<String> foodTimeDiv = ['morning', 'lunch', 'dinner', 'snack'];
+    Map<String, List<dynamic>> _timeDivInfo = {
+      // 칼로리, 탄, 단, 지
+      'morning': [0, 0, 0, 0],
+      'lunch': [0, 0, 0, 0],
+      'dinner': [0, 0, 0, 0],
+      'snack': [0, 0, 0, 0],
+    };
+    Map<String, dynamic> jsonBody;
+    try {
+      print("getTimeDivInfo from connectserver");
+
+      for (String t in foodTimeDiv) {
+        String url =
+            'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/time-div?time_div=${t}&date=${date}';
+        print("url");
+        print(url);
+        Response response = await dio.get(url); // 여기서 response 받아 오는 게 자꾸 안 되는데
+        // if (response.statusCode == 200) {
+        //   jsonBody = json.decode(response.data);
+        //   print(jsonBody);
+        // } else {}
+
+        _timeDivInfo[t]![0] = response.data['kcal'];
+        _timeDivInfo[t]![1] = response.data['carbo'];
+        _timeDivInfo[t]![2] = response.data['protein'];
+        _timeDivInfo[t]![3] = response.data['fat'];
+        print(_timeDivInfo);
+      }
+      return _timeDivInfo;
+    } catch (e) {
+      print(e);
+      print("cant get from connectserver");
+      return _timeDivInfo;
     }
   }
 }

@@ -28,11 +28,12 @@ class _ImageUploaderState extends State<ImageUploader> {
   XFile? _image;
   final picker = ImagePicker();
   final connectServer = ConnectServer();
-  List<String>? _result = ["음식메뉴"];
+  List<String>? _result;
+  List<String>? _foodNames;
   Map<String, dynamic>? _nut = nut_info;
   late Future<Image> timeDivImage;
   File? imageFile;
-  Response? response, foodresponse;
+  Response? imgresponse, foodresponse;
   String? imgUrl;
   String? foodNamesUrl;
 
@@ -48,13 +49,26 @@ class _ImageUploaderState extends State<ImageUploader> {
     foodNamesUrl =
         'http://jeongsuri.iptime.org:10019/classification?userid=dodo&time_div=${widget.timeDiv}&date=${widget.imgDate}';
     try {
-      response = await Dio()
+      imgresponse = await Dio()
           .get(imgUrl!, options: Options(responseType: ResponseType.bytes));
       foodresponse = await Dio().get(foodNamesUrl!);
-      _result = foodresponse!.data['object'];
+      print(imgUrl);
+      print("foodresponse");
+      print(foodresponse!.data['object']);
+      print("FoodNamesUrl");
+      print(foodNamesUrl);
+      if (foodresponse!.data['object_num'] > 0) {
+        _result = [];
+        for (Map m in foodresponse!.data['object']) {
+          _result!.add(m['name']);
+        }
+        _result = _result!.toSet().toList();
+        print("_result --------");
+        print(_result);
+      }
       print("response 이미지 불러오기 성공");
     } catch (e) {
-      response == null;
+      imgresponse == null;
       print("response 이미지 불러오기 실패");
       print(e);
     }
@@ -137,7 +151,7 @@ class _ImageUploaderState extends State<ImageUploader> {
     }
 
     return //_image == null
-        response == null
+        imgresponse == null
             ? Container(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -184,7 +198,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                 margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
                 width: 210,
                 height: 140,
-                child: response != null
+                child: imgresponse != null
                     ? Image.network(
                         imgUrl!,
                         fit: BoxFit.fill,
@@ -300,13 +314,17 @@ class _ImageUploaderState extends State<ImageUploader> {
               ],
             ),
             Container(
-              margin: EdgeInsets.only(left: 0.0, right: 3.0, bottom: 5.0),
-              child: Wrap(
-                direction: Axis.horizontal,
-                alignment: WrapAlignment.start,
-                children: [for (String res in _result!) FoodMenu(res)],
-              ),
-            )
+                margin: EdgeInsets.only(left: 0.0, right: 3.0, bottom: 5.0),
+                child: (_result != null)
+                    ? Wrap(
+                        direction: Axis.horizontal,
+                        alignment: WrapAlignment.start,
+                        children: [
+                          for (int i = 0; i < _result!.length; i++)
+                            FoodMenu(_result![i])
+                        ],
+                      )
+                    : Container())
           ],
         ),
       ],

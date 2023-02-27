@@ -1,5 +1,6 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:ftts_flutter/model/ConnectServer.dart';
 import '../widget/CustomCalendar.dart';
 import '../widget/DailyGraph.dart';
 import '../widget/ImageUploader.dart';
@@ -9,6 +10,7 @@ import '../widget/DetailGraph.dart';
 import 'package:provider/provider.dart';
 import '../provider/dateProvider.dart';
 import 'package:dio/dio.dart';
+import '../widget/StaticUploader.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -64,31 +66,9 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
   String? url;
   String? timeDiv;
   Response? response;
-
-  List<String> foodTimeDiv = ['아침', '점심', '저녁', '간식'];
-  Map<String, String> foodEng = {
-    '아침': 'morning',
-    '점심': 'lunch',
-    '저녁': 'dinner',
-    '간식': 'snack'
-  };
-  Map<String, double> foodKcal = {
-    'morning': 0,
-    'lunch': 0,
-    'dinner': 0,
-    'snack': 0
-  };
-  _getKcal() async {
-    try {
-      for (String t in foodTimeDiv)
-        url =
-            'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/time-div?time_div=${t}&date=${date}';
-      response = await Dio().get(url!);
-      foodKcal[timeDiv!] = response!.data['kcal'];
-    } catch (e) {
-      print(e);
-    }
-  }
+  List<String> foodTimeDiv = ['morning', 'lunch', 'dinner', 'snack'];
+  List<String> foodTimeDivName = ['아침', '점심', '저녁', '간식'];
+  final connectServer = ConnectServer();
 
   @override
   void initState() {
@@ -99,7 +79,7 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
   Widget build(BuildContext context) {
     date = DateFormat('yyyy-MM-dd')
         .format(context.watch<dateProvider>().providerDate);
-    _getKcal();
+
     return Container(
       child: Column(
         children: [
@@ -159,28 +139,31 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
               tabs: [
                 for (int i = 0; i < foodTimeDiv.length; i++)
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        height: 3,
-                      ),
+                      // Container(
+                      //   height: 3,
+                      // ),
                       Text(
-                        foodTimeDiv[i],
+                        foodTimeDivName[i],
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                        (foodKcal[foodEng[foodTimeDiv[i]]] == 0)
-                            ? "-"
-                            : "${foodKcal[foodEng[foodTimeDiv[i]]]!.toInt()}kcal",
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
+                      // Text(
+                      //   _timeDivInfo![foodTimeDiv[i][0]] != null
+                      //       ? (_timeDivInfo![foodTimeDiv[i][0]] == 0)
+                      //           ? "-"
+                      //           : "${_timeDivInfo![foodTimeDiv[i][0]]}kcal"
+                      //       : "-",
+                      //   style: TextStyle(
+                      //     color: Colors.black,
+                      //   ),
+                      // ),
                     ],
                   ),
               ],
               views: [
-                ImageUploader("morning", date!),
+                StaticUploader(date!, 'morning'),
                 ImageUploader("lunch", date!),
                 ImageUploader("dinner", date!),
                 ImageUploader("snack", date!),
