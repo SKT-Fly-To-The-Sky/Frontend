@@ -3,7 +3,6 @@ import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 import 'package:flutter/material.dart';
-import '../model/ConnectServer.dart';
 import 'package:provider/provider.dart';
 import '../provider/dateProvider.dart';
 
