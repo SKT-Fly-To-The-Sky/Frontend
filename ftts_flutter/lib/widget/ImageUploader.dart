@@ -164,7 +164,7 @@ class _ImageUploaderState extends State<ImageUploader> {
     }
 
     return //_image == null
-        imgresponse == null
+        imgresponse == null || _image == null
             ? Container(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
