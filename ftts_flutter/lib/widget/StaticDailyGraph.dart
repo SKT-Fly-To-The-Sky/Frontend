@@ -20,6 +20,13 @@ Map<String, dynamic> staticDailyData = {
   '2023-02-27': [1612.3, 197, 72.8, 60.7],
 };
 
+Map<String, dynamic> nutPercent = {
+  //[칼로리, 탄, 단, 지]
+  '2023-02-25': [2300, 88, 297, 204, 279],
+  '2023-02-26': [1748.5, 67, 179, 107, 91],
+  '2023-02-27': [1612.3, 62, 170, 118, 126],
+};
+
 List<Color> setColor(double a) {
   if (a >= 100) {
     return [Colors.deepOrange, Colors.red];
@@ -38,7 +45,8 @@ class DoughnutChartData {
 }
 
 class StaticDailyGraph extends StatefulWidget {
-  const StaticDailyGraph({Key? key}) : super(key: key);
+  String graphDate;
+  StaticDailyGraph(this.graphDate, {Key? key}) : super(key: key);
 
   @override
   State<StaticDailyGraph> createState() => _StaticDailyGraphState();
@@ -47,30 +55,25 @@ class StaticDailyGraph extends StatefulWidget {
 class _StaticDailyGraphState extends State<StaticDailyGraph> {
   final connectServer = ConnectServer();
 
-  static double kcal = 1165;
-  List<DoughnutChartData> doughnutChartData = [
-    DoughnutChartData('섭취한 칼로리', (2600 - kcal), Color(0xFF3617CE)),
-    DoughnutChartData('남은 칼로리', kcal, Color(0xFFe8e8e8)),
-  ];
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    Map<String, double> nutPercent = {
-      'kcal': 44,
-      'carbo': 96,
-      'protein': 83,
-      'fat': 78
-    };
+
+    double kcal = nutPercent[widget.graphDate][0];
+    List<DoughnutChartData> doughnutChartData = [
+      DoughnutChartData('섭취한 칼로리', (2600 - kcal), Color(0xFF3617CE)),
+      DoughnutChartData('남은 칼로리', kcal, Color(0xFFe8e8e8)),
+    ];
+
     List<VBarChartModel> barChartData = [];
     for (int i = 0; i < nutName.length; i++) {
       barChartData.add(VBarChartModel(
           index: i,
-          colors: setColor(nutPercent[nutName[i]]!),
-          jumlah: (nutPercent[nutName[i]]! >= 100)
+          colors: setColor((nutPercent[widget.graphDate])[i + 1]!.toDouble()),
+          jumlah: ((nutPercent[widget.graphDate])[i + 1]!.toDouble() >= 100)
               ? (100)
-              : (nutPercent[nutName[i]]!),
-          tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
+              : ((nutPercent[widget.graphDate])[i + 1]!.toDouble()),
+          tooltip: "${(nutPercent[widget.graphDate])[i + 1]!.toInt()}%",
           label: nutKor[nutName[i]]));
     }
 

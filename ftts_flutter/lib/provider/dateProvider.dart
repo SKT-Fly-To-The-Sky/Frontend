@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class timeDivProvider with ChangeNotifier {
-  String? providerTimediv;
+  String providerTimediv = 'morning';
   changeTimeDiv(String s) {
     providerTimediv = s;
     notifyListeners();

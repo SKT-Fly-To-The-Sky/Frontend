@@ -13,14 +13,16 @@ import 'package:url_launcher/url_launcher.dart';
 
 class JsonListView extends StatefulWidget {
   final String timeDiv;
-  JsonListView(this.timeDiv,{Key?key,}):super(key:key);
+  JsonListView(
+    this.timeDiv, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   _JsonListViewState createState() => _JsonListViewState();
 }
 
 class _JsonListViewState extends State<JsonListView> {
-
   List<dynamic> _jsonData = [];
   final dio = Dio();
 
@@ -156,7 +158,8 @@ class ResultScreen extends StatelessWidget {
   final Map<String, dynamic>? _nutinfo;
   final String timeDiv;
 
-  ResultScreen(this._image, this._result, this._nutinfo,this.timeDiv, {super.key});
+  ResultScreen(this._image, this._result, this._nutinfo, this.timeDiv,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -242,8 +245,8 @@ class ResultScreen extends StatelessWidget {
 
     Widget CircleGraph() {
       return Container(
-          height: 180,
-          width: 180,
+          height: 175,
+          width: 175,
           child: SfCircularChart(series: <CircularSeries>[
             // Renders doughnut chart
             DoughnutSeries<DoughnutChartData, String>(
@@ -263,8 +266,8 @@ class ResultScreen extends StatelessWidget {
 
     Widget CircleGraph2() {
       return Container(
-          height: 180,
-          width: 180,
+          height: 175,
+          width: 175,
           child: SfCircularChart(series: <CircularSeries>[
             // Renders doughnut chart
             DoughnutSeries<DoughnutChartData, String>(

@@ -14,7 +14,8 @@ class ConnectServer {
   List<String> foodName = [];
   List<double> foodSize = [];
 
-  Future<List<dynamic>?> uploading(XFile file, String selectDay,String time) async {
+  Future<List<dynamic>?> uploading(
+      XFile file, String selectDay, String time) async {
     List<dynamic> foodCls = [];
     //데이터 변환
     FormData formData = FormData.fromMap({
@@ -49,24 +50,28 @@ class ConnectServer {
 
         if (classficationResult.statusCode == 200) {
           //값
-          for (int i = 0; i < int.parse(classficationResult.data['object_num'].toString()); i++) {
-            if (classficationResult.data['object'][i]['name'].toString() != null) {
-
+          for (int i = 0;
+              i < int.parse(classficationResult.data['object_num'].toString());
+              i++) {
+            if (classficationResult.data['object'][i]['name'].toString() !=
+                null) {
               foodCls?.add([
                 classficationResult.data['object'][i]['name'].toString(),
                 classficationResult.data['object'][i]['volumes']
               ]);
-              foodName.add(classficationResult.data['object'][i]['name'].toString());
-              print(foodName);
-
-              print(foodCls);
+              foodName.add(
+                  classficationResult.data['object'][i]['name'].toString());
+              foodName = (foodName.toSet()).toList();
+              print(foodName); // 음식메뉴
+              print(foodCls); // [음식메뉴, volume]
             }
-            try{
-              dio.post('${Url}dodo/intakes/foods/names',options: Options(headers: {'Content-Type':'application/json'}),
+            try {
+              dio.post('${Url}dodo/intakes/foods/names',
+                  options:
+                      Options(headers: {'Content-Type': 'application/json'}),
                   queryParameters: {'time_div': time, 'date': selectDay},
                   data: json.encode(foodName));
-
-            }catch(e){
+            } catch (e) {
               print("이름 전달 실패");
             }
 
@@ -86,7 +91,7 @@ class ConnectServer {
   }
 
   Future<Map<String, dynamic>> foodNutinfo(
-      List<dynamic> foodCls, String selectDay,String time) async {
+      List<dynamic> foodCls, String selectDay, String time) async {
     print(foodCls);
     print("foodCls testing----------------------------");
     print(foodCls[0][0]);
@@ -131,9 +136,6 @@ class ConnectServer {
       print(nut_info);
 
       var post_info = {
-        "time_div": "morning",
-        "date": selectDay,
-        "time": "",
         "protein": nut_info['protein'],
         "fat": nut_info['fat'],
         "carbo": nut_info['carbo'],
@@ -166,6 +168,7 @@ class ConnectServer {
 
       print(post_info);
       dio.post('${Url}dodo/intakes/nutrients',
+          queryParameters: {'time_div': time, 'date': selectDay},
           options: Options(headers: {'Content-Type': 'application/json'}),
           data: json.encode(post_info));
       return nut_info;
@@ -174,12 +177,13 @@ class ConnectServer {
     }
   }
 
-  Future<List<String>> foodNames(String selectDay,String time) async{
-    List<String> Result=[];
+  Future<List<String>> foodNames(String selectDay, String time) async {
+    List<String> Result = [];
 
-    var response= await dio.get('${Url}dodo/intakes/foods/names',queryParameters: {"time_div":time, "date":selectDay});
-    if(response.statusCode==200){
-      for(int i=0;response.data['object_num'];i++){
+    var response = await dio.get('${Url}dodo/intakes/foods/names',
+        queryParameters: {"time_div": time, "date": selectDay});
+    if (response.statusCode == 200) {
+      for (int i = 0; response.data['object_num']; i++) {
         Result.add(response.data['object'][i]);
       }
       return Result;
