@@ -78,6 +78,7 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var timedivprovider = Provider.of<timeDivProvider>(context, listen: false);
     date = DateFormat('yyyy-MM-dd')
         .format(context.watch<dateProvider>().providerDate);
 
@@ -135,7 +136,19 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
             height: 320,
             child: ContainedTabBarView(
               onChange: (index) {
-                setState(() {});
+                setState(() {
+                  if (index == 0) {
+                    timedivprovider.changeTimeDiv("morning");
+                  } else if (index == 1) {
+                    timedivprovider.changeTimeDiv("lunch");
+                  } else if (index == 2) {
+                    timedivprovider.changeTimeDiv("dinner");
+                  } else if (index == 3) {
+                    timedivprovider.changeTimeDiv("snack");
+                  }
+                  print("timedivprovider");
+                  print(timedivprovider.providerTimediv);
+                });
               },
               tabs: [
                 for (int i = 0; i < foodTimeDiv.length; i++)

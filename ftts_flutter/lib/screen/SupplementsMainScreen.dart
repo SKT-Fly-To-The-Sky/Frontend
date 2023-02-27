@@ -75,63 +75,65 @@ class _JsonListViewState extends State<JsonListView> {
                       color: Colors.white,
                     ),
                     child: Container(
-                      padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),child:Column(
+                      padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            flex:3,
-                            child:Center(
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Container(
-                                    width: 300,
-                                      height: 300,
-                                      child: Image.network(data['image'],fit: BoxFit.fill,)
-                                  )
-                              )
-                            ),
+                            flex: 3,
+                            child: Center(
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Container(
+                                        width: 300,
+                                        height: 300,
+                                        child: Image.network(
+                                          data['image'],
+                                          fit: BoxFit.fill,
+                                        )))),
                           ),
-                        Expanded(
-                          flex: 1,
-                          child:
-                          Container(
-                            margin: EdgeInsets.only(left: 10, top: 10, right: 10),
-                            child: Text(
-                              utf8.decode(data['name'].codeUnits),
-                              style: const TextStyle(
-                                fontSize: 15,
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              margin:
+                                  EdgeInsets.only(left: 10, top: 10, right: 10),
+                              child: Text(
+                                utf8.decode(data['name'].codeUnits),
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child:
-                          Container(
-                            margin: EdgeInsets.only(left: 10, top: 5, right: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Image(
-                                  image: AssetImage('assets/11th_logo.png'),
-                                  width: 30,
-                                ),
-                                TextButton(
-                                    style: TextButton.styleFrom(
-                                      primary: Color(0xFF3617CE),
-                                    ),
-                                    onPressed: () {
-                                      _launchUrl(Uri.parse(data['link']));
-                                    },
-                                    child: Text("쇼핑하러 가기"))
-                              ],
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              margin:
+                                  EdgeInsets.only(left: 10, top: 5, right: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Image(
+                                    image: AssetImage('assets/11th_logo.png'),
+                                    width: 30,
+                                  ),
+                                  TextButton(
+                                      style: TextButton.styleFrom(
+                                        primary: Color(0xFF3617CE),
+                                      ),
+                                      onPressed: () {
+                                        _launchUrl(Uri.parse(data['link']));
+                                      },
+                                      child: Text("쇼핑하러 가기"))
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),)
+                  )
                 ],
               ),
             );
@@ -169,36 +171,48 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
         String? result;
         Map<String, dynamic>? sup_nut;
 
-        showDialog(context: context, builder: (context){
-          return Scaffold(body: Container(
-            color: const Color(0xFFF2F5FA),
-            child:Column(children: const <Widget>[
-              SizedBox(height: 60,),
-              Text(
-                '철분은 식사 전에 섭취하는게 좋아요!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'NotoSansKR',
-                    color: Colors.black,
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold),
-              ),
-              Expanded(
-                child: Image(
-                  image: AssetImage('assets/adot_loading.gif'),
-                  fit: BoxFit.fitWidth,
-                ),),
-              CircularProgressIndicator()
-            ],),
-          ),);
-        }
-        );
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Scaffold(
+                body: Container(
+                  color: const Color(0xFFF2F5FA),
+                  child: Column(
+                    children: const <Widget>[
+                      SizedBox(
+                        height: 60,
+                      ),
+                      Text(
+                        '철분은 식사 전에 섭취하는게 좋아요!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: 'NotoSansKR',
+                            color: Colors.black,
+                            fontSize: 23,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Expanded(
+                        child: Image(
+                          image: AssetImage('assets/adot_loading.gif'),
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
+                      CircularProgressIndicator()
+                    ],
+                  ),
+                ),
+              );
+            });
         //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 임의의 약이름을 반환한다.
         result = await connectServer.Supplementsuploading(_image!);
 
         //supplementList에 result값이 있는지 확인한다.
 
-        if (Provider.of<supplementProvider>(context, listen: false).supplementList.indexOf(result) == -1&&result!=null) {
+        if (Provider.of<supplementProvider>(context, listen: false)
+                    .supplementList
+                    .indexOf(result) ==
+                -1 &&
+            result != null) {
           //supplementList에 result값이 없다면 list에 result를 추가한다.
 
           _supplementProduct.addName(result.toString());
@@ -207,11 +221,10 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
           try {
             sup_nut = await connectServer.SupplementsNutinfo(result!);
             //영양정보를 supplementnutInfo에 더한다.
-            _supplementProduct.updatenutInfo(result,sup_nut!);
-          }
-          catch (e) {
+            _supplementProduct.updatenutInfo(result, sup_nut!);
+          } catch (e) {
             //예외처리용으로 우선 점심으로 처리.
-            _supplementProduct.addNameText(result,'점심','1정');
+            _supplementProduct.addNameText(result, '점심', '1정');
             print(_supplementProduct.supplemetsLunchInfo);
             print('영양성분 찾기 실패');
           }
@@ -220,20 +233,22 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
           Navigator.pop(context);
         } else {
           //약이름이 이미 있다면 팝업창으로 중복된 약이 이미 있음을 알려주기
-          showDialog(context: context, builder: (context){
-            return AlertDialog(
-              title: Text(''),
-              content: Text(result! + '영양제가 중복되었습니다!'),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                    child: Text('닫기'))
-              ],
-            );
-          });
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(''),
+                  content: Text(result! + '영양제가 중복되었습니다!'),
+                  actions: <Widget>[
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                        child: Text('닫기'))
+                  ],
+                );
+              });
         }
       } else {
         print("_image is null");
@@ -344,74 +359,73 @@ class _SupplementsMainScreen extends State<SupplementsMainScreen> {
       ),
       body: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: EdgeInsets.only(left: 20, top: 15, bottom: 10),
-                child: Row(
-                  children: [
-                    Text(
-                      "영양제 섭취율",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(left: 150),
-                        child: TextButton(
-                            style: TextButton.styleFrom(
-                              primary: Color(0xFF3617CE),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          SupplementsGrapeScreen()));
-                              },
-                            child: Text("상세 보기"))),
-                  ],
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 20, top: 15, bottom: 10),
+            child: Row(
+              children: [
+                Text(
+                  "영양제 섭취율",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
-              ),
-              CheckBoxListView(),
-              Container(
-                child: Center(
-                  child: IconButton(
-                    icon: Icon(Icons.add),
-                    iconSize: 30,
-                    color: Color(0xFF3617CE),
-                    onPressed: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: const Text('영양제 추가하기'),
-                        content: const Text('추가 방법을 고르시오'),
-                        actions: <Widget>[
-                          selectbutton(),
-                        ],
-                      ),
-                    ),
+                Container(
+                    margin: EdgeInsets.only(left: 150),
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                          primary: Color(0xFF3617CE),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SupplementsGrapeScreen()));
+                        },
+                        child: Text("상세 보기"))),
+              ],
+            ),
+          ),
+          CheckBoxListView(),
+          Container(
+            child: Center(
+              child: IconButton(
+                icon: Icon(Icons.add),
+                iconSize: 30,
+                color: Color(0xFF3617CE),
+                onPressed: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('영양제 추가하기'),
+                    content: const Text('추가 방법을 고르시오'),
+                    actions: <Widget>[
+                      selectbutton(),
+                    ],
                   ),
                 ),
               ),
-              Container(
-                  margin: EdgeInsets.only(left: 20, top: 15, bottom: 5, right: 20),
-                  child: Row(
-                    children: [
-                      Icon(Icons.medication_liquid_sharp),
-                      Container(
-                        width: 5,
-                      ),
-                      Text(
-                        "영양제 추천",
-                        style: TextStyle(
-                          // fontWeight: FontWeight.bold,
-                          fontSize: 17),
-                      ),
-                    ],
-                  )),
-              Center(child: JsonListView())
+            ),
+          ),
+          Container(
+              margin: EdgeInsets.only(left: 20, top: 15, bottom: 5, right: 20),
+              child: Row(
+                children: [
+                  Icon(Icons.medication_liquid_sharp),
+                  Container(
+                    width: 5,
+                  ),
+                  Text(
+                    "영양제 추천",
+                    style: TextStyle(
+                        // fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  ),
+                ],
+              )),
+          Center(child: JsonListView())
         ],
       )),
     );
   }
-
 }
