@@ -150,6 +150,13 @@ class _DetailGraphState extends State<DetailGraph> {
   }
 }
 
+Map<String, dynamic> chartData = {
+  //[칼로리, 탄, 단, 지]
+  '2023-02-25': [2300, 386.8, 133.08, 181.4],
+  '2023-02-26': [1748.5, 232.7, 70, 59.576],
+  '2023-02-27': [1612.3, 197, 72.8, 60.7],
+};
+
 class StaticDetailGraph extends StatefulWidget {
   const StaticDetailGraph({Key? key}) : super(key: key);
 

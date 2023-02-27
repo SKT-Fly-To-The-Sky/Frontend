@@ -54,7 +54,11 @@ class _DailyGraphState extends State<DailyGraph> {
     print("데이터 확인 ---------------");
     print(_onedayInfo['kcal']);
     List<dynamic> recommedInfo = [
-      ['칼로리', 'kcal', 2600,],
+      [
+        '칼로리',
+        'kcal',
+        2600,
+      ],
       ['탄수화물', 'carbo', 130],
       ['단백질', 'protein', 65],
       ['지방', 'fat', 65],
@@ -63,12 +67,12 @@ class _DailyGraphState extends State<DailyGraph> {
     List<VBarChartModel> barChartData = [];
 
     List<DoughnutChartData> doughnutChartData = [
-      DoughnutChartData('섭취한 칼로리', (recommedInfo[0][2] - (_onedayInfo['kcal'])), Color(0xFF3617CE)),
+      DoughnutChartData('섭취한 칼로리', (recommedInfo[0][2] - (_onedayInfo['kcal'])),
+          Color(0xFF3617CE)),
       DoughnutChartData('남은 칼로리', (_onedayInfo['kcal']), Color(0xFFe8e8e8)),
     ];
 
     for (int i = 0; i < recommedInfo.length; i++) {
-
       var result = (_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100;
       if ((result) > 100) {
         result = 100.0;
@@ -76,14 +80,18 @@ class _DailyGraphState extends State<DailyGraph> {
 
       barChartData.add(VBarChartModel(
           index: i,
-          colors: setColor((_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100),
+          colors: setColor(
+              (_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100),
           jumlah: result,
-          tooltip: ((_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100).ceil().toString() +"%",
+          tooltip:
+              ((_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100)
+                      .ceil()
+                      .toString() +
+                  "%",
           label: recommedInfo[i][0]));
     }
 
-
-    Widget Grape(){
+    Widget Grape() {
       return Container(
           width: screenWidth * 0.50,
           child: VerticalBarchart(
@@ -102,8 +110,7 @@ class _DailyGraphState extends State<DailyGraph> {
               Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
               Vlegend(isSquare: false, color: Colors.yellow, text: "부족"),
             ],
-          )
-      );
+          ));
     }
 
     return Container(
@@ -114,46 +121,47 @@ class _DailyGraphState extends State<DailyGraph> {
         children: [
           Container(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 20.0),
-                      child: Text(
-                        "남은 칼로리",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                    ),
-                  Container(
-                    height: 150,
-                    width: 150,
-                    child: SfCircularChart(
-                        centerY: '80',
-                        margin: EdgeInsets.zero,
-                        annotations: <CircularChartAnnotation>[
-                          CircularChartAnnotation(
-                              widget: Container(
-                                child: Text(
-                                  ((recommedInfo[0][2]-(_onedayInfo['kcal'])).ceil()).toString()+"kacl",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ))
-                        ],
-                        series: <CircularSeries>[
-                          DoughnutSeries<DoughnutChartData, String>(
-                              dataSource: doughnutChartData,
-                              pointColorMapper: (DoughnutChartData data, _) => data.color,
-                              xValueMapper: (DoughnutChartData data, _) => data.x,
-                              yValueMapper: (DoughnutChartData data, _) => data.y,
-                              innerRadius: '70%')
-                        ]),
-                  ),
-                ],
-              )),
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 20.0),
+                child: Text(
+                  "남은 칼로리",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+              ),
+              Container(
+                height: 150,
+                width: 150,
+                child: SfCircularChart(
+                    centerY: '80',
+                    margin: EdgeInsets.zero,
+                    annotations: <CircularChartAnnotation>[
+                      CircularChartAnnotation(
+                          widget: Container(
+                        child: Text(
+                          ((recommedInfo[0][2] - (_onedayInfo['kcal'])).ceil())
+                                  .toString() +
+                              "kcal",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ))
+                    ],
+                    series: <CircularSeries>[
+                      DoughnutSeries<DoughnutChartData, String>(
+                          dataSource: doughnutChartData,
+                          pointColorMapper: (DoughnutChartData data, _) =>
+                              data.color,
+                          xValueMapper: (DoughnutChartData data, _) => data.x,
+                          yValueMapper: (DoughnutChartData data, _) => data.y,
+                          innerRadius: '70%')
+                    ]),
+              ),
+            ],
+          )),
           SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Grape()
-          ),
+              scrollDirection: Axis.horizontal, child: Grape()),
         ],
       ),
     );
