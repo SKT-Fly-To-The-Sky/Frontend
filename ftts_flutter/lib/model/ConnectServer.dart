@@ -14,8 +14,7 @@ class ConnectServer {
   List<String> foodName = [];
   List<double> foodSize = [];
 
-  Future<List<dynamic>?> uploading(
-      XFile file, String selectDay, String timeDiv) async {
+  Future<List<dynamic>?> uploading(XFile file, String selectDay) async {
     List<dynamic> foodCls = [];
     //데이터 변환
     FormData formData = FormData.fromMap({
@@ -38,13 +37,13 @@ class ConnectServer {
     dio.options.receiveTimeout = 100000;
     try {
       var sendImage = await dio.post('${Url}dodo/intakes/images',
-          queryParameters: {'time_div': timeDiv, 'date': selectDay},
+          queryParameters: {'time_div': 'morning', 'date': selectDay},
           data: formData);
       if (sendImage.data['message'] == 'image data saved successfully') {
         var classficationResult = await dio.get('${Url}classification',
             queryParameters: {
               'userid': 'dodo',
-              'time_div': timeDiv,
+              'time_div': 'morning',
               'date': selectDay
             });
         print("--------------------------------------------------");
@@ -85,7 +84,7 @@ class ConnectServer {
   }
 
   Future<Map<String, dynamic>> foodNutinfo(
-      List<dynamic> foodCls, String selectDay, String timeDiv) async {
+      List<dynamic> foodCls, String selectDay) async {
     print(foodCls);
     print("foodCls testing----------------------------");
     print(foodCls[0][0]);
@@ -163,9 +162,7 @@ class ConnectServer {
         "kcal": nut_info['kcal']
       };
 
-      print("post_info");
       print(post_info);
-      print('${Url}dodo/intakes/nutrients');
       dio.post('${Url}dodo/intakes/nutrients',
           options: Options(headers: {'Content-Type': 'application/json'}),
           data: json.encode(post_info));
@@ -293,7 +290,7 @@ class ConnectServer {
   }
 
   Future<Map<String, dynamic>> getOneDayInfo(String day) async {
-    print('Day food info');
+    print('Day fppd info');
 
     //log 설정
     dio.interceptors.add(LogInterceptor(

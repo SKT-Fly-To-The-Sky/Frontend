@@ -35,11 +35,7 @@ class _ImageUploaderState extends State<ImageUploader>
   ];
   File? image;
 
-  //List<String>? result;
-  List<dynamic>? result;
-  Map<String, dynamic> nut = nut_info;
-
-  // Map<String, dynamic> _nut = nut_info;
+  Map<String, dynamic>? _nut = nut_info;
   late Future<Image> timeDivImage;
   File? imageFile;
   Response? imgresponse, foodresponse;
@@ -58,106 +54,32 @@ class _ImageUploaderState extends State<ImageUploader>
   Future<void> _getTimeDivImage() async {
     imgUrl =
         'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${widget.imgDate}';
-    // foodNamesUrl =
-    //     'http://jeongsuri.iptime.org:10019/classification?userid=dodo&time_div=${widget.timeDiv}&date=${widget.imgDate}';
+    foodNamesUrl =
+        'http://jeongsuri.iptime.org:10019/classification?userid=dodo&time_div=${widget.timeDiv}&date=${widget.imgDate}';
 
     try {
       imgresponse = await Dio()
           .get(imgUrl!, options: Options(responseType: ResponseType.bytes));
-      print("imgUrl");
+      foodresponse = await Dio().get(foodNamesUrl!);
       print(imgUrl);
-
-      // foodresponse = await Dio().get(foodNamesUrl!);
-      // print("foodresponse");
-      // print(foodresponse!.data['object']);
-      // print("FoodNamesUrl");
-      // print(foodNamesUrl);
-      // if (foodresponse!.data['object_num'] > 0) {
-      //   _result = [];
-      //   for (Map m in foodresponse!.data['object']) {
-      //     _result!.add(m['name']);
-      //   }
-      //   _result = _result!.toSet().toList();
-      //   print("_result --------");
-      //   print(_result);
-      // }
-      // print("response 이미지 불러오기 성공");
+      print("foodresponse");
+      print(foodresponse!.data['object']);
+      print("FoodNamesUrl");
+      print(foodNamesUrl);
+      if (foodresponse!.data['object_num'] > 0) {
+        _result = [];
+        for (Map m in foodresponse!.data['object']) {
+          _result!.add(m['name']);
+        }
+        _result = _result!.toSet().toList();
+        print("_result --------");
+        print(_result);
+      }
+      print("response 이미지 불러오기 성공");
     } catch (e) {
-      imgresponse = null;
+      imgresponse == null;
       print("response 이미지 불러오기 실패");
       print(e);
-    }
-  }
-
-  // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
-  Future getImage(ImageSource imageSource) async {
-    // Timeline.startSync('interesting function');
-    _image = await picker.pickImage(
-        source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
-        //이미지 resize 부분, height, width 설정, Quality 설정
-        );
-    print("_image");
-    print(_image);
-
-    setState(() {
-      image = File(_image!.path);
-      _result = result; // classfication 결과,
-      // _nut = nut; //영양소 정보 전달
-    });
-
-    if (_image != null) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return Container(
-              color: const Color(0xFFF2F5FA),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 60,
-                  ),
-                  Text(
-                    '딸기는 과일 중에 비타민C가 가장 많이 포함되어 있어요!',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontFamily: 'NotoSansKR',
-                        color: Colors.black,
-                        fontSize: 23,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Expanded(
-                    child: Image(
-                      image: AssetImage('assets/adot_loading.gif'),
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
-                  CircularProgressIndicator()
-                ],
-              ),
-            );
-          });
-
-      String onlydate = '2023-02-28';
-
-      result = await connectServer.uploading(_image!, onlydate!,
-          widget.timeDiv); // classification 결과 - 음식 메뉴 이름 list
-      nut = await connectServer.foodNutinfo(
-          result!, onlydate!, widget.timeDiv); // 음식 이미지 정보 - map
-
-      Navigator.pop(context);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ResultScreen(_image!, result!, nut!)));
-
-      Future<bool> _getFutureBool() {
-        return Future.delayed(Duration(milliseconds: 100000))
-            .then((onValue) => true);
-      }
-
-      _getFutureBool();
-    } else {
-      print("_image is null");
     }
   }
 
@@ -166,35 +88,119 @@ class _ImageUploaderState extends State<ImageUploader>
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     _getTimeDivImage();
+    // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
+    Future getImage(ImageSource imageSource) async {
+      // Timeline.startSync('interesting function');
+      _image = await picker.pickImage(
+          source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
+          //이미지 resize 부분, height, width 설정, Quality 설정
+          );
+      print("_image");
+      print(_image);
 
-    return (imgresponse == null && image == null)
-        ? Container(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  FloatingActionButton(
-                    heroTag: 'camera',
-                    backgroundColor: Color(0xFF3617CE),
-                    child: Icon(Icons.add_a_photo),
-                    tooltip: 'pick Image',
-                    onPressed: () {
-                      getImage(ImageSource.camera);
-                    },
-                  ),
-                  FloatingActionButton(
-                    heroTag: 'gallery',
-                    backgroundColor: Color(0xFF3617CE),
-                    child: Icon(Icons.wallpaper),
-                    tooltip: 'pick Image',
-                    onPressed: () {
-                      getImage(ImageSource.gallery);
-                    },
-                  ),
-                ])
-          ]))
-        : ShowImage();
+      setState(() {
+        image = File(_image!.path);
+      });
+
+      if (_image != null) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Container(
+                color: const Color(0xFFF2F5FA),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 60,
+                    ),
+                    Text(
+                      '딸기는 과일 중에 비타민C가 가장 많이 포함되어 있어요!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: 'NotoSansKR',
+                          color: Colors.black,
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Expanded(
+                      child: Image(
+                        image: AssetImage('assets/adot_loading.gif'),
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                    CircularProgressIndicator()
+                  ],
+                ),
+              );
+            });
+
+        //List<String>? result;
+        List<dynamic>? result;
+        Map<String, dynamic>? nut;
+        //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 'fail'를 반환한다.
+        //음식 이름 받아오기
+        var date =
+            Provider.of<dateProvider>(context, listen: false).providerDate;
+        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        String onlydate = formatter.format(date);
+
+        // classification 결과 반환 - 음식 메뉴 이름 list
+        result = await connectServer.uploading(_image!, onlydate!);
+        // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 - map
+        nut = await connectServer.foodNutinfo(result!, onlydate!);
+        Navigator.pop(context);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ResultScreen(_image!, result!, nut!)));
+        Future<bool> _getFutureBool() {
+          return Future.delayed(Duration(milliseconds: 100000))
+              .then((onValue) => true);
+        }
+
+        _getFutureBool();
+        //영양소 받아오기
+        setState(() {
+          _result = result;
+          _nut = nut;
+          //ResultScreen에 이미지, classfication 결과, 영양소 정보 전달
+        });
+      } else {
+        print("_image is null");
+      }
+    }
+
+    return //_image == null
+        (imgresponse == null && image == null)
+            ? Container(
+                color: Colors.blue,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            FloatingActionButton(
+                              heroTag: 'camera',
+                              backgroundColor: Color(0xFF3617CE),
+                              child: Icon(Icons.add_a_photo),
+                              tooltip: 'pick Image',
+                              onPressed: () {
+                                getImage(ImageSource.camera);
+                              },
+                            ),
+                            FloatingActionButton(
+                              heroTag: 'gallery',
+                              backgroundColor: Color(0xFF3617CE),
+                              child: Icon(Icons.wallpaper),
+                              tooltip: 'pick Image',
+                              onPressed: () {
+                                getImage(ImageSource.gallery);
+                              },
+                            ),
+                          ])
+                    ]))
+            : ShowImage();
   }
 
   Widget ShowImage() {
@@ -220,7 +226,6 @@ class _ImageUploaderState extends State<ImageUploader>
                       )
                     : Image.file(File(image!.path))),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -235,7 +240,7 @@ class _ImageUploaderState extends State<ImageUploader>
                           backgroundColor: Color(0xffffb3ba),
                         )),
                     Text(
-                      '${nut!['carbo'].toInt()} g',
+                      '${_nut!['carbo'].toInt()}',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -256,7 +261,7 @@ class _ImageUploaderState extends State<ImageUploader>
                           backgroundColor: Color(0xffffffba),
                         )),
                     Text(
-                      '${nut!['protein'].toInt()} g',
+                      '${_nut!['protein'].toInt()}',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -277,7 +282,7 @@ class _ImageUploaderState extends State<ImageUploader>
                           backgroundColor: Color(0xffbae1ff),
                         )),
                     Text(
-                      '${nut!['fat'].toInt()} g',
+                      '${_nut!['fat'].toInt()}',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -314,12 +319,12 @@ class _ImageUploaderState extends State<ImageUploader>
                         ),
                         onPressed: () {
                           print("nut info");
-                          // print(_nut);
+                          print(_nut);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ResultScreen(_image!, _result!, nut!)));
+                                      ResultScreen(_image!, _result!, _nut!)));
                         },
                         child: Text(
                           "상세 보기",
