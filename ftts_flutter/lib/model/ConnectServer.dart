@@ -130,8 +130,8 @@ class ConnectServer {
       print("nut_info");
       print(nut_info);
 
-      var post_info={
-        "time_div": time,
+      var post_info = {
+        "time_div": "morning",
         "date": selectDay,
         "time": "",
         "protein": nut_info['protein'],
@@ -166,7 +166,8 @@ class ConnectServer {
 
       print(post_info);
       dio.post('${Url}dodo/intakes/nutrients',
-          options: Options(headers: {'Content-Type':'application/json'}), data: json.encode(post_info));
+          options: Options(headers: {'Content-Type': 'application/json'}),
+          data: json.encode(post_info));
       return nut_info;
     } catch (e) {
       return nut_info;
@@ -235,7 +236,8 @@ class ConnectServer {
     dio.options.receiveTimeout = 10000;
     String Time = '';
     try {
-      var supinfo = await dio.get('${Url}supplements/info', queryParameters: {"sup_name": name});
+      var supinfo = await dio
+          .get('${Url}supplements/info', queryParameters: {"sup_name": name});
       Time = supinfo.data['add_eat_time'];
       return Time;
     } catch (e) {
@@ -254,7 +256,6 @@ class ConnectServer {
         responseHeader: false,
         request: false,
         requestBody: false));
-
 
     try {
       var supinfo = await dio

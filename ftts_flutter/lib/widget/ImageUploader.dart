@@ -25,7 +25,8 @@ class ImageUploader extends StatefulWidget {
   State<ImageUploader> createState() => _ImageUploaderState();
 }
 
-class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveClientMixin {
+class _ImageUploaderState extends State<ImageUploader>
+    with AutomaticKeepAliveClientMixin {
   XFile? _image;
   final picker = ImagePicker();
   final connectServer = ConnectServer();
@@ -51,13 +52,20 @@ class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveCl
     _getTimeDivImage();
   }
 
+  bool serverConnect=false;
   Future<void> _getTimeDivImage() async {
-    imgUrl = 'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${widget.imgDate}';
-    foodNamesUrl = 'http://jeongsuri.iptime.org:10019/classification?userid=dodo&time_div=${widget.timeDiv}&date=${widget.imgDate}';
+    setState(() {
+      serverConnect=true;
+    });
+    imgUrl =
+        'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${widget.imgDate}';
+    foodNamesUrl =
+        'http://jeongsuri.iptime.org:10019/classification?userid=dodo&time_div=${widget.timeDiv}&date=${widget.imgDate}';
 
     try {
-      print(widget.timeDiv);
+
       imgresponse = await Dio().get(imgUrl!, options: Options(responseType: ResponseType.bytes));
+
       foodresponse = await Dio().get(foodNamesUrl!);
 
       if (foodresponse!.data['object_num'] > 0) {
@@ -81,7 +89,8 @@ class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveCl
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    _getTimeDivImage();
+    if(serverConnect!){
+    _getTimeDivImage();}
     // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
     Future getImage(ImageSource imageSource) async {
       // Timeline.startSync('interesting function');
@@ -93,7 +102,7 @@ class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveCl
       print(_image);
 
       setState(() {
-        image=File(_image!.path);
+        image = File(_image!.path);
       });
 
       if (_image != null) {
@@ -147,9 +156,8 @@ class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveCl
             MaterialPageRoute(
                 builder: (context) => ResultScreen(_image!, result!, nut!,widget.timeDiv!)));
         Future<bool> _getFutureBool() {
-
-          return Future.delayed(Duration(milliseconds: 100000)) .then((onValue) => true);
-
+          return Future.delayed(Duration(milliseconds: 100000))
+              .then((onValue) => true);
         }
 
         _getFutureBool();
@@ -169,34 +177,34 @@ class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveCl
 
 
     return //_image == null
-      (imgresponse == null&&image==null)
+        (imgresponse == null && image == null)
             ? Container(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          FloatingActionButton(
-                            heroTag: 'camera',
-                            backgroundColor: Color(0xFF3617CE),
-                            child: Icon(Icons.add_a_photo),
-                            tooltip: 'pick Image',
-                            onPressed: () {
-                              getImage(ImageSource.camera);
-                            },
-                          ),
-                          FloatingActionButton(
-                            heroTag: 'gallery',
-                            backgroundColor: Color(0xFF3617CE),
-                            child: Icon(Icons.wallpaper),
-                            tooltip: 'pick Image',
-                            onPressed: () {
-                              getImage(ImageSource.gallery);
-                            },
-                          ),
-                        ])
-                  ]))
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            FloatingActionButton(
+                              heroTag: 'camera',
+                              backgroundColor: Color(0xFF3617CE),
+                              child: Icon(Icons.add_a_photo),
+                              tooltip: 'pick Image',
+                              onPressed: () {
+                                getImage(ImageSource.camera);
+                              },
+                            ),
+                            FloatingActionButton(
+                              heroTag: 'gallery',
+                              backgroundColor: Color(0xFF3617CE),
+                              child: Icon(Icons.wallpaper),
+                              tooltip: 'pick Image',
+                              onPressed: () {
+                                getImage(ImageSource.gallery);
+                              },
+                            ),
+                          ])
+                    ]))
             : ShowImage();
   }
 
@@ -205,27 +213,31 @@ class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveCl
         Image(image: AssetImage('assets/diet_morning.jpg'));
     return Container(
         child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
-                  width: 210,
-                  height: 140,
-                  child: image == null
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+                margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
+                width: 210,
+                height: 140,
+                child: image == null
                     ? Image.network(
                         imgUrl!,
                         fit: BoxFit.fill,
-                      )
-                    : Image.file(File(image!.path))),
+                      ):_result![0][0]!='불고기'?
+                Image.file(File(image!.path))
+                    :Image(
+                    image: AssetImage('assets/firegogi.jpg'),
+                    fit: BoxFit.fill)
+            ),
 
-                Column(
-                  children: [
-                    Row(
+            Column(
+              children: [
+                Row(
                   children: [
                     Container(
                         margin: EdgeInsets.fromLTRB(15, 0, 10, 10),

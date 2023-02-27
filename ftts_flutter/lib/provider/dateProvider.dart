@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
+class timeDivProvider with ChangeNotifier {
+  String? providerTimediv;
+  changeTimeDiv(String s) {
+    providerTimediv = s;
+    notifyListeners();
+  }
+}
+
 class dateProvider with ChangeNotifier {
   DateTime providerDate = DateTime.now();
 
@@ -32,22 +40,22 @@ class graphProvider with ChangeNotifier {
   };
 
   changeOneDayInfo(Map<String, dynamic> m) {
-    oneday_info['date']=m['date'];
-    oneday_info["kcal"]=m["kcal"];
-    oneday_info['protein']=m['protein'];
-    oneday_info["fat"]=m["fat"];
-    oneday_info['carbo']=m['carbo'];
-    oneday_info["sugar"]=m["sugar"];
-    oneday_info['chole']=m['chole'];
-    oneday_info["fiber"]=m["fiber"];
-    oneday_info['date']=m['date'];
-    oneday_info["calcium"]=m["calcium"];
-    oneday_info['iron']=m['iron'];
-    oneday_info["magne"]=m["magne"];
-    oneday_info['potass']=m['potass'];
-    oneday_info["sodium"]=m["sodium"];
-    oneday_info['zinc']=m['zinc'];
-    oneday_info["zinc"]=m["zinc"];
+    oneday_info['date'] = m['date'];
+    oneday_info["kcal"] = m["kcal"];
+    oneday_info['protein'] = m['protein'];
+    oneday_info["fat"] = m["fat"];
+    oneday_info['carbo'] = m['carbo'];
+    oneday_info["sugar"] = m["sugar"];
+    oneday_info['chole'] = m['chole'];
+    oneday_info["fiber"] = m["fiber"];
+    oneday_info['date'] = m['date'];
+    oneday_info["calcium"] = m["calcium"];
+    oneday_info['iron'] = m['iron'];
+    oneday_info["magne"] = m["magne"];
+    oneday_info['potass'] = m['potass'];
+    oneday_info["sodium"] = m["sodium"];
+    oneday_info['zinc'] = m['zinc'];
+    oneday_info["zinc"] = m["zinc"];
 
     print(oneday_info);
     notifyListeners();
