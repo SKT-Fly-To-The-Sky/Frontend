@@ -14,7 +14,7 @@ class ConnectServer {
   List<String> foodName = [];
   List<double> foodSize = [];
 
-  Future<List<dynamic>?> uploading(XFile file, String selectDay) async {
+  Future<List<dynamic>?> uploading(XFile file, String selectDay,String time) async {
     List<dynamic> foodCls = [];
     //데이터 변환
     FormData formData = FormData.fromMap({
@@ -37,13 +37,13 @@ class ConnectServer {
     dio.options.receiveTimeout = 100000;
     try {
       var sendImage = await dio.post('${Url}dodo/intakes/images',
-          queryParameters: {'time_div': 'morning', 'date': selectDay},
+          queryParameters: {'time_div': time, 'date': selectDay},
           data: formData);
       if (sendImage.data['message'] == 'image data saved successfully') {
         var classficationResult = await dio.get('${Url}classification',
             queryParameters: {
               'userid': 'dodo',
-              'time_div': 'morning',
+              'time_div': time,
               'date': selectDay
             });
         print("--------------------------------------------------");
@@ -84,7 +84,7 @@ class ConnectServer {
   }
 
   Future<Map<String, dynamic>> foodNutinfo(
-      List<dynamic> foodCls, String selectDay) async {
+      List<dynamic> foodCls, String selectDay,String time) async {
     print(foodCls);
     print("foodCls testing----------------------------");
     print(foodCls[0][0]);
@@ -129,7 +129,7 @@ class ConnectServer {
       print(nut_info);
 
       var post_info={
-        "time_div": "morning",
+        "time_div": time,
         "date": selectDay,
         "time": "string",
         "protein": nut_info['protein'],

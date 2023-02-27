@@ -3,17 +3,8 @@ import 'package:vertical_barchart/vertical-barchart.dart';
 import 'package:vertical_barchart/vertical-barchartmodel.dart';
 import 'package:vertical_barchart/vertical-legend.dart';
 import 'package:flutter/material.dart';
-import '../model/ConnectServer.dart';
 import 'package:provider/provider.dart';
 import '../provider/dateProvider.dart';
-
-// final List<String> nutName = ['kcal', 'carbo', 'protein', 'fat'];
-// final Map<String, String> nutKor = {
-//   'kcal': '칼로리',
-//   'carbo': '탄수화물',
-//   'protein': '단백질',
-//   'fat': '지방'
-// };
 
 List<Color> setColor(double a) {
   if (a >= 100) {

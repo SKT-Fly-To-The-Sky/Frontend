@@ -1,19 +1,8 @@
-import 'dart:developer';
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import '../screen/ResultScreen.dart';
-import '../model/ConnectServer.dart';
-import 'dart:developer';
-import 'package:rounded_background_text/rounded_background_text.dart';
-import 'dart:math' as math;
-import 'ImageUploader.dart';
 
-// data = {'2023-02-25':
-//   {'morning':[[음식메뉴], url, 칼로리, 탄, 단, 지]},
-//   {'lunch':[[음식메뉴], url, 칼로리, 탄, 단, 지]},
-//   {'dinner':[[음식메뉴], url, 칼로리, 탄, 단, 지]},
-// }
+import 'package:flutter/material.dart';
+import 'package:rounded_background_text/rounded_background_text.dart';
+
+
 
 Map<String, dynamic> data = {
   '2023-02-25': [

@@ -29,6 +29,7 @@ class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveCl
   XFile? _image;
   final picker = ImagePicker();
   final connectServer = ConnectServer();
+
   List<dynamic>? _result = [
     ["불고기", 1.0]
   ];
@@ -55,13 +56,10 @@ class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveCl
     foodNamesUrl = 'http://jeongsuri.iptime.org:10019/classification?userid=dodo&time_div=${widget.timeDiv}&date=${widget.imgDate}';
 
     try {
+      print(widget.timeDiv);
       imgresponse = await Dio().get(imgUrl!, options: Options(responseType: ResponseType.bytes));
       foodresponse = await Dio().get(foodNamesUrl!);
-      print(imgUrl);
-      print("foodresponse");
-      print(foodresponse!.data['object']);
-      print("FoodNamesUrl");
-      print(foodNamesUrl);
+
       if (foodresponse!.data['object_num'] > 0) {
         _result = [];
         for (Map m in foodresponse!.data['object']) {
@@ -141,14 +139,14 @@ class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveCl
         String onlydate = formatter.format(date);
 
         // classification 결과 반환 - 음식 메뉴 이름 list
-        result = await connectServer.uploading(_image!, onlydate!);
+        result = await connectServer.uploading(_image!, onlydate!,widget.timeDiv!);
         // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 - map
-        nut = await connectServer.foodNutinfo(result!, onlydate!);
+        nut = await connectServer.foodNutinfo(result!, onlydate!,widget.timeDiv!);
         Navigator.pop(context);
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ResultScreen(_image!, result!, nut!)));
+                builder: (context) => ResultScreen(_image!, result!, nut!,widget.timeDiv!)));
         Future<bool> _getFutureBool() {
 
           return Future.delayed(Duration(milliseconds: 100000)) .then((onValue) => true);
@@ -170,7 +168,6 @@ class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveCl
     return //_image == null
       (imgresponse == null&&image==null)
             ? Container(
-          color: Colors.blue,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -322,7 +319,7 @@ class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveCl
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ResultScreen(_image!, _result!, _nut!)));
+                                      ResultScreen(_image!, _result!, _nut!,widget.timeDiv)));
                         },
                         child: Text(
                           "상세 보기",

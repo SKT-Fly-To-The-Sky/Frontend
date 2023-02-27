@@ -9,31 +9,32 @@ import 'dart:io';
 import '../utils/TMapPlugin.dart';
 import 'GraphScreen.dart';
 import '../widget/DailyGraph.dart';
-import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
 
 class JsonListView extends StatefulWidget {
+  final String timeDiv;
+  JsonListView(this.timeDiv,{Key?key,}):super(key:key);
+
   @override
   _JsonListViewState createState() => _JsonListViewState();
 }
 
 class _JsonListViewState extends State<JsonListView> {
+
   List<dynamic> _jsonData = [];
   final dio = Dio();
 
   @override
   void initState() {
-    print("test/??????");
     super.initState();
-    foodRecommand('morning');
+    foodRecommand(widget.timeDiv);
   }
 
   Future<void> foodRecommand(String day) async {
     var foodrecommand = [];
     var recommanddata = await dio.get(
         'http://jeongsuri.iptime.org:10019/dodo/foods/recommand',
-        queryParameters: {'time_div': "morning"});
+        queryParameters: {'time_div': day});
 
     if (recommanddata.statusCode == 200) {
       setState(() {
@@ -153,8 +154,9 @@ class ResultScreen extends StatelessWidget {
   final XFile? _image;
   final List<dynamic>? _result;
   final Map<String, dynamic>? _nutinfo;
+  final String timeDiv;
 
-  ResultScreen(this._image, this._result, this._nutinfo, {super.key});
+  ResultScreen(this._image, this._result, this._nutinfo,this.timeDiv, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -451,7 +453,7 @@ class ResultScreen extends StatelessWidget {
                           ),
                         ],
                       )),
-                  Center(child: JsonListView())
+                  Center(child: JsonListView(timeDiv))
                 ],
               ),
             ));
