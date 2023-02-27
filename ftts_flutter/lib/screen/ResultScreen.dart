@@ -1,5 +1,3 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,14 +13,12 @@ import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
-
 class JsonListView extends StatefulWidget {
   @override
-  _JsonListViewState createState( ) => _JsonListViewState();
+  _JsonListViewState createState() => _JsonListViewState();
 }
 
 class _JsonListViewState extends State<JsonListView> {
-
   List<dynamic> _jsonData = [];
   final dio = Dio();
 
@@ -33,20 +29,23 @@ class _JsonListViewState extends State<JsonListView> {
     foodRecommand('morning');
   }
 
+  Future<void> foodRecommand(String day) async {
+    var foodrecommand = [];
+    var recommanddata = await dio.get(
+        'http://jeongsuri.iptime.org:10019/dodo/foods/recommand',
+        queryParameters: {'time_div': "morning"});
 
-  Future<void> foodRecommand(String day) async{
-    var foodrecommand=[];
-    var recommanddata= await dio.get('http://jeongsuri.iptime.org:10019/dodo/foods/recommand',queryParameters: {'time_div':"morning"});
-
-    if(recommanddata.statusCode==200){
+    if (recommanddata.statusCode == 200) {
       setState(() {
-        for(int i=0;i<3;i++){
-          foodrecommand.add([recommanddata.data[i]["name"].toString(),recommanddata.data[i]["image"].toString()]);
+        for (int i = 0; i < 3; i++) {
+          foodrecommand.add([
+            recommanddata.data[i]["name"].toString(),
+            recommanddata.data[i]["image"].toString()
+          ]);
         }
-        _jsonData=foodrecommand;
-      }
-      );
-     }
+        _jsonData = foodrecommand;
+      });
+    }
   }
 
   @override
@@ -89,31 +88,37 @@ class _JsonListViewState extends State<JsonListView> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(flex:3 ,child: Center(
-                            child:ClipRRect(
-                               borderRadius: BorderRadius.circular(8.0),
-                                child: Container(
-                                  width: 300,
-                                  height: 300,
-                                  child: Image.network(data[1],fit: BoxFit.fill,))),
-                          ),) ,
                           Expanded(
-                            flex: 1,
-                              child:
-                                Container(
-                                  margin: EdgeInsets.only(left: 10, top: 10, right: 10),
-                                    child: Text(
-                                      "다음 식사는 "+data[0]+" 어때요?",
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                )
+                            flex: 3,
+                            child: Center(
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Container(
+                                      width: 300,
+                                      height: 300,
+                                      child: Image.network(
+                                        data[1],
+                                        fit: BoxFit.fill,
+                                      ))),
+                            ),
                           ),
                           Expanded(
                               flex: 1,
                               child: Container(
-                                margin: EdgeInsets.only(left: 10, top: 5, right: 10),
+                                margin: EdgeInsets.only(
+                                    left: 10, top: 10, right: 10),
+                                child: Text(
+                                  "다음 식사는 " + data[0] + " 어때요?",
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              )),
+                          Expanded(
+                              flex: 1,
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    left: 10, top: 5, right: 10),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -127,14 +132,14 @@ class _JsonListViewState extends State<JsonListView> {
                                         ),
                                         onPressed: () {
                                           TMapPlugin.exeTMap(data[0]);
-                                          },
-                                        child: Text("근처 식당 경로찾기")
-                                )
-                              ],
-                            ),
-                          )),
-                      ],
-                    ),),
+                                        },
+                                        child: Text("근처 식당 경로찾기"))
+                                  ],
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -143,7 +148,6 @@ class _JsonListViewState extends State<JsonListView> {
     );
   }
 }
-
 
 class ResultScreen extends StatelessWidget {
   final XFile? _image;
@@ -190,7 +194,10 @@ class ResultScreen extends StatelessWidget {
     }
 
     List<DoughnutChartData> doughnutChartData = [
-      DoughnutChartData('탄수화물', _nutinfo!['carbo'] / (_nutinfo!['carbo'] + _nutinfo!['protein'] + _nutinfo!['fat']),
+      DoughnutChartData(
+          '탄수화물',
+          _nutinfo!['carbo'] /
+              (_nutinfo!['carbo'] + _nutinfo!['protein'] + _nutinfo!['fat']),
           Color(0xFF5757)),
       DoughnutChartData(
           '단백질',
@@ -209,7 +216,6 @@ class ResultScreen extends StatelessWidget {
       DoughnutChartData('지방', 65 / (130 + 65 + 65), Color(0x1DC09A)),
     ];
     //추천 메뉴
-
 
     Widget Graph() {
       return Container(
@@ -243,9 +249,10 @@ class ResultScreen extends StatelessWidget {
                 pointColorMapper: (DoughnutChartData data, _) => data.color,
                 xValueMapper: (DoughnutChartData data, _) => data.x,
                 yValueMapper: (DoughnutChartData data, _) => data.y,
-                dataLabelMapper: (DoughnutChartData data,_)=>data.x,
-                dataLabelSettings: DataLabelSettings(isVisible: true,
-                labelIntersectAction: LabelIntersectAction.shift),
+                dataLabelMapper: (DoughnutChartData data, _) => data.x,
+                dataLabelSettings: DataLabelSettings(
+                    isVisible: true,
+                    labelIntersectAction: LabelIntersectAction.shift),
                 radius: '100%'
                 // cornerStyle: CornerStyle.bothCurve
                 )
@@ -263,8 +270,9 @@ class ResultScreen extends StatelessWidget {
                 pointColorMapper: (DoughnutChartData data, _) => data.color,
                 xValueMapper: (DoughnutChartData data, _) => data.x,
                 yValueMapper: (DoughnutChartData data, _) => data.y,
-                dataLabelMapper: (DoughnutChartData data,_)=>data.x,
-                dataLabelSettings: DataLabelSettings(isVisible: true,
+                dataLabelMapper: (DoughnutChartData data, _) => data.x,
+                dataLabelSettings: DataLabelSettings(
+                    isVisible: true,
                     labelIntersectAction: LabelIntersectAction.shift),
                 radius: '100%'
                 // cornerStyle: CornerStyle.bothCurve
@@ -289,15 +297,15 @@ class ResultScreen extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     //child: (_image!='fail')?Expanded(child:Image.network(_result![0])):
-                    child: (_image != null) && (_result![0][0]!= '불고기')
+                    child: (_image != null) && (_result![0][0] != '불고기')
                         ? Expanded(
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: Container(
-                                width: 200,
-                                height: 100,
-                                child: Image.file(File(_image!.path!),
-                                    fit: BoxFit.fill),
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Container(
+                              width: 200,
+                              height: 100,
+                              child: Image.file(File(_image!.path!),
+                                  fit: BoxFit.fill),
                             ),
                           ))
                         : Expanded(
@@ -315,7 +323,8 @@ class ResultScreen extends StatelessWidget {
                     flex: 2,
                     child: Column(
                       children: <Widget>[
-                        for (int i=0;i<_result!.length;i++) Text(_result![i][0])
+                        for (int i = 0; i < _result!.length; i++)
+                          Text(_result![i][0])
                       ],
                     ))
               ],
@@ -350,22 +359,22 @@ class ResultScreen extends StatelessWidget {
                 children: <Widget>[
                   SizedBox(
                       child: FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: Row(
-                          children: <Widget>[
-                            Column(children: <Widget>[
-                              Text("오늘 섭취 영양소",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                              CircleGraph(),
-                            ]),
-                            Column(children: <Widget>[
-                              Text("권장 섭취 영양소",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                              CircleGraph2()
+                    fit: BoxFit.fitWidth,
+                    child: Row(
+                      children: <Widget>[
+                        Column(children: <Widget>[
+                          Text("오늘 섭취 영양소",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
+                          CircleGraph(),
+                        ]),
+                        Column(children: <Widget>[
+                          Text("권장 섭취 영양소",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
+                          CircleGraph2()
                         ])
                       ],
                     ),
@@ -377,7 +386,7 @@ class ResultScreen extends StatelessWidget {
     }
 
     return //this._image != null ?
-    Scaffold(
+        Scaffold(
             backgroundColor: Color(0xFFF4F6F9),
             appBar: AppBar(
               //AppBar 설정(UI 적용 완료)
@@ -426,7 +435,8 @@ class ResultScreen extends StatelessWidget {
                   Container1(),
                   Container2(),
                   Container(
-                      margin: EdgeInsets.only(left: 20, top: 15, bottom: 5, right: 20),
+                      margin: EdgeInsets.only(
+                          left: 20, top: 15, bottom: 5, right: 20),
                       child: Row(
                         children: [
                           Icon(Icons.room_service_outlined),
@@ -436,15 +446,14 @@ class ResultScreen extends StatelessWidget {
                           Text(
                             "음식 메뉴 추천",
                             style: TextStyle(
-                              // fontWeight: FontWeight.bold,
+                                // fontWeight: FontWeight.bold,
                                 fontSize: 17),
                           ),
                         ],
                       )),
-                  Center(child:JsonListView())
+                  Center(child: JsonListView())
                 ],
               ),
-            )
-          );
+            ));
   }
 }

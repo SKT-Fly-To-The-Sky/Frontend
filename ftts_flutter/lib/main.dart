@@ -14,7 +14,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => supplementProvider()),
         ChangeNotifierProvider(create: (context) => dateProvider()),
         ChangeNotifierProvider(create: (context) => graphProvider()),
-        // ChangeNotifierProvider(create: (context) => timeDivProvider())
+        ChangeNotifierProvider(create: (context) => timeDivProvider())
       ], child: MyApp())));
 }
 

@@ -12,10 +12,10 @@ class ConnectServer {
 
   String data = "";
   List<String> foodName = [];
-  List<double> foodSize=[];
+  List<double> foodSize = [];
 
   Future<List<dynamic>?> uploading(XFile file, String selectDay) async {
-    List<dynamic> foodCls=[];
+    List<dynamic> foodCls = [];
     //데이터 변환
     FormData formData = FormData.fromMap({
       'file': await MultipartFile.fromFile(
@@ -36,10 +36,15 @@ class ConnectServer {
     dio.options.connectTimeout = 100000;
     dio.options.receiveTimeout = 100000;
     try {
-      var sendImage = await dio.post('${Url}dodo/intakes/images', queryParameters: {'time_div': 'morning', 'date': selectDay}, data: formData);
+      var sendImage = await dio.post('${Url}dodo/intakes/images',
+          queryParameters: {'time_div': 'morning', 'date': selectDay},
+          data: formData);
       if (sendImage.data['message'] == 'image data saved successfully') {
-
-        var classficationResult = await dio.get('${Url}classification', queryParameters: {'userid': 'dodo', 'time_div': 'morning', 'date': selectDay
+        var classficationResult = await dio.get('${Url}classification',
+            queryParameters: {
+              'userid': 'dodo',
+              'time_div': 'morning',
+              'date': selectDay
             });
         print("--------------------------------------------------");
         print(classficationResult.data.toString());
@@ -47,9 +52,11 @@ class ConnectServer {
 
         if (classficationResult.statusCode == 200) {
           //값
-          for (int i = 0; i < int.parse(classficationResult.data['object_num'].toString()); i++) {
-            if(classficationResult.data['object'][i]['name'].toString()!=null) {
-
+          for (int i = 0;
+              i < int.parse(classficationResult.data['object_num'].toString());
+              i++) {
+            if (classficationResult.data['object'][i]['name'].toString() !=
+                null) {
               print("for문===========================");
               print(classficationResult.data['object'][i]['name'].toString());
               print("예외처리 안되는 중");
@@ -63,39 +70,59 @@ class ConnectServer {
 
             //영양소 값 합산
           }
-          if(foodCls==null){
-            foodCls.add(['불고기',1.0]);
+          if (foodCls == null) {
+            foodCls.add(['불고기', 1.0]);
           }
         }
       }
       return foodCls;
     } catch (e) {
-      return [['불고기',1.0]];
+      return [
+        ['불고기', 1.0]
+      ];
     }
   }
 
-  Future<Map<String, dynamic>> foodNutinfo(List<dynamic> foodCls, String selectDay) async {
+  Future<Map<String, dynamic>> foodNutinfo(
+      List<dynamic> foodCls, String selectDay) async {
     print(foodCls);
     print("foodCls testing----------------------------");
     print(foodCls[0][0]);
     try {
       for (int i = 0; i < foodCls.length; i++) {
-        var foodsInfo = await dio.get('${Url}foods/info', queryParameters: {"food_name": foodCls[i][0]});
+        var foodsInfo = await dio.get('${Url}foods/info',
+            queryParameters: {"food_name": foodCls[i][0]});
 
-        nut_info['kcal'] = kcal + (double.parse(foodsInfo.data["kcal"].toString()))*foodCls[i][1];
-        nut_info['protein'] = protein + (double.parse(foodsInfo.data['protein'].toString())*foodCls[i][1]);
-        nut_info['fat'] = fat + (double.parse(foodsInfo.data['fat'].toString())*foodCls[i][1]);
-        nut_info['carbo'] = carbo + (double.parse(foodsInfo.data['carbo'].toString())*foodCls[i][1]);
-        nut_info['sugar'] = sugar + (double.parse(foodsInfo.data['sugar'].toString())*foodCls[i][1]);
-        nut_info['chole'] = chole + (double.parse(foodsInfo.data['chole'].toString())*foodCls[i][1]);
-        nut_info['fiber'] = fiber + (double.parse(foodsInfo.data['fiber'].toString())*foodCls[i][1]);
-        nut_info['calcium'] = calcium + (double.parse(foodsInfo.data['calcium'].toString())*foodCls[i][1]);
-        nut_info['iron'] = iron + (double.parse(foodsInfo.data['iron'].toString())*foodCls[i][1]);
-        nut_info['magne'] = magne + (double.parse(foodsInfo.data['magne'].toString())*foodCls[i][1]);
-        nut_info['potass'] = potass + (double.parse(foodsInfo.data['potass'].toString())*foodCls[i][1]);
-        nut_info['sodium'] = sodium + (double.parse(foodsInfo.data['sodium'].toString())*foodCls[i][1]);
-        nut_info['zinc'] = zinc + (double.parse(foodsInfo.data['zinc'].toString())*foodCls[i][1]);
-        nut_info['copper'] = copper + (double.parse(foodsInfo.data['copper'].toString())*foodCls[i][1]);
+        nut_info['kcal'] = kcal +
+            (double.parse(foodsInfo.data["kcal"].toString())) * foodCls[i][1];
+        nut_info['protein'] = protein +
+            (double.parse(foodsInfo.data['protein'].toString()) *
+                foodCls[i][1]);
+        nut_info['fat'] = fat +
+            (double.parse(foodsInfo.data['fat'].toString()) * foodCls[i][1]);
+        nut_info['carbo'] = carbo +
+            (double.parse(foodsInfo.data['carbo'].toString()) * foodCls[i][1]);
+        nut_info['sugar'] = sugar +
+            (double.parse(foodsInfo.data['sugar'].toString()) * foodCls[i][1]);
+        nut_info['chole'] = chole +
+            (double.parse(foodsInfo.data['chole'].toString()) * foodCls[i][1]);
+        nut_info['fiber'] = fiber +
+            (double.parse(foodsInfo.data['fiber'].toString()) * foodCls[i][1]);
+        nut_info['calcium'] = calcium +
+            (double.parse(foodsInfo.data['calcium'].toString()) *
+                foodCls[i][1]);
+        nut_info['iron'] = iron +
+            (double.parse(foodsInfo.data['iron'].toString()) * foodCls[i][1]);
+        nut_info['magne'] = magne +
+            (double.parse(foodsInfo.data['magne'].toString()) * foodCls[i][1]);
+        nut_info['potass'] = potass +
+            (double.parse(foodsInfo.data['potass'].toString()) * foodCls[i][1]);
+        nut_info['sodium'] = sodium +
+            (double.parse(foodsInfo.data['sodium'].toString()) * foodCls[i][1]);
+        nut_info['zinc'] = zinc +
+            (double.parse(foodsInfo.data['zinc'].toString()) * foodCls[i][1]);
+        nut_info['copper'] = copper +
+            (double.parse(foodsInfo.data['copper'].toString()) * foodCls[i][1]);
       }
 
       print("nut_info");
@@ -109,7 +136,10 @@ class ConnectServer {
       post_info.addAll(nut_info);
 
       print(post_info);
-      dio.post('${Url}dodo/intakes/nutrients', options: Options(headers: {HttpHeaders.contentTypeHeader: "application/json"}), data: jsonEncode(post_info));
+      dio.post('${Url}dodo/intakes/nutrients',
+          options: Options(
+              headers: {HttpHeaders.contentTypeHeader: "application/json"}),
+          data: jsonEncode(post_info));
       return nut_info;
     } catch (e) {
       return nut_info;
@@ -144,7 +174,6 @@ class ConnectServer {
       data = response.data['object'][0]['name'].toString();
       print("supplement testing");
       print(data);
-
     } catch (e) {
       data = '비타민D';
     }
@@ -191,7 +220,8 @@ class ConnectServer {
     dio.options.receiveTimeout = 10000;
 
     try {
-      var supinfo = await dio.get('${Url}supplements/info', queryParameters: {"sup_name": name});
+      var supinfo = await dio
+          .get('${Url}supplements/info', queryParameters: {"sup_name": name});
       Map<String, dynamic> supnut_info;
       supnut_info = {
         "vitA": double.parse(supinfo.data['vitA'].toString()),
@@ -236,7 +266,6 @@ class ConnectServer {
     }
   }
 
-
   Future<Map<String, dynamic>> getOneDayInfo(String day) async {
     print('Day fppd info');
 
@@ -253,11 +282,13 @@ class ConnectServer {
     dio.options.receiveTimeout = 10000;
 
     try {
-      var supinfo = await dio.get('http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/day',queryParameters: {"date": day});
+      var supinfo = await dio.get(
+          'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/day',
+          queryParameters: {"date": day});
       Map<String, dynamic> _onedayInfo;
       _onedayInfo = {
-        "userid":supinfo.data['userid'].toString(),
-        "date":supinfo.data['date'].toString(),
+        "userid": supinfo.data['userid'].toString(),
+        "date": supinfo.data['date'].toString(),
         "kcal": double.parse(supinfo.data['kcal'].toString()),
         "protein": double.parse(supinfo.data['protein'].toString()),
         "fat": double.parse(supinfo.data['fat'].toString()),
@@ -267,10 +298,10 @@ class ConnectServer {
         "fiber": double.parse(supinfo.data['fiber'].toString()),
         "calcium": double.parse(supinfo.data['calcium'].toString()),
         "magne": double.parse(supinfo.data['magne'].toString()),
-        "iron":double.parse(supinfo.data['iron'].toString()),
+        "iron": double.parse(supinfo.data['iron'].toString()),
         "potass": double.parse(supinfo.data['potass'].toString()),
         "sodium": double.parse(supinfo.data['sodium'].toString()),
-        "zinc":double.parse(supinfo.data['zinc'].toString()),
+        "zinc": double.parse(supinfo.data['zinc'].toString()),
         "copper": double.parse(supinfo.data['copper'].toString()),
       };
       print("_onedayInfo data: " + _onedayInfo['kcal'].toString());
@@ -279,8 +310,8 @@ class ConnectServer {
       print("catch");
       Map<String, dynamic> _onedayInfo;
       _onedayInfo = {
-        "userid":"dodo",
-        "date":day,
+        "userid": "dodo",
+        "date": day,
         "kcal": 0.0,
         "protein": 0.0,
         "fat": 0.0,
@@ -290,10 +321,10 @@ class ConnectServer {
         "fiber": 0.0,
         "calcium": 0.0,
         "magne": 0.0,
-        "iron":0.0,
+        "iron": 0.0,
         "potass": 0.0,
         "sodium": 0.0,
-        "zinc":0.0,
+        "zinc": 0.0,
         "copper": 0.0,
       };
       print("_onedayInfo data: " + _onedayInfo['kcal'].toString());
@@ -302,20 +333,33 @@ class ConnectServer {
     }
   }
 
-  Future<List<dynamic>> foodRecommand(String day) async{
-    var foodrecommand=[];
+  Future<List<dynamic>> foodRecommand(String day) async {
+    var foodrecommand = [];
 
-    try{
-      var recommanddata= await dio.get('${Url}dodo/foods/recommand',queryParameters: {'time_div':day});
-      for(int i=0;i<3;i++){
-        foodrecommand.add([recommanddata.data["name"].toString(),recommanddata.data["image"].toString()]);
+    try {
+      var recommanddata = await dio.get('${Url}dodo/foods/recommand',
+          queryParameters: {'time_div': day});
+      for (int i = 0; i < 3; i++) {
+        foodrecommand.add([
+          recommanddata.data["name"].toString(),
+          recommanddata.data["image"].toString()
+        ]);
       }
       return foodrecommand;
-    }catch(e){
+    } catch (e) {
       return [
-        ["라면","https://dl.dropbox.com/s/kdbdhuo47cdfhi7/%EB%9D%BC%EB%A9%B4.jpeg?dl=0"],
-        ['된장찌게','https://dl.dropbox.com/s/pl7kcss1101ujmx/%EB%90%9C%EC%9E%A5%EC%B0%8C%EA%B0%9C.jpeg?dl=0'],
-        ['토스트',"https://dl.dropbox.com/s/17q0vm86y4njnjc/%ED%86%A0%EC%8A%A4%ED%8A%B8.jpeg?dl=0"]
+        [
+          "라면",
+          "https://dl.dropbox.com/s/kdbdhuo47cdfhi7/%EB%9D%BC%EB%A9%B4.jpeg?dl=0"
+        ],
+        [
+          '된장찌게',
+          'https://dl.dropbox.com/s/pl7kcss1101ujmx/%EB%90%9C%EC%9E%A5%EC%B0%8C%EA%B0%9C.jpeg?dl=0'
+        ],
+        [
+          '토스트',
+          "https://dl.dropbox.com/s/17q0vm86y4njnjc/%ED%86%A0%EC%8A%A4%ED%8A%B8.jpeg?dl=0"
+        ]
       ];
     }
   }
