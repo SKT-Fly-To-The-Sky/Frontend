@@ -89,6 +89,15 @@ flutter:
     - assets/adot_loading.gif
     - assets/firegogi.jpg
     - assets/adot_splash.jpg
+    - assets/diet_day1_morning.jpg
+    - assets/diet_day1_lunch.jpg
+    - assets/diet_day1_dinner.jpg
+    - assets/diet_day2_morning.jpg
+    - assets/diet_day2_lunch.jpg
+    - assets/diet_day2_dinner.jpg
+    - assets/diet_day3_morning.jpg
+    - assets/diet_day3_lunch.jpg
+    - assets/diet_day3_dinner.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
