@@ -125,7 +125,7 @@ class _ImageUploaderState extends State<ImageUploader> {
         Navigator.push(context, MaterialPageRoute(
                 builder: (context) => ResultScreen(_image!, result!, nut!)));
         Future<bool> _getFutureBool() {
-          return Future.delayed(Duration(milliseconds: 10000)) .then((onValue) => true);
+          return Future.delayed(Duration(milliseconds: 100000)) .then((onValue) => true);
         }
         _getFutureBool();
         //영양소 받아오기

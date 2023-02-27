@@ -186,9 +186,7 @@ class ConnectServer {
         responseHeader: false,
         request: false,
         requestBody: false));
-    //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
-    dio.options.connectTimeout = 10000;
-    dio.options.receiveTimeout = 10000;
+
 
     try {
       var supinfo = await dio.get('${Url}supplements/info', queryParameters: {"sup_name": name});
@@ -249,8 +247,8 @@ class ConnectServer {
         request: false,
         requestBody: false));
     //서버 연결 timeout 설정, connect, receive가 각각 5초안에 연결되지 않으면 fail(총 10초 소요)
-    dio.options.connectTimeout = 10000;
-    dio.options.receiveTimeout = 10000;
+    dio.options.connectTimeout = 100000;
+    dio.options.receiveTimeout = 100000;
 
     try {
       var supinfo = await dio.get('http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/day',queryParameters: {"date": day});
