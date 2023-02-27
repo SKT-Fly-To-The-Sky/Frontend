@@ -153,24 +153,11 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Container(
-                      //   height: 3,
-                      // ),
                       Text(
                         foodTimeDivName[i],
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),
-                      // Text(
-                      //   _timeDivInfo![foodTimeDiv[i][0]] != null
-                      //       ? (_timeDivInfo![foodTimeDiv[i][0]] == 0)
-                      //           ? "-"
-                      //           : "${_timeDivInfo![foodTimeDiv[i][0]]}kcal"
-                      //       : "-",
-                      //   style: TextStyle(
-                      //     color: Colors.black,
-                      //   ),
-                      // ),
                     ],
                   ),
               ],
@@ -184,7 +171,6 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
                 (date == '2023-02-28')
                     ? ImageUploader("dinner", date!)
                     : StaticUploader(date!, 2),
-
                 // ImageUploader("morning", date!),
                 // ImageUploader("lunch", date!),
                 // ImageUploader("dinner", date!),

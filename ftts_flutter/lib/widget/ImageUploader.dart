@@ -59,45 +59,55 @@ class _ImageUploaderState extends State<ImageUploader>
     });
     imgUrl =
         'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${widget.imgDate}';
-    foodNamesUrl =
-        'http://jeongsuri.iptime.org:10019/classification?userid=dodo&time_div=${widget.timeDiv}&date=${widget.imgDate}';
-
     try {
       imgresponse = await Dio()
           .get(imgUrl!, options: Options(responseType: ResponseType.bytes));
-      foodresponse = await Dio().get(foodNamesUrl!);
 
-      if (foodresponse!.data['object_num'] > 0) {
-        _result = [];
-        for (Map m in foodresponse!.data['object']) {
-          _result!.add(m['name']);
-        }
-        _result = _result!.toSet().toList();
-        print("_result --------");
-        print(_result);
-      }
       print("response 이미지 불러오기 성공");
     } catch (e) {
-      imgresponse == null;
+      imgresponse = null;
       print("response 이미지 불러오기 실패");
       print(e);
     }
+  }
+
+  Future<void> _getfoodNames(String selectDay, String time) async {
+    List<String> Result = [];
+
+    var response = await Dio().get(
+        'http://jeongsuri.iptime.org:10019/dodo/intakes/foods/names',
+        queryParameters: {"time_div": time, "date": selectDay});
+    if (response.statusCode == 200) {
+      for (int i = 0; i < response.data['object_num']; i++) {
+        print(response);
+        Result.add(response.data['object'][i]);
+      }
+      _result = Result;
+      print(_result);
+      // return _result;
+    }
+    // return ["불고기"];
   }
 
   // 이미지 업로더 위젯
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    var timedivprovider = context.watch<timeDivProvider>().providerTimediv;
+    // Provider.of<timeDivProvider>(context, listen: false).providerTimediv;
+    var dateprovider = DateFormat('yyyy-MM-dd')
+        .format(context.watch<dateProvider>().providerDate);
     if (serverConnect!) {
       _getTimeDivImage();
+      _getfoodNames(dateprovider, timedivprovider);
     }
-    // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
+
     Future getImage(ImageSource imageSource) async {
-      // Timeline.startSync('interesting function');
       _image = await picker.pickImage(
-          source: imageSource, maxHeight: 448, maxWidth: 448, imageQuality: 100
-          //이미지 resize 부분, height, width 설정, Quality 설정
-          );
+          source: imageSource,
+          maxHeight: 448,
+          maxWidth: 448,
+          imageQuality: 100);
       print("_image");
       print(_image);
 
@@ -137,15 +147,9 @@ class _ImageUploaderState extends State<ImageUploader>
               );
             });
 
-        //List<String>? result;
-        List<dynamic>? result;
+        List<dynamic>? result, foodNames;
         Map<String, dynamic>? nut;
-        //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 'fail'를 반환한다.
-        //음식 이름 받아오기
-        var date =
-            Provider.of<dateProvider>(context, listen: false).providerDate;
-        final DateFormat formatter = DateFormat('yyyy-MM-dd');
-        String onlydate = formatter.format(date);
+        String onlydate = '2023-02-28';
 
         // classification 결과 반환 - 음식 메뉴 이름
         result =
@@ -153,6 +157,7 @@ class _ImageUploaderState extends State<ImageUploader>
         // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 -
         nut = await connectServer.foodNutinfo(
             result!, onlydate!, widget.timeDiv!);
+
         Navigator.pop(context);
         Navigator.push(
             context,
@@ -349,7 +354,7 @@ class _ImageUploaderState extends State<ImageUploader>
                         alignment: WrapAlignment.start,
                         children: [
                           for (int i = 0; i < _result!.length; i++)
-                            FoodMenu(_result![i][0])
+                            FoodMenu(_result![i])
                         ],
                       )
                     : Container())
