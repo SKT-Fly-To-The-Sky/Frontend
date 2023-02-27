@@ -165,7 +165,7 @@ class ConnectServer {
 
       print("post_info");
       print(post_info);
-      // print("post_info error");
+      print('${Url}dodo/intakes/nutrients');
       dio.post('${Url}dodo/intakes/nutrients',
           options: Options(headers: {'Content-Type': 'application/json'}),
           data: json.encode(post_info));
@@ -293,7 +293,7 @@ class ConnectServer {
   }
 
   Future<Map<String, dynamic>> getOneDayInfo(String day) async {
-    print('Day fppd info');
+    print('Day food info');
 
     //log 설정
     dio.interceptors.add(LogInterceptor(

@@ -25,11 +25,11 @@ class ImageUploader extends StatefulWidget {
   State<ImageUploader> createState() => _ImageUploaderState();
 }
 
-class _ImageUploaderState extends State<ImageUploader> {
+class _ImageUploaderState extends State<ImageUploader>
+    with AutomaticKeepAliveClientMixin {
   XFile? _image;
   final picker = ImagePicker();
   final connectServer = ConnectServer();
-  List<dynamic>? _clsResult; // 예측 결과 음식 메뉴 이름 리스트
   List<dynamic>? _result = [
     ["불고기", 1.0]
   ];
@@ -38,9 +38,12 @@ class _ImageUploaderState extends State<ImageUploader> {
   Map<String, dynamic>? _nut = nut_info;
   late Future<Image> timeDivImage;
   File? imageFile;
-  Response? imgresponse, timedivresponse;
-  String? imgUrl, timedivUrl;
-  Map<String, dynamic>? timedivInfo;
+  Response? imgresponse, foodresponse;
+  String? imgUrl;
+  String? foodNamesUrl;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -51,38 +54,32 @@ class _ImageUploaderState extends State<ImageUploader> {
   Future<void> _getTimeDivImage() async {
     imgUrl =
         'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${widget.imgDate}';
-    timedivUrl =
-        'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/time-div?time_div=${widget.timeDiv}&date=${widget.imgDate}';
+    // foodNamesUrl =
+    //     'http://jeongsuri.iptime.org:10019/classification?userid=dodo&time_div=${widget.timeDiv}&date=${widget.imgDate}';
 
     try {
       imgresponse = await Dio()
           .get(imgUrl!, options: Options(responseType: ResponseType.bytes));
-      timedivresponse = await Dio().get(timedivUrl!);
-      print("timedivresponse");
-      print(timedivresponse);
-      timedivInfo = {
-        'kcal': double.parse(timedivresponse!.data['kcal'].toString()),
-        'carbo': double.parse(timedivresponse!.data['carbo'].toString()),
-        'protein': double.parse(timedivresponse!.data['protein'].toString()),
-        'fat': double.parse(timedivresponse!.data['fat'].toString())
-      };
+
+      print(imgUrl);
+
       // foodresponse = await Dio().get(foodNamesUrl!);
-      // print(imgUrl);
       // print("foodresponse");
       // print(foodresponse!.data['object']);
       // print("FoodNamesUrl");
       // print(foodNamesUrl);
       // if (foodresponse!.data['object_num'] > 0) {
-      //   _clsResult = [];
+      //   _result = [];
       //   for (Map m in foodresponse!.data['object']) {
-      //     _clsResult!.add(m['name']);
+      //     _result!.add(m['name']);
       //   }
-      //   _clsResult = _clsResult!.toSet().toList();
-      //   print("_clsResult --------");
-      //   print(_clsResult);
-      print("response 이미지 불러오기 성공");
+      //   _result = _result!.toSet().toList();
+      //   print("_result --------");
+      //   print(_result);
+      // }
+      // print("response 이미지 불러오기 성공");
     } catch (e) {
-      // imgresponse == null;
+      imgresponse == null;
       print("response 이미지 불러오기 실패");
       print(e);
     }
@@ -93,7 +90,6 @@ class _ImageUploaderState extends State<ImageUploader> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     _getTimeDivImage();
-
     // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
     Future getImage(ImageSource imageSource) async {
       // Timeline.startSync('interesting function');
@@ -105,9 +101,7 @@ class _ImageUploaderState extends State<ImageUploader> {
       print(_image);
 
       setState(() {
-        if (_image != null) {
-          image = File(_image!.path);
-        }
+        image = File(_image!.path);
       });
 
       if (_image != null) {
@@ -142,28 +136,26 @@ class _ImageUploaderState extends State<ImageUploader> {
               );
             });
 
-        List<dynamic>? result; //classfication 결과 받아오기
+        //List<String>? result;
+        List<dynamic>? result;
         Map<String, dynamic>? nut;
-
         // var date =
         //     Provider.of<dateProvider>(context, listen: false).providerDate;
         // final DateFormat formatter = DateFormat('yyyy-MM-dd');
         // String onlydate = formatter.format(date);
         String onlydate = '2023-02-28';
 
-        result = await connectServer.uploading(_image!, onlydate!,
-            widget.timeDiv); // classification 결과 반환 - 음식 메뉴 이름 list
-
-        nut = await connectServer.foodNutinfo(result!, onlydate!,
-            widget.timeDiv); // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 - map
-        print("nut-----");
-        print(nut);
+        // classification 결과 반환 - 음식 메뉴 이름 list
+        result =
+            await connectServer.uploading(_image!, onlydate!, widget.timeDiv);
+        // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 - map
+        nut =
+            await connectServer.foodNutinfo(result!, onlydate!, widget.timeDiv);
         Navigator.pop(context);
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ResultScreen(_image!, result, nut!)));
-
+                builder: (context) => ResultScreen(_image!, result!, nut!)));
         Future<bool> _getFutureBool() {
           return Future.delayed(Duration(milliseconds: 100000))
               .then((onValue) => true);
@@ -172,9 +164,8 @@ class _ImageUploaderState extends State<ImageUploader> {
         _getFutureBool();
         //영양소 받아오기
         setState(() {
-          _result = result;
-          _nut = nut;
-          //ResultScreen에 이미지, classfication 결과, 영양소 정보 전달
+          _result = result; // classfication 결과,
+          _nut = nut; //영양소 정보 전달
         });
       } else {
         print("_image is null");
@@ -228,13 +219,13 @@ class _ImageUploaderState extends State<ImageUploader> {
                 width: 210,
                 height: 140,
                 child: image == null
-                    ? Container(
-                        child: Image.network(
+                    ? Image.network(
                         imgUrl!,
                         fit: BoxFit.fill,
-                      ))
+                      )
                     : Image.file(File(image!.path))),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -249,7 +240,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                           backgroundColor: Color(0xffffb3ba),
                         )),
                     Text(
-                      '${_nut!['carbo'].toInt()}',
+                      '${_nut!['carbo'].toInt()} g',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -270,7 +261,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                           backgroundColor: Color(0xffffffba),
                         )),
                     Text(
-                      '${_nut!['protein'].toInt()}',
+                      '${_nut!['protein'].toInt()} g',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -291,7 +282,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                           backgroundColor: Color(0xffbae1ff),
                         )),
                     Text(
-                      '${_nut!['fat'].toInt()}',
+                      '${_nut!['fat'].toInt()} g',
                       style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16),
                     )
                   ],
@@ -329,11 +320,11 @@ class _ImageUploaderState extends State<ImageUploader> {
                         onPressed: () {
                           print("nut info");
                           print(_nut);
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             ResultScreen(_image!, _result!, _nut!)));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ResultScreen(_image!, _result!, _nut!)));
                         },
                         child: Text(
                           "상세 보기",
@@ -343,13 +334,13 @@ class _ImageUploaderState extends State<ImageUploader> {
             ),
             Container(
                 margin: EdgeInsets.only(left: 0.0, right: 3.0, bottom: 5.0),
-                child: (_clsResult != null)
+                child: (_result != null)
                     ? Wrap(
                         direction: Axis.horizontal,
                         alignment: WrapAlignment.start,
                         children: [
-                          for (int i = 0; i < _clsResult!.length; i++)
-                            FoodMenu(_clsResult![i])
+                          for (int i = 0; i < _result!.length; i++)
+                            FoodMenu(_result![i][0])
                         ],
                       )
                     : Container())
