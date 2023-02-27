@@ -106,7 +106,7 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
                 ],
                 views: [
                   DailyGraph(),
-                  DetailGraph(),
+                  date == '2023-02-28' ? DetailGraph() : StaticDetailGraph(),
                 ],
               )),
           Container(
@@ -131,7 +131,7 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
             ),
-            height: 380,
+            height: 320,
             child: ContainedTabBarView(
               onChange: (index) {
                 setState(() {});
@@ -163,9 +163,13 @@ class _DailyFoodWidgetState extends State<DailyFoodWidget> {
                   ),
               ],
               views: [
-                StaticUploader(date!, 'morning'),
-                ImageUploader("lunch", date!),
-                ImageUploader("dinner", date!),
+                StaticUploader(date!, 0),
+                (date == '2023-02-28')
+                    ? ImageUploader("lunch", date!)
+                    : StaticUploader(date!, 1),
+                (date == '2023-02-28')
+                    ? ImageUploader("dinner", date!)
+                    : StaticUploader(date!, 2),
                 ImageUploader("snack", date!),
               ],
             ),

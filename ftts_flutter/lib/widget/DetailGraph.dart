@@ -6,7 +6,6 @@ import '../model/ConnectServer.dart';
 import 'package:provider/provider.dart';
 import '../provider/dateProvider.dart';
 
-
 List<Color> setColor(double a) {
   if (a >= 100) {
     return [Colors.deepOrange, Colors.red];
@@ -36,57 +35,65 @@ class _DetailGraphState extends State<DetailGraph> {
 
     _onedayInfo = graphprovider.oneday_info;
 
-    List<dynamic> recommedInfo=[
-      ['칼로리','kcal',2600],
-      ['탄수화물','carbo',130],
-      ['단백질','protein',65],
-      ['지방','fat',65],
-      ['당류','sugar',100],
-      ['콜레스트롤','chole',300],
-      ['식이섬유','fiber',30],
-      ['칼슘','calcium',2500],
-      ['철','iron', 40],
-      ['마그네슘','magne',360],
-      ['칼륨','potass', 3500],
-      ['나트륨','sodium',2300],
-      ['아연','zinc', 35],
-      ['구리','copper',10000]
+    List<dynamic> recommedInfo = [
+      ['칼로리', 'kcal', 2600],
+      ['탄수화물', 'carbo', 130],
+      ['단백질', 'protein', 65],
+      ['지방', 'fat', 65],
+      ['당류', 'sugar', 100],
+      ['콜레스트롤', 'chole', 300],
+      ['식이섬유', 'fiber', 30],
+      ['칼슘', 'calcium', 2500],
+      ['철', 'iron', 40],
+      ['마그네슘', 'magne', 360],
+      ['칼륨', 'potass', 3500],
+      ['나트륨', 'sodium', 2300],
+      ['아연', 'zinc', 35],
+      ['구리', 'copper', 10000]
     ];
 
     List<VBarChartModel> barChartData = [];
     List<VBarChartModel> barChartData2 = [];
 
-    for (int i=0;i<7;i++){
-      var result=(_onedayInfo[recommedInfo[i][1]]/recommedInfo[i][2])*100;
-      if((result)>100){
-        result=100.0;
+    for (int i = 0; i < 7; i++) {
+      var result = (_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100;
+      if ((result) > 100) {
+        result = 100.0;
       }
 
       barChartData.add(VBarChartModel(
           index: i,
-          colors: setColor((_onedayInfo[recommedInfo[i][1]]/recommedInfo[i][2])*100),
+          colors: setColor(
+              (_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100),
           jumlah: result,
-          tooltip: ((_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100).ceil().toString() +"%",//+단위
-          label: recommedInfo[i][0]
-      ));
+          tooltip:
+              ((_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100)
+                      .ceil()
+                      .toString() +
+                  "%", //+단위
+          label: recommedInfo[i][0]));
     }
 
-    for (int i=7;i<recommedInfo.length;i++){
-      var result=(_onedayInfo[recommedInfo[i][1]]/recommedInfo[i][2])*100;
-      if((result)>100){
-        result=100.0;
+    for (int i = 7; i < recommedInfo.length; i++) {
+      var result = (_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100;
+      if ((result) > 100) {
+        result = 100.0;
       }
 
       barChartData2.add(VBarChartModel(
           index: i,
-          colors: setColor((_onedayInfo[recommedInfo[i][1]]/recommedInfo[i][2])*100),
+          colors: setColor(
+              (_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100),
           jumlah: result,
-          tooltip: ((_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100).ceil().toString() +"%",//+단위
-          label: recommedInfo[i][0]
-      ));
+          tooltip:
+              ((_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100)
+                      .ceil()
+                      .toString() +
+                  "%", //+단위
+          label: recommedInfo[i][0]));
     }
 
-    Widget Grape(){
+    Widget Grape() {
       return Container(
           width: screenWidth * 0.48,
           child: VerticalBarchart(
@@ -103,7 +110,7 @@ class _DetailGraphState extends State<DetailGraph> {
               showLegend: false));
     }
 
-    Widget Grape2(){
+    Widget Grape2() {
       return Container(
           width: screenWidth * 0.44,
           child: VerticalBarchart(
@@ -132,12 +139,145 @@ class _DetailGraphState extends State<DetailGraph> {
       color: Colors.white,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              Grape(),
-              Grape2(),
-            ],
-          ),
+        child: Row(
+          children: [
+            Grape(),
+            Grape2(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class StaticDetailGraph extends StatefulWidget {
+  const StaticDetailGraph({Key? key}) : super(key: key);
+
+  @override
+  State<StaticDetailGraph> createState() => _StaticDetailGraphState();
+}
+
+class _StaticDetailGraphState extends State<StaticDetailGraph> {
+  final List<String> nutName = [
+    'kcal',
+    'carbo',
+    'protein',
+    'fat',
+    'sugar',
+    'chole',
+    'fiber',
+    'calcium',
+    'iron',
+    'magne'
+  ];
+  final Map<String, String> nutKor = {
+    'kcal': '칼로리',
+    'carbo': '탄수화물',
+    'protein': '단백질',
+    'fat': '지방',
+    'sugar': '당류',
+    'chole': '콜레스테롤',
+    'fiber': '식이섬유',
+    'calcium': '칼슘',
+    'iron': '철',
+    'magne': '마그네슘'
+  };
+
+  List<Color> setColor(double a) {
+    if (a >= 100) {
+      return [Colors.deepOrange, Colors.red];
+    } else if (a > 60) {
+      return [Colors.green, Colors.teal];
+    } else {
+      return [Colors.limeAccent, Colors.yellow];
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    Map<String, double> nutPercent = {
+      'kcal': 52,
+      'carbo': 52,
+      'protein': 28,
+      'fat': 25,
+      'sugar': 25,
+      'chole': 25,
+      'fiber': 25,
+      'calcium': 25,
+      'iron': 25,
+      'magne': 25,
+    };
+
+    List<VBarChartModel> barChartData = [];
+    List<VBarChartModel> barChartData2 = [];
+
+    for (int i = 0; i < 5; i++) {
+      barChartData.add(VBarChartModel(
+          index: i,
+          colors: setColor(nutPercent[nutName[i]]!),
+          jumlah: (nutPercent[nutName[i]]! >= 100)
+              ? (100)
+              : (nutPercent[nutName[i]]!),
+          tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
+          label: nutKor[nutName[i]]));
+    }
+    for (int i = 5; i < nutName.length; i++) {
+      barChartData2.add(VBarChartModel(
+          index: i,
+          colors: setColor(nutPercent[nutName[i]]!),
+          jumlah: (nutPercent[nutName[i]]! >= 100)
+              ? (100)
+              : (nutPercent[nutName[i]]!),
+          tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
+          label: nutKor[nutName[i]]));
+    }
+
+    return Container(
+      width: screenWidth * 0.9,
+      margin: EdgeInsets.all(0),
+      color: Colors.white,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            Container(
+                width: screenWidth * 0.46,
+                child: VerticalBarchart(
+                    background: Colors.transparent,
+                    labelColor: Colors.black,
+                    labelSizeFactor: 0.48,
+                    tooltipColor: Colors.black,
+                    data: barChartData,
+                    showBackdrop: true,
+                    barStyle: BarStyle.DEFAULT,
+                    barSize: 12,
+                    maxX: 100,
+                    tooltipSize: 45,
+                    showLegend: false)),
+            Container(
+                width: screenWidth * 0.48,
+                child: VerticalBarchart(
+                  background: Colors.transparent,
+                  labelColor: Colors.black,
+                  labelSizeFactor: 0.50,
+                  tooltipColor: Colors.black,
+                  data: barChartData2,
+                  showBackdrop: true,
+                  barStyle: BarStyle.DEFAULT,
+                  barSize: 12,
+                  maxX: 100,
+                  showLegend: false,
+                  tooltipSize: 45,
+                  legend: [
+                    Vlegend(isSquare: false, color: Colors.green, text: "적정"),
+                    Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
+                    Vlegend(isSquare: false, color: Colors.yellow, text: "부족"),
+                  ],
+                )),
+          ],
+        ),
       ),
     );
   }
