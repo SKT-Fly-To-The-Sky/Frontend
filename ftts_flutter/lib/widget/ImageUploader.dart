@@ -133,14 +133,13 @@ class _ImageUploaderState extends State<ImageUploader> with AutomaticKeepAliveCl
         Map<String, dynamic>? nut;
         //classfication 결과 받아오기 -> 서버 연결 중 에러 발생시 'fail'를 반환한다.
         //음식 이름 받아오기
-        var date =
-            Provider.of<dateProvider>(context, listen: false).providerDate;
+        var date = Provider.of<dateProvider>(context, listen: false).providerDate;
         final DateFormat formatter = DateFormat('yyyy-MM-dd');
         String onlydate = formatter.format(date);
 
-        // classification 결과 반환 - 음식 메뉴 이름 list
+        // classification 결과 반환 - 음식 메뉴 이름
         result = await connectServer.uploading(_image!, onlydate!,widget.timeDiv!);
-        // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 - map
+        // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 -
         nut = await connectServer.foodNutinfo(result!, onlydate!,widget.timeDiv!);
         Navigator.pop(context);
         Navigator.push(

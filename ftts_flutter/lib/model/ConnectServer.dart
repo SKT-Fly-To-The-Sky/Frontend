@@ -46,26 +46,28 @@ class ConnectServer {
               'time_div': time,
               'date': selectDay
             });
-        print("--------------------------------------------------");
-        print(classficationResult.data.toString());
-        print(classficationResult.data['object']);
 
         if (classficationResult.statusCode == 200) {
           //값
-          for (int i = 0;
-              i < int.parse(classficationResult.data['object_num'].toString());
-              i++) {
-            if (classficationResult.data['object'][i]['name'].toString() !=
-                null) {
-              print("for문===========================");
-              print(classficationResult.data['object'][i]['name'].toString());
-              print("예외처리 안되는 중");
+          for (int i = 0; i < int.parse(classficationResult.data['object_num'].toString()); i++) {
+            if (classficationResult.data['object'][i]['name'].toString() != null) {
 
               foodCls?.add([
                 classficationResult.data['object'][i]['name'].toString(),
                 classficationResult.data['object'][i]['volumes']
               ]);
+              foodName.add(classficationResult.data['object'][i]['name'].toString());
+              print(foodName);
+
               print(foodCls);
+            }
+            try{
+              dio.post('${Url}dodo/intakes/foods/names',options: Options(headers: {'Content-Type':'application/json'}),
+                  queryParameters: {'time_div': time, 'date': selectDay},
+                  data: json.encode(foodName));
+
+            }catch(e){
+              print("이름 전달 실패");
             }
 
             //영양소 값 합산
@@ -131,7 +133,7 @@ class ConnectServer {
       var post_info={
         "time_div": time,
         "date": selectDay,
-        "time": "string",
+        "time": "",
         "protein": nut_info['protein'],
         "fat": nut_info['fat'],
         "carbo": nut_info['carbo'],
@@ -169,6 +171,19 @@ class ConnectServer {
     } catch (e) {
       return nut_info;
     }
+  }
+
+  Future<List<String>> foodNames(String selectDay,String time) async{
+    List<String> Result=[];
+
+    var response= await dio.get('${Url}dodo/intakes/foods/names',queryParameters: {"time_div":time, "date":selectDay});
+    if(response.statusCode==200){
+      for(int i=0;response.data['object_num'];i++){
+        Result.add(response.data['object'][i]);
+      }
+      return Result;
+    }
+    return ["불고기"];
   }
 
   //약 이미지 전달
