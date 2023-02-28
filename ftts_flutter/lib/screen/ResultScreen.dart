@@ -235,7 +235,7 @@ class ResultScreen extends StatelessWidget {
             background: Colors.transparent,
             data: bardata,
             barSize: 11,
-            labelSizeFactor: 0.24,
+            labelSizeFactor: 0.30,
             maxX: 100,
             tooltipSize: 45,
             showBackdrop: true,
@@ -251,8 +251,8 @@ class ResultScreen extends StatelessWidget {
 
     Widget CircleGraph() {
       return Container(
-          height: 175,
-          width: 175,
+          height: 150,
+          width: 150,
           child: SfCircularChart(series: <CircularSeries>[
             // Renders doughnut chart
             DoughnutSeries<DoughnutChartData, String>(
@@ -272,8 +272,8 @@ class ResultScreen extends StatelessWidget {
 
     Widget CircleGraph2() {
       return Container(
-          height: 175,
-          width: 175,
+          height: 150,
+          width: 150,
           child: SfCircularChart(series: <CircularSeries>[
             // Renders doughnut chart
             DoughnutSeries<DoughnutChartData, String>(

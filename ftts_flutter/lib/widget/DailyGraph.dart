@@ -89,12 +89,12 @@ class _DailyGraphState extends State<DailyGraph> {
           child: VerticalBarchart(
             background: Colors.transparent,
             labelColor: Colors.black,
-            labelSizeFactor: 0.45,
+            labelSizeFactor: 0.50,
             tooltipColor: Colors.black,
             data: barChartData,
             showBackdrop: true,
             barStyle: BarStyle.DEFAULT,
-            barSize: 12,
+            barSize: 11,
             maxX: 100,
             showLegend: true,
             legend: [
@@ -124,8 +124,8 @@ class _DailyGraphState extends State<DailyGraph> {
                 ),
               ),
               Container(
-                height: 150,
-                width: 150,
+                height: 130,
+                width: 130,
                 child: SfCircularChart(
                     centerY: '80',
                     margin: EdgeInsets.zero,
