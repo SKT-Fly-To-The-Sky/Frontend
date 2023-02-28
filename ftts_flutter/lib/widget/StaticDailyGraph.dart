@@ -59,7 +59,10 @@ class _StaticDailyGraphState extends State<StaticDailyGraph> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
+    try{
+
     double kcal = nutPercent[widget.graphDate][0];
+
     List<DoughnutChartData> doughnutChartData = [
       DoughnutChartData('섭취한 칼로리', (2600 - kcal), Color(0xFF3617CE)),
       DoughnutChartData('남은 칼로리', kcal, Color(0xFFe8e8e8)),
@@ -147,5 +150,36 @@ class _StaticDailyGraphState extends State<StaticDailyGraph> {
         ],
       ),
     );
+    }catch(e){
+      return Container(
+        width: screenWidth * 0.9,
+        margin: EdgeInsets.all(0),
+        color: Colors.white,
+        child: Row(
+          children: [
+            Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 20.0),
+                    ),
+                    Container(
+                      height: 150,
+                      width: 150,
+                    ),
+                  ],
+                )),
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                    width: screenWidth * 0.50,
+
+                    )),
+          ],
+        ),
+      );
+  }
   }
 }

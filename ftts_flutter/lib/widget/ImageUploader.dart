@@ -67,15 +67,13 @@ class _ImageUploaderState extends State<ImageUploader>
       imgresponse = await Dio()
           .get(imgUrl!, options: Options(responseType: ResponseType.bytes));
       timedivresp = await Dio().get(timeDivUrl!);
+      print("timedivresp kcal!");
       print(timedivresp!.data['kcal'].toInt());
+
       timedivNut[0] = timedivresp!.data['kcal'].toInt();
       timedivNut[1] = timedivresp!.data['carbo'].toInt();
       timedivNut[2] = timedivresp!.data['protein'].toInt();
       timedivNut[3] = timedivresp!.data['fat'].toInt();
-      // _nut['kcal'] = timedivNut[0];
-      // _nut['carbo'] = timedivNut[1];
-      // _nut['protein'] = timedivNut[2];
-      // _nut['fat'] = timedivNut[3];
     } catch (e) {
       imgresponse = null;
       print(e);
