@@ -158,13 +158,15 @@ Map<String, dynamic> chartData = {
 };
 
 class StaticDetailGraph extends StatefulWidget {
-  const StaticDetailGraph({Key? key}) : super(key: key);
+  String graphDate;
+  StaticDetailGraph(this.graphDate, {Key? key}) : super(key: key);
 
   @override
   State<StaticDetailGraph> createState() => _StaticDetailGraphState();
 }
 
 class _StaticDetailGraphState extends State<StaticDetailGraph> {
+
   final List<String> nutName = [
     'kcal',
     'carbo',
@@ -204,6 +206,7 @@ class _StaticDetailGraphState extends State<StaticDetailGraph> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
+
     Map<String, double> nutPercent = {
       'kcal': 62,
       'carbo': 170,
@@ -217,30 +220,52 @@ class _StaticDetailGraphState extends State<StaticDetailGraph> {
       'magne': 25,
     };
 
+
     List<VBarChartModel> barChartData = [];
     List<VBarChartModel> barChartData2 = [];
+    if(widget.graphDate=='2023-02-25'||widget.graphDate=='2023-02-26'||widget.graphDate=='2023-02-27'){
+      print(widget.graphDate);
+      print("testing!!!");
+      for (int i = 0; i < 5; i++) {
+        barChartData.add(VBarChartModel(
+            index: i,
+            colors: setColor(nutPercent[nutName[i]]!),
+            jumlah: (nutPercent[nutName[i]]! >= 100)
+                ? (100)
+                : (nutPercent[nutName[i]]!),
+            tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
+            label: nutKor[nutName[i]]));
+      }
 
-    for (int i = 0; i < 5; i++) {
-      barChartData.add(VBarChartModel(
-          index: i,
-          colors: setColor(nutPercent[nutName[i]]!),
-          jumlah: (nutPercent[nutName[i]]! >= 100)
-              ? (100)
-              : (nutPercent[nutName[i]]!),
-          tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
-          label: nutKor[nutName[i]]));
-    }
-    for (int i = 5; i < nutName.length; i++) {
-      barChartData2.add(VBarChartModel(
-          index: i,
-          colors: setColor(nutPercent[nutName[i]]!),
-          jumlah: (nutPercent[nutName[i]]! >= 100)
-              ? (100)
-              : (nutPercent[nutName[i]]!),
-          tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
-          label: nutKor[nutName[i]]));
-    }
+      for (int i = 5; i < nutName.length; i++) {
+        barChartData2.add(VBarChartModel(
+            index: i,
+            colors: setColor(nutPercent[nutName[i]]!),
+            jumlah: (nutPercent[nutName[i]]! >= 100)
+                ? (100)
+                : (nutPercent[nutName[i]]!),
+            tooltip: "${nutPercent[nutName[i]]!.toInt()}%",
+            label: nutKor[nutName[i]]));
+      }
+    }else {
+      for (int i = 0; i < 5; i++) {
+        barChartData.add(VBarChartModel(
+            index: i,
+            colors: [Colors.deepOrange, Colors.red],
+            jumlah: 0,
+            tooltip: "0%",
+            label: nutKor[nutName[i]]));
+      }
 
+      for (int i = 5; i < nutName.length; i++) {
+        barChartData2.add(VBarChartModel(
+            index: i,
+            colors: [Colors.deepOrange, Colors.red],
+            jumlah: 0,
+            tooltip: "0%",
+            label: nutKor[nutName[i]]));
+      }
+    }
     return Container(
       width: screenWidth * 0.9,
       margin: EdgeInsets.all(0),
