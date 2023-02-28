@@ -42,6 +42,7 @@ class _DailyGraphState extends State<DailyGraph> {
     Map<String, dynamic> _onedayInfo;
 
     _onedayInfo = graphprovider.oneday_info;
+
     print("데이터 확인 ---------------");
     print(_onedayInfo['kcal']);
     List<dynamic> recommedInfo = [
@@ -131,7 +132,7 @@ class _DailyGraphState extends State<DailyGraph> {
                     annotations: <CircularChartAnnotation>[
                       CircularChartAnnotation(
                           widget: Container(
-                        child: Text(
+                            child: Text(
                           ((recommedInfo[0][2] - (_onedayInfo['kcal'])).ceil())
                                   .toString() +
                               "kcal",

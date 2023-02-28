@@ -55,20 +55,38 @@ class _ImageUploaderState extends State<ImageUploader>
   }
 
   bool serverConnect = false;
+
   Future<void> _getTimeDivImage() async {
     setState(() {
       serverConnect = true;
     });
-    imgUrl =
-        'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${widget.imgDate}';
-    timeDivUrl =
-        'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/time-div?time_div=${widget.timeDiv}&date=${widget.imgDate}';
+    imgUrl = 'http://jeongsuri.iptime.org:10019/dodo/intakes/images?time_div=${widget.timeDiv}&date=${widget.imgDate}';
+    timeDivUrl = 'http://jeongsuri.iptime.org:10019/dodo/intakes/nutrients/time-div?time_div=${widget.timeDiv}&date=${widget.imgDate}';
     try {
-      imgresponse = await Dio()
-          .get(imgUrl!, options: Options(responseType: ResponseType.bytes));
+      imgresponse = await Dio().get(imgUrl!, options: Options(responseType: ResponseType.bytes));
       timedivresp = await Dio().get(timeDivUrl!);
+
       print("timedivresp kcal!");
-      print(timedivresp!.data['kcal'].toInt());
+      print(timedivresp!.data.toString());
+      var graphprovider = Provider.of<graphProvider>(context, listen: false);
+      Map<String,dynamic> oneday={
+        "date": widget.imgDate,
+        "kcal": timedivresp!.data['kcal'],
+        "protein": timedivresp!.data['protein'],
+        "fat": timedivresp!.data['fat'],
+        "carbo": timedivresp!.data['carbo'],
+        "sugar": timedivresp!.data['sugar'],
+        "chole": timedivresp!.data['chole'],
+        "fiber":timedivresp!.data['fiber'],
+        "calcium": timedivresp!.data['calcium'],
+        "iron":  timedivresp!.data['iron'],
+        "magne": timedivresp!.data['magne'],
+        "potass": timedivresp!.data['potass'],
+        "sodium": timedivresp!.data['sodium'],
+        "zinc": timedivresp!.data['zinc'],
+        "copper":timedivresp!.data['copper'],
+      };
+      graphprovider.changeOneDayInfo(oneday);
 
       timedivNut[0] = timedivresp!.data['kcal'].toInt();
       timedivNut[1] = timedivresp!.data['carbo'].toInt();
@@ -166,14 +184,10 @@ class _ImageUploaderState extends State<ImageUploader>
         String onlydate = '2023-02-28';
 
         // classification 결과 반환 - foodCls: [음식이름, volume]
-        result =
-            await connectServer.uploading(_image!, onlydate!, widget.timeDiv!);
+        result = await connectServer.uploading(_image!, onlydate!, widget.timeDiv!);
         // 음식 이미지 하나에 대한 영양 정보 합산 결과 반환 -
-        nut = await connectServer.foodNutinfo(
-            result!, onlydate!, widget.timeDiv!);
-        // print("nut");
-        // print(nut);
-        // _nut = nut;
+        nut = await connectServer.foodNutinfo(result!, onlydate!, widget.timeDiv!);
+
         Navigator.pop(context);
         Navigator.push(
             context,
@@ -348,13 +362,12 @@ class _ImageUploaderState extends State<ImageUploader>
                           primary: Color(0xFF3617CE),
                         ),
                         onPressed: () {
-                          print("nut info");
-                          print(_nut);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ResultScreen(_image!,
-                                      _result!, _nut!, widget.timeDiv)));
+                                  builder: (context) =>
+                                      ResultScreen(
+                                          _image, _result!, _nut!, widget.timeDiv!)));
                         },
                         child: Text(
                           "상세 보기",
