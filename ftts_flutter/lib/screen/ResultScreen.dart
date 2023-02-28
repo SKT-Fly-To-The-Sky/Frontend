@@ -183,17 +183,23 @@ class ResultScreen extends StatelessWidget {
       ['지방', 'fat', 65, 'mg']
     ];
 
+    double fiting(double num){
+      double result=0.0;
+      if (num>100){
+        result=100;
+      }else{
+        result=num;
+      }
+      return result;
+    }
+
     List<VBarChartModel> bardata = [];
     for (int i = 0; i < recommedInfo.length; i++) {
       bardata.add(VBarChartModel(
           index: i,
-          colors: setColor(
-              (_nutinfo![recommedInfo[i][1]] / recommedInfo[i][2]) * 100),
-          jumlah: (_nutinfo![recommedInfo[i][1]] / recommedInfo[i][2]) * 100,
-          tooltip: ((_nutinfo![recommedInfo[i][1]] / recommedInfo[i][2]) * 100)
-                  .ceil()
-                  .toString() +
-              recommedInfo[i][3],
+          colors: setColor((_nutinfo![recommedInfo[i][1]] / recommedInfo[i][2]) * 100),
+          jumlah: fiting((_nutinfo![recommedInfo[i][1]] / recommedInfo[i][2]) * 100),
+          tooltip: ((_nutinfo![recommedInfo[i][1]] / recommedInfo[i][2]) * 100).ceil().toString()+recommedInfo[i][3],
           //+단위
           label: recommedInfo[i][0]));
     }
