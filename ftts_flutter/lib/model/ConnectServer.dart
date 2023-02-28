@@ -41,6 +41,7 @@ class ConnectServer {
           queryParameters: {'time_div': time, 'date': selectDay},
           data: formData);
       if (sendImage.data['message'] == 'image data saved successfully') {
+
         var classficationResult = await dio.get('${Url}classification',
             queryParameters: {
               'userid': 'dodo',
@@ -48,23 +49,26 @@ class ConnectServer {
               'date': selectDay
             });
 
+        print("classficationResult");
+        print(classficationResult.data.toString());
+
         if (classficationResult.statusCode == 200) {
           //값
-          for (int i = 0;
-              i < int.parse(classficationResult.data['object_num'].toString());
-              i++) {
-            if (classficationResult.data['object'][i]['name'].toString() !=
-                null) {
+
+          if (classficationResult.data['object_num']!=0) {
+          for (int i = 0; i < int.parse(classficationResult.data['object_num'].toString()); i++) {
+
+            print("here?");
+
               foodCls?.add([
                 classficationResult.data['object'][i]['name'].toString(),
                 classficationResult.data['object'][i]['volumes']
               ]);
-              foodName.add(
-                  classficationResult.data['object'][i]['name'].toString());
-              foodName = (foodName.toSet()).toList();
+              foodName.add(classficationResult.data['object'][i]['name'].toString());foodName = (foodName.toSet()).toList();
               print(foodName); // 음식메뉴
               print(foodCls); // [음식메뉴, volume]
-            }
+
+
             try {
               dio.post('${Url}dodo/intakes/foods/names',
                   options:
@@ -77,15 +81,16 @@ class ConnectServer {
 
             //영양소 값 합산
           }
-          if (foodCls == null) {
-            foodCls.add(['불고기', 1.0]);
+          }else{
+            print("else");
+            return [['불고기',1.0]];
           }
         }
       }
       return foodCls;
     } catch (e) {
       return [
-        ['불고기', 1.0]
+        [['불고기', 1.0]]
       ];
     }
   }

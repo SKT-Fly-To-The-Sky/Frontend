@@ -99,15 +99,15 @@ class _StaticDailyGraphState extends State<StaticDailyGraph> {
                 ),
               ),
               Container(
-                height: 150,
-                width: 150,
+                height: 130,
+                width: 130,
                 child: SfCircularChart(
                     centerY: '80',
                     margin: EdgeInsets.zero,
                     annotations: <CircularChartAnnotation>[
                       CircularChartAnnotation(
                           widget: Container(
-                        child: Text(
+                            child: Text(
                           "${kcal.toInt()}kcal",
                           style: TextStyle(fontSize: 18),
                         ),
@@ -132,13 +132,14 @@ class _StaticDailyGraphState extends State<StaticDailyGraph> {
                   child: VerticalBarchart(
                     background: Colors.transparent,
                     labelColor: Colors.black,
-                    labelSizeFactor: 0.45,
+                    labelSizeFactor: 0.50,
                     tooltipColor: Colors.black,
                     data: barChartData,
                     showBackdrop: true,
                     barStyle: BarStyle.DEFAULT,
-                    barSize: 12,
+                    barSize: 11,
                     maxX: 100,
+
                     showLegend: true,
                     legend: [
                       Vlegend(isSquare: false, color: Colors.green, text: "적정"),
@@ -166,8 +167,8 @@ class _StaticDailyGraphState extends State<StaticDailyGraph> {
                       margin: EdgeInsets.only(top: 20.0),
                     ),
                     Container(
-                      height: 150,
-                      width: 150,
+                      height: 130,
+                      width: 130,
                     ),
                   ],
                 )),

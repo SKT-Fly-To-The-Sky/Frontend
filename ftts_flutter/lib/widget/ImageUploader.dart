@@ -354,9 +354,7 @@ class _ImageUploaderState extends State<ImageUploader>
                   ),
                 ),
                 Container(
-                    margin: EdgeInsets.only(
-                      left: 170,
-                    ),
+                  alignment: Alignment.centerRight,
                     child: TextButton(
                         style: TextButton.styleFrom(
                           primary: Color(0xFF3617CE),
@@ -372,7 +370,8 @@ class _ImageUploaderState extends State<ImageUploader>
                         child: Text(
                           "상세 보기",
                           style: TextStyle(fontSize: 14),
-                        ))),
+                        ))
+                ),
               ],
             ),
             Container(

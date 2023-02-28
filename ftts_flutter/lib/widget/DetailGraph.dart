@@ -46,16 +46,12 @@ class _DetailGraphState extends State<DetailGraph> {
       ['칼슘', 'calcium', 2500],
       ['철', 'iron', 40],
       ['마그네슘', 'magne', 360],
-      ['칼륨', 'potass', 3500],
-      ['나트륨', 'sodium', 2300],
-      ['아연', 'zinc', 35],
-      ['구리', 'copper', 10000]
     ];
 
     List<VBarChartModel> barChartData = [];
     List<VBarChartModel> barChartData2 = [];
 
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 5; i++) {
       var result = (_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100;
       if ((result) > 100) {
         result = 100.0;
@@ -74,7 +70,7 @@ class _DetailGraphState extends State<DetailGraph> {
           label: recommedInfo[i][0]));
     }
 
-    for (int i = 7; i < recommedInfo.length; i++) {
+    for (int i = 5; i < recommedInfo.length; i++) {
       var result = (_onedayInfo[recommedInfo[i][1]] / recommedInfo[i][2]) * 100;
       if ((result) > 100) {
         result = 100.0;
@@ -104,7 +100,7 @@ class _DetailGraphState extends State<DetailGraph> {
               data: barChartData,
               showBackdrop: true,
               barStyle: BarStyle.DEFAULT,
-              barSize: 12,
+              barSize: 11,
               maxX: 100,
               tooltipSize: 30,
               showLegend: false));
@@ -121,7 +117,7 @@ class _DetailGraphState extends State<DetailGraph> {
             data: barChartData2,
             showBackdrop: true,
             barStyle: BarStyle.DEFAULT,
-            barSize: 12,
+            barSize: 11,
             maxX: 100,
             showLegend: false,
             tooltipSize: 30,
@@ -275,21 +271,21 @@ class _StaticDetailGraphState extends State<StaticDetailGraph> {
         child: Row(
           children: [
             Container(
-                width: screenWidth * 0.46,
+                width: screenWidth * 0.48,
                 child: VerticalBarchart(
                     background: Colors.transparent,
                     labelColor: Colors.black,
-                    labelSizeFactor: 0.48,
+                    labelSizeFactor: 0.50,
                     tooltipColor: Colors.black,
                     data: barChartData,
                     showBackdrop: true,
                     barStyle: BarStyle.DEFAULT,
-                    barSize: 12,
+                    barSize: 11,
                     maxX: 100,
-                    tooltipSize: 45,
+                    tooltipSize: 30,
                     showLegend: false)),
             Container(
-                width: screenWidth * 0.48,
+                width: screenWidth * 0.44,
                 child: VerticalBarchart(
                   background: Colors.transparent,
                   labelColor: Colors.black,
@@ -298,10 +294,10 @@ class _StaticDetailGraphState extends State<StaticDetailGraph> {
                   data: barChartData2,
                   showBackdrop: true,
                   barStyle: BarStyle.DEFAULT,
-                  barSize: 12,
+                  barSize: 11,
                   maxX: 100,
                   showLegend: false,
-                  tooltipSize: 45,
+                  tooltipSize: 30,
                   legend: [
                     Vlegend(isSquare: false, color: Colors.green, text: "적정"),
                     Vlegend(isSquare: false, color: Colors.red, text: "과잉"),
