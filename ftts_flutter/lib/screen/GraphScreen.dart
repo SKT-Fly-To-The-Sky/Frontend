@@ -68,10 +68,10 @@ class GraphScreen extends StatelessWidget {
         child: VerticalBarchart(
           background: Colors.transparent,
           data: bardata,
-          barSize: 11,
-          labelSizeFactor: 0.24,
+          barSize: 10,
+          labelSizeFactor: 0.26,
           maxX: 100,
-          tooltipSize: 45,
+          tooltipSize: 50,
           showBackdrop: true,
           showLegend: true,
           barStyle: BarStyle.DEFAULT,
