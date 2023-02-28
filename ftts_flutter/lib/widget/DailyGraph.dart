@@ -68,6 +68,8 @@ class _DailyGraphState extends State<DailyGraph> {
       "copper": 0.0,
     };
 
+    _onedayInfo = graphprovider.oneday_info;
+    
     print("데이터 확인 ---------------");
     print(_onedayInfo);
 
@@ -191,7 +193,7 @@ class _DailyGraphState extends State<DailyGraph> {
                     annotations: <CircularChartAnnotation>[
                       CircularChartAnnotation(
                           widget: Container(
-                        child: Text(
+                            child: Text(
                           ((recommedInfo[0][2] - (_onedayInfo['kcal'])).ceil())
                                   .toString() +
                               "kcal",
